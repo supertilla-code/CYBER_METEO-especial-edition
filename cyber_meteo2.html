@@ -264,6 +264,7 @@
             <p>
                 <span class="badge">🌊 ESTADO DEL MAR · 12 PUERTOS</span>
                 <span class="badge">🌬️ DATOS DE VIENTO · OLEAJE · MAREAS</span>
+                <span class="badge">📊 8 GRÁFICOS INTERACTIVOS</span>
             </p>
         </div>
         <div class="action-buttons">
@@ -335,7 +336,7 @@
         </div>
     </div>
 
-    <!-- FILA 2: CORRIENTES + MAREAS + GRÁFICOS -->
+    <!-- FILA 2: CORRIENTES + MAREAS + GRÁFICOS 1-2 -->
     <div class="grid">
         <div class="card">
             <div class="card-header"><span>🌊</span><h2>CORRIENTES MARINAS</h2></div>
@@ -354,7 +355,7 @@
                     <tr><td>MAÑANA</td><td id="highTide2">--:-- / --:--</td><td id="lowTide2">--:--</td></tr>
                     <tr><td>+2 DÍAS</td><td id="highTide3">--:-- / --:--</td><td id="lowTide3">--:-- / --:--</td></tr>
                 </tbody>
-            </table>
+             </table>
             <div class="data-row"><span>📈 COEFICIENTE MAREA:</span><span id="tideCoef">--</span></div>
             <div class="data-row"><span>🌕 FASE LUNAR:</span><span id="moonPhase">--</span></div>
             <div class="data-row"><span>💡 ILUMINACIÓN:</span><span id="moonIllum">--%</span></div>
@@ -369,7 +370,7 @@
         </div>
     </div>
 
-    <!-- FILA 3: MÁS GRÁFICOS -->
+    <!-- FILA 3: GRÁFICOS 3-4-5-6 -->
     <div class="grid">
         <div class="card">
             <div class="card-header"><span>🌊</span><h2>PREDICCIÓN MAREA (12h)</h2></div>
@@ -378,6 +379,26 @@
         <div class="card">
             <div class="card-header"><span>🌬️</span><h2>VIENTO · RACHAS (24h)</h2></div>
             <div class="chart-container"><canvas id="windForecastChart"></canvas></div>
+        </div>
+        <div class="card">
+            <div class="card-header"><span>🌡️</span><h2>TEMP. AGUA · SEMANAL</h2></div>
+            <div class="chart-container"><canvas id="tempChart"></canvas></div>
+        </div>
+        <div class="card">
+            <div class="card-header"><span>📊</span><h2>POTENCIA OLEAJE (kW/m)</h2></div>
+            <div class="chart-container"><canvas id="powerChart"></canvas></div>
+        </div>
+    </div>
+
+    <!-- FILA 4: GRÁFICOS 7-8 + ALERTAS -->
+    <div class="grid">
+        <div class="card">
+            <div class="card-header"><span>📈</span><h2>PRESIÓN ATMOSFÉRICA (hPa)</h2></div>
+            <div class="chart-container"><canvas id="pressureChart"></canvas></div>
+        </div>
+        <div class="card">
+            <div class="card-header"><span>🌊</span><h2>PERÍODO OLEAJE (segundos)</h2></div>
+            <div class="chart-container"><canvas id="periodChart"></canvas></div>
         </div>
         <div class="card">
             <div class="card-header"><span>⚠️</span><h2>ALERTAS · SEGURIDAD MARINA</h2></div>
@@ -392,7 +413,7 @@
     <footer>
         <div>⚡ FUENTES: PUERTOS DEL ESTADO · AEMET · INSTITUTO HIDROGRÁFICO DE LA MARINA · BOYAS OCEANOGRÁFICAS</div>
         <div>🐵 DESARROLLO: SUPERTILLA_DEVELOPER · 🤖 ASISTENCIA: DeepSeek AI · 🌊 CYBER_METEO SPECIAL EDITION</div>
-        <div>🍌 EDICIÓN ESPECIAL SERGIO PEPINELLI · TODOS LOS DATOS OCEANOGRÁFICOS EN TIEMPO REAL</div>
+        <div>🍌 EDICIÓN ESPECIAL SERGIO PEPINELLI · 8 GRÁFICOS INTERACTIVOS · TODOS LOS DATOS OCEANOGRÁFICOS</div>
     </footer>
 </div>
 
@@ -496,7 +517,7 @@
             <p>🐵 SUPERTILLA_DEVELOPER 🐵</p>
             <p>🤖 ASISTENCIA Y DESARROLLO: <strong style="color:#0ff;">DeepSeek AI</strong></p>
             <p>📡 FUENTES: Puertos del Estado · AEMET · Instituto Hidrográfico</p>
-            <p>🌊 TODOS LOS DATOS OCEANOGRÁFICOS · 12 PUERTOS DISPONIBLES</p>
+            <p>📊 8 GRÁFICOS INTERACTIVOS · 12 PUERTOS DISPONIBLES</p>
             <p>🐵🐒🙊🙉🙈 🍌🍌🍌</p>
             <button id="closeModal">🔮 CERRAR</button>
         `;
@@ -565,11 +586,16 @@
         document.getElementById('lowTide3').innerHTML = '00:20 / 12:41';
         document.getElementById('lastUpdateTime').innerHTML = '🕒 ACTUALIZADO: ' + new Date().toLocaleTimeString() + ' · ' + loc.name;
         
+        // ACTUALIZAR TODOS LOS GRÁFICOS (8 GRÁFICOS)
         if(charts.waveForecast) charts.waveForecast.data.datasets[0].data = [loc.wave-0.1, loc.wave-0.05, loc.wave, loc.wave+0.05, loc.wave, loc.wave-0.05];
         if(charts.waveSpectrum) charts.waveSpectrum.data.datasets[0].data = [Math.floor(loc.swellHeight*40), Math.floor(loc.wind*2), 100 - Math.floor(loc.swellHeight*40) - Math.floor(loc.wind*2)];
         if(charts.tideChart) charts.tideChart.data.datasets[0].data = [1.1, 0.8, 0.5, 1.0, 1.4, 1.2, 0.9];
         if(charts.windForecast) charts.windForecast.data.datasets[0].data = [loc.wind-3, loc.wind-1, loc.wind, loc.wind+2, loc.wind+1, loc.wind-2];
-        [charts.waveForecast, charts.waveSpectrum, charts.tideChart, charts.windForecast].forEach(c => c?.update());
+        if(charts.tempChart) charts.tempChart.data.datasets[0].data = [loc.temp-0.5, loc.temp, loc.temp+0.3, loc.temp+0.1, loc.temp-0.2, loc.temp+0.4, loc.temp];
+        if(charts.powerChart) charts.powerChart.data.datasets[0].data = [loc.power-20, loc.power, loc.power+15, loc.power+5, loc.power-10, loc.power+8];
+        if(charts.pressureChart) charts.pressureChart.data.datasets[0].data = [loc.pressure-3, loc.pressure-1, loc.pressure, loc.pressure+1, loc.pressure+2, loc.pressure-2];
+        if(charts.periodChart) charts.periodChart.data.datasets[0].data = [loc.period-0.5, loc.period, loc.period+0.3, loc.period+0.1, loc.period-0.2, loc.period+0.4];
+        Object.values(charts).forEach(c => c?.update());
     }
 
     function createSplash(x,y) {
@@ -589,6 +615,10 @@
         charts.waveSpectrum = new Chart(document.getElementById('waveSpectrumChart'), { type:'bar', data:{ labels:['M.Fondo','Viento','Mixto'], datasets:[{ label:'Energía (%)', data:[65,25,10], backgroundColor:['#0ff','#f0f','#ff0'] }] }, options:{ responsive:true } });
         charts.tideChart = new Chart(document.getElementById('tideChart'), { type:'line', data:{ labels:['00','02','04','06','08','10','12'], datasets:[{ label:'Nivel marea (m)', data:[1.1,0.9,0.6,0.5,0.8,1.2,1.5], borderColor:'#f0f', tension:0.3 }] }, options:{ responsive:true } });
         charts.windForecast = new Chart(document.getElementById('windForecastChart'), { type:'line', data:{ labels:['00h','04h','08h','12h','16h','20h'], datasets:[{ label:'Viento (km/h)', data:[15,18,20,22,19,16], borderColor:'#ff0', tension:0.3 }] }, options:{ responsive:true } });
+        charts.tempChart = new Chart(document.getElementById('tempChart'), { type:'line', data:{ labels:['Lun','Mar','Mié','Jue','Vie','Sáb','Dom'], datasets:[{ label:'Temp. Agua (°C)', data:[15.0,15.2,15.4,15.3,15.1,15.5,15.2], borderColor:'#0ff', tension:0.3 }] }, options:{ responsive:true } });
+        charts.powerChart = new Chart(document.getElementById('powerChart'), { type:'bar', data:{ labels:['00h','06h','12h','18h','24h'], datasets:[{ label:'Potencia (kW/m)', data:[120,135,150,140,125], backgroundColor:'#0ff' }] }, options:{ responsive:true } });
+        charts.pressureChart = new Chart(document.getElementById('pressureChart'), { type:'line', data:{ labels:['00h','04h','08h','12h','16h','20h'], datasets:[{ label:'Presión (hPa)', data:[1018,1017,1018,1019,1018,1017], borderColor:'#f0f', tension:0.3 }] }, options:{ responsive:true } });
+        charts.periodChart = new Chart(document.getElementById('periodChart'), { type:'line', data:{ labels:['00h','04h','08h','12h','16h','20h'], datasets:[{ label:'Período (s)', data:[4.2,4.3,4.5,4.4,4.2,4.1], borderColor:'#ff0', tension:0.3 }] }, options:{ responsive:true } });
     }
 
     document.addEventListener('DOMContentLoaded', () => {
@@ -632,7 +662,7 @@ ${document.getElementById('alertWind').innerHTML}
 
 ━━━━━━━━━━━━━━━━━━━━━
 🍌 SUPERTILLA🐵DEVELOPER 🍌
-🌊 CYBER_METEO SPECIAL EDITION
+🌊 CYBER_METEO SPECIAL EDITION · 8 GRÁFICOS
 🤖 DeepSeek AI · Sergio Pepinelli`;
             window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
         };
