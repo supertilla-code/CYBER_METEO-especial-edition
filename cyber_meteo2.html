@@ -661,9 +661,7 @@ ${document.getElementById('alertWind').innerHTML}
 🏊 ${document.getElementById('swimAdvice').innerHTML}
 
 ━━━━━━━━━━━━━━━━━━━━━
-🍌 SUPERTILLA🐵DEVELOPER 🍌
-🌊 CYBER_METEO SPECIAL EDITION · 8 GRÁFICOS
-🤖 DeepSeek AI · Sergio Pepinelli`;
+🍌 SUPERTILLA🐵DEVELOPER 🍌`;
             window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
         };
         document.getElementById('pdfBtn').onclick = () => html2pdf().set({ margin:0.5, filename:'CYBER_METEO_MARINE.pdf', image:{ quality:0.9 }, jsPDF:{ unit:'in', format:'a4', orientation:'landscape' } }).from(document.getElementById('dashboardContent')).save();
