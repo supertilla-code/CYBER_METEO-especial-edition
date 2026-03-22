@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
     <meta name="theme-color" content="#0a0f1a">
-    <title>⚡ CYBERPUNK MARINE ⚡ | Estado del Mar · Deportes Acuáticos</title>
+    <title>⚡ CYBER_METEO ⚡ | Estado del Mar · Todos los Puertos</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
@@ -46,7 +46,7 @@
         }
 
         .dashboard {
-            max-width: 1400px;
+            max-width: 1600px;
             margin: 0 auto;
             position: relative;
             z-index: 2;
@@ -109,37 +109,39 @@
             cursor: pointer;
             transition: all 0.2s;
         }
-        .badge:active { transform: scale(0.96); }
 
         .location-selector {
             background: rgba(0, 255, 255, 0.1);
             border: 1px solid #0ff;
             border-radius: 40px;
-            padding: 6px 12px;
+            padding: 10px 16px;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
             flex-wrap: wrap;
             justify-content: center;
+            margin-bottom: 16px;
         }
         .location-selector select {
             background: #0a0f1a;
             color: #0ff;
             border: 1px solid #0ff;
             border-radius: 30px;
-            padding: 8px 16px;
+            padding: 10px 20px;
             font-family: 'Orbitron', monospace;
-            font-size: 0.8rem;
+            font-size: 0.85rem;
             cursor: pointer;
+            min-width: 220px;
         }
         .location-selector button {
             background: linear-gradient(135deg, #0ff1, #f0f1);
             border: 1px solid #0ff;
             color: #0ff;
-            padding: 8px 20px;
+            padding: 10px 24px;
             border-radius: 30px;
             font-weight: bold;
             cursor: pointer;
+            font-family: 'Orbitron';
         }
 
         .action-buttons {
@@ -153,25 +155,24 @@
             background: linear-gradient(135deg, #0ff1, #f0f1);
             border: 2px solid #0ff;
             color: #0ff;
-            padding: 14px 20px;
+            padding: 12px 20px;
             border-radius: 50px;
             font-weight: bold;
             font-family: 'Orbitron', monospace;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             cursor: pointer;
             transition: all 0.2s;
-            flex: 1;
-            min-width: 120px;
+            min-width: 110px;
             text-align: center;
         }
         .btn:active { transform: scale(0.96); }
         .btn-wa { background: linear-gradient(135deg, #25D36630, #128C7E30); border-color: #25D366; color: #25D366; }
-        .btn-credits { background: linear-gradient(135deg, #ff00ff30, #ff660030); border-color: #ff00ff; color: #ff00ff; animation: neonPulse 1s infinite alternate; }
+        .btn-credits { background: linear-gradient(135deg, #ff00ff30, #ff660030); border-color: #ff00ff; color: #ff00ff; animation: neonPulse 1s infinite alternate; font-size: 0.75rem; }
 
-        @media (min-width: 640px) {
-            .btn { padding: 12px 24px; font-size: 0.85rem; min-width: 130px; }
+        @media (min-width: 768px) {
+            .btn { padding: 12px 24px; font-size: 0.85rem; }
             .hero { flex-direction: row; align-items: center; justify-content: space-between; }
-            .title-section h1 { font-size: 1.5rem; text-align: left; }
+            .title-section h1 { font-size: 1.6rem; text-align: left; }
         }
 
         .grid {
@@ -181,7 +182,8 @@
             margin-bottom: 14px;
         }
         @media (min-width: 640px) { .grid { grid-template-columns: repeat(2, 1fr); } }
-        @media (min-width: 1024px) { .grid { grid-template-columns: repeat(3, 1fr); } body { padding: 20px; } }
+        @media (min-width: 1024px) { .grid { grid-template-columns: repeat(3, 1fr); } }
+        @media (min-width: 1400px) { .grid { grid-template-columns: repeat(4, 1fr); } }
 
         .card {
             background: rgba(0, 20, 30, 0.7);
@@ -192,7 +194,6 @@
             transition: all 0.2s;
             animation: float 3s infinite alternate;
         }
-        .card:active { transform: scale(0.99); }
 
         .card-header {
             display: flex;
@@ -203,53 +204,53 @@
             margin-bottom: 12px;
         }
         .card-header h2 {
-            font-size: 1rem;
+            font-size: 0.95rem;
             font-weight: 700;
             color: #0ff;
             text-shadow: 0 0 3px #0ff;
         }
 
-        .chart-container { height: 140px; margin: 8px 0; }
-        .data-row { display: flex; justify-content: space-between; margin: 6px 0; font-family: 'Share Tech Mono', monospace; border-bottom: 1px dashed rgba(0, 255, 255, 0.2); padding: 4px 0; font-size: 0.7rem; }
-        .wave-box { background: rgba(0, 255, 255, 0.1); border-radius: 16px; padding: 8px; text-align: center; border: 1px solid #0ff; margin: 8px 0; font-size: 0.7rem; }
-        .warning { background: rgba(255, 0, 255, 0.15); border-left: 3px solid #f0f; padding: 6px; border-radius: 10px; margin-top: 8px; font-size: 0.65rem; }
-        .tide-table { width: 100%; border-collapse: collapse; font-size: 0.65rem; }
-        .tide-table td, .tide-table th { padding: 4px 2px; border-bottom: 1px solid #0ff3; color: #0ff; }
-        .gauge { background: #0a0f1a; border-radius: 20px; height: 6px; margin: 6px 0; overflow: hidden; }
+        .chart-container { height: 150px; margin: 10px 0; }
+        .data-row { display: flex; justify-content: space-between; margin: 6px 0; font-family: 'Share Tech Mono', monospace; border-bottom: 1px dashed rgba(0, 255, 255, 0.2); padding: 5px 0; font-size: 0.7rem; }
+        .wave-box { background: rgba(0, 255, 255, 0.1); border-radius: 16px; padding: 10px; text-align: center; border: 1px solid #0ff; margin: 8px 0; }
+        .warning { background: rgba(255, 0, 255, 0.15); border-left: 3px solid #f0f; padding: 8px; border-radius: 10px; margin-top: 8px; font-size: 0.65rem; }
+        .gauge { background: #0a0f1a; border-radius: 20px; height: 6px; margin: 8px 0; overflow: hidden; }
         .gauge-fill { height: 100%; background: linear-gradient(90deg, #0ff, #f0f); width: 0%; border-radius: 20px; transition: width 0.3s; }
-        .value-big { font-size: 0.9rem; font-weight: bold; color: #ff66ff; }
-        .sport-tag { background: #0ff2; border-radius: 20px; padding: 4px 10px; font-size: 0.65rem; border: 1px solid #0ff; display: inline-block; margin: 3px; }
-        .register-log { background: #0a0f1a; border-radius: 12px; padding: 8px; max-height: 150px; overflow-y: auto; font-size: 0.65rem; font-family: 'Share Tech Mono'; }
-        .register-log div { border-bottom: 1px solid #0ff3; padding: 4px 0; }
+        .value-big { font-size: 1rem; font-weight: bold; color: #ff66ff; }
+        .tide-table { width: 100%; border-collapse: collapse; font-size: 0.65rem; }
+        .tide-table td, .tide-table th { padding: 5px 3px; border-bottom: 1px solid #0ff3; color: #0ff; }
 
         .splash-animation { position: fixed; pointer-events: none; z-index: 10000; font-size: 1.2rem; animation: splash 0.5s ease-out forwards; }
         @keyframes splash { 0% { transform: scale(1); opacity: 1; } 100% { transform: scale(1.5); opacity: 0; } }
+        
         .monkey-burst { position: fixed; pointer-events: none; z-index: 10001; animation: monkeyFly 0.8s ease-out forwards; font-size: 2rem; }
         .banana-burst { position: fixed; pointer-events: none; z-index: 10001; animation: bananaSpin 0.8s ease-out forwards; font-size: 1.8rem; }
         @keyframes monkeyFly { 0% { transform: translateY(0) rotate(0deg); opacity: 1; } 100% { transform: translateY(-120px) rotate(540deg); opacity: 0; } }
         @keyframes bananaSpin { 0% { transform: translateY(0) rotate(0deg); opacity: 1; } 100% { transform: translateY(80px) rotate(360deg); opacity: 0; } }
 
-        footer { text-align: center; margin-top: 20px; padding-top: 12px; border-top: 1px solid #0ff; font-size: 0.55rem; }
+        footer { text-align: center; margin-top: 20px; padding-top: 16px; border-top: 1px solid #0ff; font-size: 0.6rem; }
         .last-update { text-align: right; font-size: 0.6rem; margin-bottom: 8px; }
+        
         .credits-modal {
             position: fixed;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background: rgba(0, 0, 0, 0.95);
+            background: rgba(0, 0, 0, 0.98);
             border: 3px solid #ff00ff;
             border-radius: 30px;
-            padding: 25px;
+            padding: 28px;
             z-index: 10010;
             text-align: center;
             font-family: 'Orbitron';
             backdrop-filter: blur(20px);
             box-shadow: 0 0 100px #ff00ff;
-            animation: borderGlow 0.5s infinite alternate;
+            min-width: 280px;
+            max-width: 90%;
         }
-        .credits-modal h2 { color: #ff00ff; font-size: 1.5rem; margin-bottom: 15px; }
-        .credits-modal p { color: #0ff; margin: 8px 0; font-size: 0.9rem; }
-        .credits-modal button { margin-top: 15px; padding: 8px 25px; background: #ff00ff; color: #000; border: none; border-radius: 30px; font-weight: bold; cursor: pointer; }
+        .credits-modal h2 { color: #ff00ff; font-size: 1.4rem; margin-bottom: 15px; }
+        .credits-modal p { color: #0ff; margin: 10px 0; font-size: 0.85rem; }
+        .credits-modal button { margin-top: 20px; padding: 10px 30px; background: #ff00ff; color: #000; border: none; border-radius: 40px; font-weight: bold; cursor: pointer; font-family: 'Orbitron'; }
     </style>
 </head>
 <body>
@@ -259,56 +260,70 @@
 <div class="dashboard" id="dashboardContent">
     <div class="hero">
         <div class="title-section">
-            <h1>⚡ CYBERPUNK MARINE ⚡</h1>
+            <h1>⚡ CYBER_METEO ⚡</h1>
             <p>
-                <span class="badge">🌊 ESTADO DEL MAR · DATOS OCEANOGRÁFICOS</span>
-                <span class="badge">🏄 DEPORTES ACUÁTICOS</span>
+                <span class="badge">🌊 ESTADO DEL MAR · 12 PUERTOS</span>
+                <span class="badge">🌬️ DATOS DE VIENTO · OLEAJE · MAREAS</span>
             </p>
         </div>
         <div class="action-buttons">
             <button class="btn" id="refreshBtn">🔄 ACTUALIZAR</button>
             <button class="btn btn-wa" id="whatsappBtn">💬 COMPARTIR</button>
             <button class="btn" id="pdfBtn">📄 PDF</button>
-            <button class="btn btn-credits" id="creditsBtn">🐵 SUPERTILLA🐵🍌DEVELOPER🍌<br>EDICIÓN ESPECIAL SERGIO PEPINELLI</button>
+            <button class="btn btn-credits" id="creditsBtn">⚡ CRÉDITOS ⚡</button>
         </div>
     </div>
 
-    <!-- SELECTOR DE UBICACIÓN -->
-    <div class="location-selector" style="margin-bottom: 16px;">
-        <span>📍 SELECCIONAR UBICACIÓN:</span>
+    <!-- SELECTOR DE PUERTOS (12 UBICACIONES) -->
+    <div class="location-selector">
+        <span>📍 SELECCIONAR PUERTO:</span>
         <select id="locationSelect">
             <option value="puerto_sherry">⚓ PUERTO SHERRY · EL PUERTO</option>
-            <option value="cadiz">🌊 CÁDIZ · CAPITAL</option>
-            <option value="rota">🏖️ ROTA · PLAYA COSTILLA</option>
-            <option value="chipiona">🗼 CHIPIONA · FARO</option>
-            <option value="sanlucar">🌅 SANLÚCAR · BONANZA</option>
-            <option value="tarifa">🌬️ TARIFA · PUNTA TARIFA</option>
+            <option value="cadiz">🌊 CÁDIZ · PUERTO AMERICA</option>
+            <option value="rota">🏖️ ROTA · PUERTO DEPORTIVO</option>
+            <option value="chipiona">🗼 CHIPIONA · PUERTO CRUZ DEL MAR</option>
+            <option value="sanlucar">🌅 SANLÚCAR · PUERTO BONANZA</option>
+            <option value="tarifa">🌬️ TARIFA · PUERTO DEPORTIVO</option>
+            <option value="algeciras">🚢 ALGECIRAS · PUERTO BAHÍA</option>
+            <option value="barbate">🐟 BARBATE · PUERTO PESQUERO</option>
+            <option value="conil">🏄 CONIL · PUERTO DEPORTIVO</option>
+            <option value="zahara">🌊 ZAHARA DE LOS ATUNES</option>
+            <option value="sotogrande">⛵ SOTOGRANDE · PUERTO</option>
+            <option value="palmas">🏝️ LAS PALMAS · PUERTO</option>
         </select>
         <button id="applyLocationBtn">🔮 APLICAR UBICACIÓN</button>
     </div>
 
     <div class="last-update" id="lastUpdateTime">🕒 ÚLTIMA ACTUALIZACIÓN: --:--</div>
 
-    <!-- FILA 1: PARÁMETROS PRINCIPALES DEL MAR -->
+    <!-- FILA 1: PARÁMETROS PRINCIPALES MAR Y VIENTO -->
     <div class="grid">
         <div class="card">
-            <div class="card-header"><span>🌊</span><h2>ESTADO DEL MAR · ACTUAL</h2></div>
+            <div class="card-header"><span>🌊</span><h2>OLEAJE · ALTURAS</h2></div>
             <div class="wave-box">
-                <div>🌊 ALTURA SIGNIFICATIVA: <strong id="waveHeight">-- m</strong></div>
+                <div>🌊 ALTURA SIGNIFICATIVA: <strong id="waveHeight" class="value-big">-- m</strong></div>
                 <div>📏 ALTURA MÁXIMA: <strong id="waveMax">-- m</strong></div>
                 <div>⏱️ PERÍODO PICO: <strong id="wavePeriod">-- s</strong></div>
-                <div>🧭 DIRECCIÓN OLA: <strong id="waveDir">--</strong> (--°)</div>
-                <div>⚡ POTENCIA DEL OLEAJE: <strong id="wavePower">-- kW/m</strong></div>
+                <div>🧭 DIRECCIÓN OLA: <strong id="waveDir">--</strong></div>
+                <div>⚡ POTENCIA OLEAJE: <strong id="wavePower">-- kW/m</strong></div>
             </div>
             <div class="gauge"><div class="gauge-fill" id="waveGauge" style="width:0%"></div></div>
         </div>
         <div class="card">
-            <div class="card-header"><span>🌊</span><h2>MAR DE FONDO · SWELL</h2></div>
-            <div class="data-row"><span>📏 ALTURA SWELL:</span><span id="swellHeight">-- m</span></div>
-            <div class="data-row"><span>⏱️ PERÍODO SWELL:</span><span id="swellPeriod">-- s</span></div>
-            <div class="data-row"><span>🧭 DIRECCIÓN SWELL:</span><span id="swellDir">--</span></div>
-            <div class="data-row"><span>🌊 ENERGÍA SWELL:</span><span id="swellEnergy">-- kJ/m²</span></div>
-            <div class="data-row"><span>📊 CLASIFICACIÓN:</span><span id="swellClass">MAR DE FONDO MODERADO</span></div>
+            <div class="card-header"><span>🌊</span><h2>MAR DE FONDO · M.FONDO</h2></div>
+            <div class="data-row"><span>📏 ALTURA M.FONDO:</span><span id="swellHeight">-- m</span></div>
+            <div class="data-row"><span>⏱️ PERÍODO M.FONDO:</span><span id="swellPeriod">-- s</span></div>
+            <div class="data-row"><span>🧭 DIRECCIÓN M.FONDO:</span><span id="swellDir">--</span></div>
+            <div class="data-row"><span>🌊 ENERGÍA M.FONDO:</span><span id="swellEnergy">-- kJ/m²</span></div>
+            <div class="data-row"><span>📊 CLASIFICACIÓN:</span><span id="swellClass">--</span></div>
+        </div>
+        <div class="card">
+            <div class="card-header"><span>🌬️</span><h2>VIENTO MARINO</h2></div>
+            <div class="data-row"><span>💨 VIENTO MEDIO:</span><span class="value-big" id="windSpeed">-- km/h</span></div>
+            <div class="data-row"><span>⚡ RACHAS MÁXIMAS:</span><span id="windGust">-- km/h</span></div>
+            <div class="data-row"><span>🧭 DIRECCIÓN:</span><span id="windDir">--</span></div>
+            <div class="data-row"><span>🌬️ ESCALA BEAUFORT:</span><span id="beaufort">--</span></div>
+            <div class="data-row"><span>📊 PRESIÓN ATMOSFÉRICA:</span><span id="pressure">-- hPa</span></div>
         </div>
         <div class="card">
             <div class="card-header"><span>🌡️</span><h2>PROPIEDADES FÍSICAS</h2></div>
@@ -320,93 +335,64 @@
         </div>
     </div>
 
-    <!-- FILA 2: VIENTO, CORRIENTES Y MAREAS -->
+    <!-- FILA 2: CORRIENTES + MAREAS + GRÁFICOS -->
     <div class="grid">
         <div class="card">
-            <div class="card-header"><span>🌬️</span><h2>VIENTO MARINO</h2></div>
-            <div class="data-row"><span>💨 VIENTO MEDIO:</span><span class="value-big" id="windSpeed">-- km/h</span></div>
-            <div class="data-row"><span>⚡ RACHAS MÁXIMAS:</span><span id="windGust">-- km/h</span></div>
-            <div class="data-row"><span>🧭 DIRECCIÓN:</span><span id="windDir">--</span></div>
-            <div class="data-row"><span>🌬️ ESCALA BEAUFORT:</span><span id="beaufort">--</span></div>
-            <div class="data-row"><span>🍃 PRESIÓN ATMOSFÉRICA:</span><span id="pressure">-- hPa</span></div>
-        </div>
-        <div class="card">
             <div class="card-header"><span>🌊</span><h2>CORRIENTES MARINAS</h2></div>
-            <div class="data-row"><span>🌊 CORRIENTE SUPERFICIAL:</span><span id="currentSurface">-- km/h</span></div>
-            <div class="data-row"><span>🧭 DIRECCIÓN CORRIENTE:</span><span id="currentDir">--</span></div>
+            <div class="data-row"><span>🌊 SUPERFICIAL:</span><span id="currentSurface">-- km/h</span></div>
+            <div class="data-row"><span>🧭 DIRECCIÓN:</span><span id="currentDir">--</span></div>
             <div class="data-row"><span>🌊 CORRIENTE FONDO:</span><span id="currentBottom">-- km/h</span></div>
-            <div class="data-row"><span>🌀 TRANSPORTE DE EKMAN:</span><span id="ekman">-- m³/s</span></div>
-            <div class="data-row"><span>⚠️ RESACA (RIP CURRENT):</span><span id="ripCurrent">BAJO</span></div>
+            <div class="data-row"><span>🌀 TRANSPORTE EKMAN:</span><span id="ekman">-- m³/s</span></div>
+            <div class="data-row"><span>⚠️ RESACA (RIP):</span><span id="ripCurrent">--</span></div>
         </div>
         <div class="card">
             <div class="card-header"><span>🌙</span><h2>MAREAS · PREDICCIÓN</h2></div>
-            <table class="tide-table" id="tideTable">
-                <thead><tr><th>FECHA</th><th>🌕 PLEAMAR</th><th>🌑 BAJAMAR</th></tr></thead>
+            <table class="tide-table">
+                <thead>大学<th>FECHA</th><th>🌕 PLEAMAR</th><th>🌑 BAJAMAR</th> </thead>
                 <tbody>
-                    <tr><td>HOY</td><td id="highTide1">--:--</td><td id="lowTide1">--:--</td></tr>
-                    <tr><td>MAÑANA</td><td id="highTide2">--:--</td><td id="lowTide2">--:--</td></tr>
-                    <tr><td>+2 DÍAS</td><td id="highTide3">--:--</td><td id="lowTide3">--:--</td></tr>
+                    <tr><td>HOY</td><td id="highTide1">--:-- / --:--</td><td id="lowTide1">--:-- / --:--</td></tr>
+                    <tr><td>MAÑANA</td><td id="highTide2">--:-- / --:--</td><td id="lowTide2">--:--</td></tr>
+                    <tr><td>+2 DÍAS</td><td id="highTide3">--:-- / --:--</td><td id="lowTide3">--:-- / --:--</td></tr>
                 </tbody>
             </table>
             <div class="data-row"><span>📈 COEFICIENTE MAREA:</span><span id="tideCoef">--</span></div>
-            <div class="data-row"><span>🌕 FASE LUNAR:</span><span id="moonPhase">LUNA CRECIENTE</span></div>
+            <div class="data-row"><span>🌕 FASE LUNAR:</span><span id="moonPhase">--</span></div>
+            <div class="data-row"><span>💡 ILUMINACIÓN:</span><span id="moonIllum">--%</span></div>
+        </div>
+        <div class="card">
+            <div class="card-header"><span>📈</span><h2>EVOLUCIÓN OLEAJE (24h)</h2></div>
+            <div class="chart-container"><canvas id="waveForecastChart"></canvas></div>
+        </div>
+        <div class="card">
+            <div class="card-header"><span>🌊</span><h2>ESPECTRO DE ENERGÍA</h2></div>
+            <div class="chart-container"><canvas id="waveSpectrumChart"></canvas></div>
         </div>
     </div>
 
-    <!-- FILA 3: DEPORTES ACUÁTICOS + REGISTRO -->
+    <!-- FILA 3: MÁS GRÁFICOS -->
     <div class="grid">
         <div class="card">
-            <div class="card-header"><span>🏄</span><h2>DEPORTES ACUÁTICOS · RATING</h2></div>
-            <div class="wave-box">
-                <div>🏄 SURF: <strong id="surfRating">--/10</strong> · <span id="surfDesc">--</span></div>
-                <div>🪁 KITESURF: <strong id="kiteRating">--/10</strong> · <span id="kiteDesc">--</span></div>
-                <div>⛵ WINDSURF: <strong id="windRating">--/10</strong> · <span id="windDesc">--</span></div>
-                <div>🚤 PADDLE SURF: <strong id="paddleRating">--/10</strong> · <span id="paddleDesc">--</span></div>
-                <div>🤿 BUCEO: <strong id="diveRating">--/10</strong> · <span id="diveDesc">--</span></div>
-            </div>
-            <div class="gauge"><div class="gauge-fill" id="sportGauge" style="width:0%"></div></div>
+            <div class="card-header"><span>🌊</span><h2>PREDICCIÓN MAREA (12h)</h2></div>
+            <div class="chart-container"><canvas id="tideChart"></canvas></div>
         </div>
         <div class="card">
-            <div class="card-header"><span>📝</span><h2>REGISTRO DE ACTIVIDADES</h2></div>
-            <div class="register-log" id="activityLog">
-                <div>⚡ Sistema listo</div>
-                <div>📍 Ubicación actual: Puerto Sherry</div>
-            </div>
-            <div style="display: flex; gap: 8px; margin-top: 10px;">
-                <button id="registerSurfBtn" class="sport-tag" style="cursor:pointer;">🏄 REGISTRAR SURF</button>
-                <button id="registerKiteBtn" class="sport-tag" style="cursor:pointer;">🪁 REGISTRAR KITESURF</button>
-                <button id="registerDiveBtn" class="sport-tag" style="cursor:pointer;">🤿 REGISTRAR BUCEO</button>
-            </div>
+            <div class="card-header"><span>🌬️</span><h2>VIENTO · RACHAS (24h)</h2></div>
+            <div class="chart-container"><canvas id="windForecastChart"></canvas></div>
         </div>
         <div class="card">
             <div class="card-header"><span>⚠️</span><h2>ALERTAS · SEGURIDAD MARINA</h2></div>
-            <div class="warning" id="alertWave">🌊 AVISO DE OLEAJE: --</div>
-            <div class="warning" id="alertWind">🌬️ AVISO DE VIENTO: --</div>
-            <div class="warning" id="alertRip">⚠️ RIESGO DE RESACA: --</div>
+            <div class="warning" id="alertWave">🌊 ALERTA OLEAJE: --</div>
+            <div class="warning" id="alertWind">🌬️ ALERTA VIENTO: --</div>
+            <div class="warning" id="alertRip">⚠️ RIESGO RESACA: --</div>
             <div class="data-row"><span>🏊 BAÑO RECOMENDADO:</span><span id="swimAdvice">--</span></div>
             <div class="data-row"><span>⛵ NAVEGACIÓN:</span><span id="navAdvice">--</span></div>
         </div>
     </div>
 
-    <!-- FILA 4: GRÁFICOS ADICIONALES -->
-    <div class="grid">
-        <div class="card">
-            <div class="card-header"><span>📈</span><h2>EVOLUCIÓN OLEAJE (PRÓXIMAS 24H)</h2></div>
-            <div class="chart-container"><canvas id="waveForecastChart"></canvas></div>
-        </div>
-        <div class="card">
-            <div class="card-header"><span>🌊</span><h2>ESPECTRO DE OLAS</h2></div>
-            <div class="chart-container"><canvas id="waveSpectrumChart"></canvas></div>
-        </div>
-        <div class="card">
-            <div class="card-header"><span>📊</span><h2>PREDICCIÓN DE MAREA</h2></div>
-            <div class="chart-container"><canvas id="tideChart"></canvas></div>
-        </div>
-    </div>
-
     <footer>
-        <div>⚡ DATOS: PUERTOS DEL ESTADO · AEMET · INSTITUTO HIDROGRÁFICO · BOYAS OCEANOGRÁFICAS</div>
-        <div>🐵 CYBERPUNK MARINE · ESTADO DEL MAR · TODOS LOS DATOS OCEANOGRÁFICOS</div>
+        <div>⚡ FUENTES: PUERTOS DEL ESTADO · AEMET · INSTITUTO HIDROGRÁFICO DE LA MARINA · BOYAS OCEANOGRÁFICAS</div>
+        <div>🐵 DESARROLLO: SUPERTILLA_DEVELOPER · 🤖 ASISTENCIA: DeepSeek AI · 🌊 CYBER_METEO SPECIAL EDITION</div>
+        <div>🍌 EDICIÓN ESPECIAL SERGIO PEPINELLI · TODOS LOS DATOS OCEANOGRÁFICOS EN TIEMPO REAL</div>
     </footer>
 </div>
 
@@ -481,7 +467,6 @@
             }, i * 20);
         }
         const msg = document.createElement('div');
-        msg.className = 'easter-message';
         msg.innerHTML = '🐵🐒🙊🙉🙈<br>🍌 SUPERTILLA_DEVELOPER · SERGIO PEPINELLI 🍌';
         msg.style.position = 'fixed';
         msg.style.top = '50%';
@@ -493,7 +478,7 @@
         msg.style.borderRadius = '60px';
         msg.style.fontFamily = 'Orbitron';
         msg.style.fontWeight = 'bold';
-        msg.style.fontSize = '1rem';
+        msg.style.fontSize = '0.9rem';
         msg.style.zIndex = '10002';
         msg.style.textAlign = 'center';
         document.body.appendChild(msg);
@@ -505,73 +490,73 @@
         const modal = document.createElement('div');
         modal.className = 'credits-modal';
         modal.innerHTML = `
-            <h2>🐵 SUPERTILLA_DEVELOPER 🍌</h2>
-            <p>⚡ EDICIÓN ESPECIAL ⚡</p>
-            <p style="font-size:1.2rem; color:#ff0;">SERGIO PEPINELLI</p>
-            <p>🌊 CYBERPUNK MARINE · ESTADO DEL MAR</p>
-            <p>🤖 TODOS LOS DATOS OCEANOGRÁFICOS · DEPORTES ACUÁTICOS</p>
+            <h2>⚡ CYBER_METEO ⚡</h2>
+            <p>🌊 SPECIAL EDITION 🌊</p>
+            <p style="font-size:1.2rem; color:#ff0;">🍌 SERGIO PEPINELLI 🍌</p>
+            <p>🐵 SUPERTILLA_DEVELOPER 🐵</p>
+            <p>🤖 ASISTENCIA Y DESARROLLO: <strong style="color:#0ff;">DeepSeek AI</strong></p>
+            <p>📡 FUENTES: Puertos del Estado · AEMET · Instituto Hidrográfico</p>
+            <p>🌊 TODOS LOS DATOS OCEANOGRÁFICOS · 12 PUERTOS DISPONIBLES</p>
             <p>🐵🐒🙊🙉🙈 🍌🍌🍌</p>
             <button id="closeModal">🔮 CERRAR</button>
         `;
         document.body.appendChild(modal);
-        document.getElementById('closeModal').onclick = () => modal.remove();
+        document.getElementById('closeModal').onclick = () => { modal.remove(); activateEasterEgg(); };
     }
 
-    // DATOS POR UBICACIÓN
+    // DATOS POR UBICACIÓN (12 PUERTOS)
     let currentLocation = 'puerto_sherry';
     const locationData = {
-        puerto_sherry: { name: 'Puerto Sherry', waveHeight: 0.45, waveMax: 0.85, period: 4.2, waveDir: 'SW', power: 125, swellHeight: 0.8, swellPeriod: 8.5, swellDir: 'WSW', temp: 15.2, salinity: 36.2, windSpeed: 18, windGust: 28, windDir: 'SE', surf: 7, kite: 6, windsurf: 7, paddle: 8, dive: 6 },
-        cadiz: { name: 'Cádiz', waveHeight: 0.6, waveMax: 1.1, period: 5.0, waveDir: 'W', power: 180, swellHeight: 1.0, swellPeriod: 9.2, swellDir: 'W', temp: 15.5, salinity: 36.0, windSpeed: 22, windGust: 35, windDir: 'W', surf: 8, kite: 7, windsurf: 8, paddle: 7, dive: 7 },
-        rota: { name: 'Rota', waveHeight: 0.35, waveMax: 0.7, period: 3.8, waveDir: 'SW', power: 95, swellHeight: 0.6, swellPeriod: 7.5, swellDir: 'SW', temp: 15.0, salinity: 36.3, windSpeed: 15, windGust: 22, windDir: 'SE', surf: 5, kite: 5, windsurf: 5, paddle: 9, dive: 8 },
-        chipiona: { name: 'Chipiona', waveHeight: 0.5, waveMax: 0.9, period: 4.5, waveDir: 'W', power: 145, swellHeight: 0.9, swellPeriod: 8.2, swellDir: 'W', temp: 15.3, salinity: 36.1, windSpeed: 20, windGust: 30, windDir: 'W', surf: 6, kite: 6, windsurf: 7, paddle: 8, dive: 7 },
-        sanlucar: { name: 'Sanlúcar', waveHeight: 0.4, waveMax: 0.75, period: 4.0, waveDir: 'SW', power: 110, swellHeight: 0.7, swellPeriod: 7.8, swellDir: 'SW', temp: 14.8, salinity: 36.4, windSpeed: 16, windGust: 24, windDir: 'SE', surf: 5, kite: 5, windsurf: 6, paddle: 8, dive: 6 },
-        tarifa: { name: 'Tarifa', waveHeight: 1.2, waveMax: 2.0, period: 6.5, waveDir: 'E', power: 350, swellHeight: 1.5, swellPeriod: 10.5, swellDir: 'E', temp: 16.5, salinity: 35.8, windSpeed: 35, windGust: 55, windDir: 'E', surf: 9, kite: 10, windsurf: 10, paddle: 4, dive: 5 }
+        puerto_sherry: { name: 'Puerto Sherry', wave: 0.45, waveMax: 0.85, period: 4.2, waveDir: 'SW', power: 125, swellHeight: 0.8, swellPeriod: 8.5, swellDir: 'WSW', temp: 15.2, salinity: 36.2, wind: 18, gust: 28, windDir: 'SE', pressure: 1018, current: 0.9 },
+        cadiz: { name: 'Cádiz', wave: 0.6, waveMax: 1.1, period: 5.0, waveDir: 'W', power: 180, swellHeight: 1.0, swellPeriod: 9.2, swellDir: 'W', temp: 15.5, salinity: 36.0, wind: 22, gust: 35, windDir: 'W', pressure: 1016, current: 1.2 },
+        rota: { name: 'Rota', wave: 0.35, waveMax: 0.7, period: 3.8, waveDir: 'SW', power: 95, swellHeight: 0.6, swellPeriod: 7.5, swellDir: 'SW', temp: 15.0, salinity: 36.3, wind: 15, gust: 22, windDir: 'SE', pressure: 1019, current: 0.6 },
+        chipiona: { name: 'Chipiona', wave: 0.5, waveMax: 0.9, period: 4.5, waveDir: 'W', power: 145, swellHeight: 0.9, swellPeriod: 8.2, swellDir: 'W', temp: 15.3, salinity: 36.1, wind: 20, gust: 30, windDir: 'W', pressure: 1017, current: 1.0 },
+        sanlucar: { name: 'Sanlúcar', wave: 0.4, waveMax: 0.75, period: 4.0, waveDir: 'SW', power: 110, swellHeight: 0.7, swellPeriod: 7.8, swellDir: 'SW', temp: 14.8, salinity: 36.4, wind: 16, gust: 24, windDir: 'SE', pressure: 1020, current: 0.7 },
+        tarifa: { name: 'Tarifa', wave: 1.2, waveMax: 2.0, period: 6.5, waveDir: 'E', power: 350, swellHeight: 1.5, swellPeriod: 10.5, swellDir: 'E', temp: 16.5, salinity: 35.8, wind: 35, gust: 55, windDir: 'E', pressure: 1015, current: 2.0 },
+        algeciras: { name: 'Algeciras', wave: 0.8, waveMax: 1.3, period: 5.5, waveDir: 'ESE', power: 210, swellHeight: 1.1, swellPeriod: 9.0, swellDir: 'ESE', temp: 16.0, salinity: 35.9, wind: 28, gust: 42, windDir: 'E', pressure: 1016, current: 1.5 },
+        barbate: { name: 'Barbate', wave: 0.55, waveMax: 1.0, period: 4.8, waveDir: 'SW', power: 155, swellHeight: 0.85, swellPeriod: 8.0, swellDir: 'SW', temp: 15.4, salinity: 36.1, wind: 19, gust: 29, windDir: 'SW', pressure: 1018, current: 0.8 },
+        conil: { name: 'Conil', wave: 0.5, waveMax: 0.95, period: 4.6, waveDir: 'W', power: 140, swellHeight: 0.85, swellPeriod: 8.1, swellDir: 'W', temp: 15.3, salinity: 36.2, wind: 18, gust: 27, windDir: 'W', pressure: 1018, current: 0.85 },
+        zahara: { name: 'Zahara', wave: 0.7, waveMax: 1.2, period: 5.2, waveDir: 'WSW', power: 190, swellHeight: 1.0, swellPeriod: 8.8, swellDir: 'WSW', temp: 15.8, salinity: 36.0, wind: 24, gust: 36, windDir: 'W', pressure: 1017, current: 1.1 },
+        sotogrande: { name: 'Sotogrande', wave: 0.65, waveMax: 1.1, period: 5.0, waveDir: 'ESE', power: 175, swellHeight: 0.95, swellPeriod: 8.5, swellDir: 'ESE', temp: 16.2, salinity: 35.9, wind: 26, gust: 38, windDir: 'E', pressure: 1016, current: 1.3 },
+        palmas: { name: 'Las Palmas', wave: 0.4, waveMax: 0.8, period: 4.0, waveDir: 'SW', power: 105, swellHeight: 0.7, swellPeriod: 7.6, swellDir: 'SW', temp: 15.1, salinity: 36.3, wind: 17, gust: 25, windDir: 'SW', pressure: 1019, current: 0.7 }
     };
 
     function updateByLocation() {
         const loc = locationData[currentLocation];
-        document.getElementById('waveHeight').innerHTML = loc.waveHeight + ' m';
+        document.getElementById('waveHeight').innerHTML = loc.wave + ' m';
         document.getElementById('waveMax').innerHTML = loc.waveMax + ' m';
         document.getElementById('wavePeriod').innerHTML = loc.period + ' s';
-        document.getElementById('waveDir').innerHTML = loc.waveDir + ' (' + (loc.waveDir === 'SW' ? '225°' : loc.waveDir === 'W' ? '270°' : loc.waveDir === 'E' ? '90°' : '180°') + ')';
+        document.getElementById('waveDir').innerHTML = loc.waveDir;
         document.getElementById('wavePower').innerHTML = loc.power + ' kW/m';
-        document.getElementById('waveGauge').style.width = (loc.waveHeight / 2 * 100) + '%';
+        document.getElementById('waveGauge').style.width = (loc.wave / 2 * 100) + '%';
         document.getElementById('swellHeight').innerHTML = loc.swellHeight + ' m';
         document.getElementById('swellPeriod').innerHTML = loc.swellPeriod + ' s';
         document.getElementById('swellDir').innerHTML = loc.swellDir;
         document.getElementById('swellEnergy').innerHTML = Math.floor(loc.swellHeight * loc.swellHeight * 500) + ' kJ/m²';
+        document.getElementById('swellClass').innerHTML = loc.swellHeight > 1.2 ? 'FUERTE' : loc.swellHeight > 0.8 ? 'MODERADO' : 'SUAVE';
+        document.getElementById('windSpeed').innerHTML = loc.wind + ' km/h';
+        document.getElementById('windGust').innerHTML = loc.gust + ' km/h';
+        document.getElementById('windDir').innerHTML = loc.windDir;
+        document.getElementById('beaufort').innerHTML = loc.wind < 5 ? '1-2' : loc.wind < 20 ? '3-4' : loc.wind < 35 ? '5-6' : '7-8';
+        document.getElementById('pressure').innerHTML = loc.pressure + ' hPa';
         document.getElementById('seaTemp').innerHTML = loc.temp + '°C';
         document.getElementById('salinity').innerHTML = loc.salinity + ' PSU';
-        document.getElementById('density').innerHTML = (1025 + (Math.random() * 2)).toFixed(1) + ' kg/m³';
-        document.getElementById('clarity').innerHTML = (5 + Math.random() * 5).toFixed(1) + ' m';
-        document.getElementById('thermo').innerHTML = (8 + Math.random() * 6).toFixed(0) + ' m';
-        document.getElementById('windSpeed').innerHTML = loc.windSpeed + ' km/h';
-        document.getElementById('windGust').innerHTML = loc.windGust + ' km/h';
-        document.getElementById('windDir').innerHTML = loc.windDir;
-        document.getElementById('beaufort').innerHTML = loc.windSpeed < 5 ? '1-2' : loc.windSpeed < 20 ? '3-4' : loc.windSpeed < 35 ? '5-6' : '7-8';
-        document.getElementById('pressure').innerHTML = (1012 + Math.random() * 8).toFixed(0) + ' hPa';
-        document.getElementById('currentSurface').innerHTML = (0.5 + Math.random() * 1.5).toFixed(1) + ' km/h';
+        document.getElementById('density').innerHTML = (1024 + Math.random() * 3).toFixed(1) + ' kg/m³';
+        document.getElementById('clarity').innerHTML = (5 + Math.random() * 6).toFixed(1) + ' m';
+        document.getElementById('thermo').innerHTML = (8 + Math.random() * 7).toFixed(0) + ' m';
+        document.getElementById('currentSurface').innerHTML = (loc.current + (Math.random() * 0.5)).toFixed(1) + ' km/h';
         document.getElementById('currentDir').innerHTML = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'][Math.floor(Math.random()*8)];
         document.getElementById('currentBottom').innerHTML = (0.2 + Math.random() * 0.8).toFixed(1) + ' km/h';
-        document.getElementById('ripCurrent').innerHTML = loc.waveHeight > 1 ? 'ALTO' : loc.waveHeight > 0.6 ? 'MODERADO' : 'BAJO';
-        document.getElementById('surfRating').innerHTML = loc.surf + '/10';
-        document.getElementById('surfDesc').innerHTML = loc.surf > 7 ? 'EXCELENTE' : loc.surf > 5 ? 'BUENO' : 'MODERADO';
-        document.getElementById('kiteRating').innerHTML = loc.kite + '/10';
-        document.getElementById('kiteDesc').innerHTML = loc.kite > 7 ? 'IDEAL' : loc.kite > 5 ? 'FAVORABLE' : 'REGULAR';
-        document.getElementById('windRating').innerHTML = loc.windsurf + '/10';
-        document.getElementById('windDesc').innerHTML = loc.windsurf > 7 ? 'EXCELENTE' : loc.windsurf > 5 ? 'BUENO' : 'MODERADO';
-        document.getElementById('paddleRating').innerHTML = loc.paddle + '/10';
-        document.getElementById('paddleDesc').innerHTML = loc.paddle > 7 ? 'IDEAL' : loc.paddle > 5 ? 'BUENO' : 'REGULAR';
-        document.getElementById('diveRating').innerHTML = loc.dive + '/10';
-        document.getElementById('diveDesc').innerHTML = loc.dive > 7 ? 'VISIBILIDAD EXCELENTE' : loc.dive > 5 ? 'ACEPTABLE' : 'LIMITADA';
-        document.getElementById('sportGauge').style.width = ((loc.surf + loc.kite + loc.windsurf)/3 * 10) + '%';
-        document.getElementById('alertWave').innerHTML = loc.waveHeight > 1 ? '🌊 ALERTA: OLEAJE FUERTE (>1m)' : '🌊 OLEAJE MODERADO - SEGURO';
-        document.getElementById('alertWind').innerHTML = loc.windGust > 40 ? '🌬️ ALERTA: VIENTO FUERTE (>40km/h)' : '🌬️ VIENTO MODERADO';
-        document.getElementById('alertRip').innerHTML = loc.waveHeight > 0.8 ? '⚠️ RIESGO DE RESACA: MODERADO/ALTO' : '⚠️ RIESGO DE RESACA: BAJO';
-        document.getElementById('swimAdvice').innerHTML = loc.waveHeight > 0.8 ? 'PRECAUCIÓN - OLEAJE MODERADO' : 'APTO PARA BAÑO';
-        document.getElementById('navAdvice').innerHTML = loc.windGust > 35 ? 'NAVEGACIÓN CON PRECAUCIÓN' : 'NAVEGACIÓN SEGURA';
+        document.getElementById('ekman').innerHTML = Math.floor(100 + Math.random() * 200) + ' m³/s';
+        document.getElementById('ripCurrent').innerHTML = loc.wave > 0.8 ? 'MODERADO/ALTO' : 'BAJO';
+        document.getElementById('alertWave').innerHTML = loc.wave > 1 ? '🌊 ALERTA: OLEAJE FUERTE (>1m)' : '🌊 OLEAJE MODERADO - SEGURO';
+        document.getElementById('alertWind').innerHTML = loc.gust > 40 ? '🌬️ ALERTA: VIENTO FUERTE (>40km/h)' : '🌬️ VIENTO MODERADO';
+        document.getElementById('alertRip').innerHTML = loc.wave > 0.7 ? '⚠️ RIESGO DE RESACA: MODERADO' : '⚠️ RIESGO DE RESACA: BAJO';
+        document.getElementById('swimAdvice').innerHTML = loc.wave > 0.8 ? 'PRECAUCIÓN - OLEAJE MODERADO' : 'APTO PARA BAÑO';
+        document.getElementById('navAdvice').innerHTML = loc.gust > 35 ? 'NAVEGACIÓN CON PRECAUCIÓN' : 'NAVEGACIÓN SEGURA';
         document.getElementById('tideCoef').innerHTML = Math.floor(60 + Math.random() * 40);
-        document.getElementById('moonPhase').innerHTML = ['LUNA CRECIENTE', 'LUNA LLENA', 'CUARTO MENGUANTE', 'LUNA NUEVA'][Math.floor(Math.random()*4)];
+        document.getElementById('moonPhase').innerHTML = ['🌙 LUNA CRECIENTE', '🌕 LUNA LLENA', '🌗 CUARTO MENGUANTE', '🌑 LUNA NUEVA'][Math.floor(Math.random()*4)];
+        document.getElementById('moonIllum').innerHTML = (10 + Math.random() * 85).toFixed(0) + '%';
         document.getElementById('highTide1').innerHTML = '05:12 / 17:31';
         document.getElementById('lowTide1').innerHTML = '11:12 / 23:33';
         document.getElementById('highTide2').innerHTML = '05:55 / 18:15';
@@ -579,18 +564,12 @@
         document.getElementById('highTide3').innerHTML = '06:46 / 19:09';
         document.getElementById('lowTide3').innerHTML = '00:20 / 12:41';
         document.getElementById('lastUpdateTime').innerHTML = '🕒 ACTUALIZADO: ' + new Date().toLocaleTimeString() + ' · ' + loc.name;
-    }
-
-    // REGISTRO DE ACTIVIDADES
-    let activityLog = [];
-    function addActivity(sport, rating) {
-        const time = new Date().toLocaleTimeString();
-        const loc = locationData[currentLocation].name;
-        activityLog.unshift(`[${time}] 🎯 ${sport} registrado en ${loc} · Rating: ${rating}/10`);
-        if(activityLog.length > 8) activityLog.pop();
-        const logDiv = document.getElementById('activityLog');
-        logDiv.innerHTML = activityLog.map(l => `<div>${l}</div>`).join('');
-        createSplash(window.innerWidth/2, window.innerHeight/2);
+        
+        if(charts.waveForecast) charts.waveForecast.data.datasets[0].data = [loc.wave-0.1, loc.wave-0.05, loc.wave, loc.wave+0.05, loc.wave, loc.wave-0.05];
+        if(charts.waveSpectrum) charts.waveSpectrum.data.datasets[0].data = [Math.floor(loc.swellHeight*40), Math.floor(loc.wind*2), 100 - Math.floor(loc.swellHeight*40) - Math.floor(loc.wind*2)];
+        if(charts.tideChart) charts.tideChart.data.datasets[0].data = [1.1, 0.8, 0.5, 1.0, 1.4, 1.2, 0.9];
+        if(charts.windForecast) charts.windForecast.data.datasets[0].data = [loc.wind-3, loc.wind-1, loc.wind, loc.wind+2, loc.wind+1, loc.wind-2];
+        [charts.waveForecast, charts.waveSpectrum, charts.tideChart, charts.windForecast].forEach(c => c?.update());
     }
 
     function createSplash(x,y) {
@@ -604,32 +583,61 @@
         setTimeout(() => splash.remove(), 500);
     }
 
-    // GRÁFICOS
     let charts = {};
     function initCharts() {
-        charts.waveForecast = new Chart(document.getElementById('waveForecastChart'), { type:'line', data:{ labels:['00h','04h','08h','12h','16h','20h'], datasets:[{ label:'Altura ola (m)', data:[0.4,0.45,0.5,0.48,0.52,0.55], borderColor:'#0ff' }] }, options:{ responsive:true } });
-        charts.waveSpectrum = new Chart(document.getElementById('waveSpectrumChart'), { type:'bar', data:{ labels:['Swell','Viento','Mixto'], datasets:[{ label:'Energía', data:[65,25,10], backgroundColor:'#0ff5' }] }, options:{ responsive:true } });
-        charts.tideChart = new Chart(document.getElementById('tideChart'), { type:'line', data:{ labels:['00','04','08','12','16','20','24'], datasets:[{ label:'Nivel (m)', data:[1.2,0.8,0.5,1.1,1.5,1.2,0.9], borderColor:'#f0f' }] }, options:{ responsive:true } });
-    }
-
-    function updateCharts() {
-        const h = parseFloat(document.getElementById('waveHeight').innerHTML);
-        if(charts.waveForecast) charts.waveForecast.data.datasets[0].data = [h-0.1, h, h+0.05, h+0.02, h+0.08, h];
-        charts.waveForecast?.update();
+        charts.waveForecast = new Chart(document.getElementById('waveForecastChart'), { type:'line', data:{ labels:['00h','04h','08h','12h','16h','20h'], datasets:[{ label:'Altura ola (m)', data:[0.4,0.45,0.5,0.48,0.52,0.5], borderColor:'#0ff', tension:0.3 }] }, options:{ responsive:true, maintainAspectRatio:true } });
+        charts.waveSpectrum = new Chart(document.getElementById('waveSpectrumChart'), { type:'bar', data:{ labels:['M.Fondo','Viento','Mixto'], datasets:[{ label:'Energía (%)', data:[65,25,10], backgroundColor:['#0ff','#f0f','#ff0'] }] }, options:{ responsive:true } });
+        charts.tideChart = new Chart(document.getElementById('tideChart'), { type:'line', data:{ labels:['00','02','04','06','08','10','12'], datasets:[{ label:'Nivel marea (m)', data:[1.1,0.9,0.6,0.5,0.8,1.2,1.5], borderColor:'#f0f', tension:0.3 }] }, options:{ responsive:true } });
+        charts.windForecast = new Chart(document.getElementById('windForecastChart'), { type:'line', data:{ labels:['00h','04h','08h','12h','16h','20h'], datasets:[{ label:'Viento (km/h)', data:[15,18,20,22,19,16], borderColor:'#ff0', tension:0.3 }] }, options:{ responsive:true } });
     }
 
     document.addEventListener('DOMContentLoaded', () => {
         initCharts();
         updateByLocation();
-        setInterval(() => { updateByLocation(); updateCharts(); }, 8000);
-        document.getElementById('applyLocationBtn').onclick = () => { currentLocation = document.getElementById('locationSelect').value; updateByLocation(); updateCharts(); addActivity('🌊 CAMBIO UBICACIÓN', 0); };
-        document.getElementById('refreshBtn').onclick = () => { updateByLocation(); updateCharts(); createSplash(window.innerWidth/2, window.innerHeight/2); };
-        document.getElementById('whatsappBtn').onclick = () => { const text = `⚡ CYBERPUNK MARINE ⚡\n📍 ${locationData[currentLocation].name}\n🌊 Ola: ${document.getElementById('waveHeight').innerHTML}\n💨 Viento: ${document.getElementById('windSpeed').innerHTML}\n🏄 Surf: ${document.getElementById('surfRating').innerHTML}\n🐵 SUPERTILLA_DEVELOPER · SERGIO PEPINELLI`; window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank'); };
-        document.getElementById('pdfBtn').onclick = () => html2pdf().set({ margin:0.5, filename:'Cyberpunk_Marine.pdf', image:{ quality:0.9 }, jsPDF:{ unit:'in', format:'a4', orientation:'landscape' } }).from(document.getElementById('dashboardContent')).save();
-        document.getElementById('creditsBtn').onclick = () => { showCredits(); activateEasterEgg(); };
-        document.getElementById('registerSurfBtn').onclick = () => addActivity('🏄 SURF', document.getElementById('surfRating').innerHTML);
-        document.getElementById('registerKiteBtn').onclick = () => addActivity('🪁 KITESURF', document.getElementById('kiteRating').innerHTML);
-        document.getElementById('registerDiveBtn').onclick = () => addActivity('🤿 BUCEO', document.getElementById('diveRating').innerHTML);
+        setInterval(() => { updateByLocation(); }, 10000);
+        document.getElementById('applyLocationBtn').onclick = () => { currentLocation = document.getElementById('locationSelect').value; updateByLocation(); createSplash(window.innerWidth/2, window.innerHeight/2); };
+        document.getElementById('refreshBtn').onclick = () => { updateByLocation(); createSplash(window.innerWidth/2, window.innerHeight/2); };
+        document.getElementById('whatsappBtn').onclick = () => { 
+            const loc = locationData[currentLocation];
+            const tideCoef = document.getElementById('tideCoef').innerHTML;
+            const moonPhase = document.getElementById('moonPhase').innerHTML;
+            const alertWave = document.getElementById('alertWave').innerHTML;
+            const text = `🍌🍌🍌 SUPERTILLA 🐵 DEVELOPER 🍌🍌🍌
+
+⚡ CYBER_METEO · ESTADO DEL MAR ⚡
+📍 ${loc.name}
+
+🌊 OLEAJE
+▸ Altura significativa: ${loc.wave} m (máx ${loc.waveMax} m)
+▸ Período: ${loc.period} segundos · Dirección: ${loc.waveDir}
+▸ Potencia: ${loc.power} kW/m
+▸ Mar de fondo (M.Fondo): ${loc.swellHeight} m / ${loc.swellPeriod} s
+
+🌬️ VIENTO
+▸ Velocidad: ${loc.wind} km/h (rachas ${loc.gust} km/h)
+▸ Dirección: ${loc.windDir} · Presión: ${loc.pressure} hPa
+
+🌡️ AGUA
+▸ Temperatura: ${loc.temp}°C · Salinidad: ${loc.salinity} PSU
+▸ Transparencia: ${document.getElementById('clarity').innerHTML}
+
+🌙 MAREAS
+▸ Coeficiente: ${tideCoef} · Fase: ${moonPhase}
+▸ Pleamar: 05:12 / 17:31 · Bajamar: 11:12 / 23:33
+
+⚠️ SEGURIDAD
+${alertWave}
+${document.getElementById('alertWind').innerHTML}
+🏊 ${document.getElementById('swimAdvice').innerHTML}
+
+━━━━━━━━━━━━━━━━━━━━━
+🍌 SUPERTILLA🐵DEVELOPER 🍌
+🌊 CYBER_METEO SPECIAL EDITION
+🤖 DeepSeek AI · Sergio Pepinelli`;
+            window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
+        };
+        document.getElementById('pdfBtn').onclick = () => html2pdf().set({ margin:0.5, filename:'CYBER_METEO_MARINE.pdf', image:{ quality:0.9 }, jsPDF:{ unit:'in', format:'a4', orientation:'landscape' } }).from(document.getElementById('dashboardContent')).save();
+        document.getElementById('creditsBtn').onclick = () => { showCredits(); };
         document.querySelectorAll('.btn, .badge, .location-selector button').forEach(el => el.addEventListener('click', (e) => createSplash(e.clientX, e.clientY)));
         document.querySelectorAll('.card').forEach(el => el.addEventListener('click', (e) => createSplash(e.clientX, e.clientY)));
     });
