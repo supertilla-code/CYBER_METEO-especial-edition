@@ -258,7 +258,7 @@
 <canvas id="easterEggCanvas"></canvas>
 
 <div class="dashboard" id="dashboardContent">
-    <div class="hero" id="easterEggTrigger">
+    <div class="hero">
         <div class="title-section">
             <h1>⚡ CYBER_METEO ⚡</h1>
             <p>
@@ -431,7 +431,6 @@
     resizeMatrixCanvas();
     window.addEventListener('resize', resizeMatrixCanvas);
     
-    // CARACTERES PARA LA MATRIX: monos, plátanos y SUPERTILLA@DEV
     const matrixChars = ["🐵", "🍌", "S", "U", "P", "E", "R", "T", "I", "L", "L", "A", "@", "D", "E", "V"];
     let matrixFontSize = Math.max(16, Math.floor(window.innerWidth / 45));
     let matrixColumns = Math.floor(canvasMat.width / matrixFontSize);
@@ -448,7 +447,6 @@
     function drawMatrixRain() {
         ctxMat.fillStyle = "rgba(10, 15, 26, 0.05)";
         ctxMat.fillRect(0, 0, canvasMat.width, canvasMat.height);
-        ctxMat.fillStyle = "#0ff";
         ctxMat.font = matrixFontSize + "px monospace";
         
         for (let i = 0; i < matrixDrops.length; i++) {
@@ -472,87 +470,6 @@
         matrixFontSize = Math.max(16, Math.floor(window.innerWidth / 45));
         initMatrixDrops();
     });
-    
-    // ============================================================
-    // 🍌🐵 EASTER EGG: 2 CLICS = MONOS, 3 CLICS = PLÁTANOS
-    // ============================================================
-    let clickCount = 0;
-    let clickTimeout = null;
-    
-    function triggerMonkeyRainEgg() {
-        for (let i = 0; i < 60; i++) {
-            const monkey = document.createElement('div');
-            monkey.className = 'monkey-burst';
-            monkey.textContent = ['🐵', '🙈', '🙉', '🙊', '🐒'][Math.floor(Math.random() * 5)];
-            monkey.style.left = Math.random() * 100 + '%';
-            monkey.style.top = Math.random() * 100 + '%';
-            monkey.style.fontSize = (24 + Math.random() * 40) + 'px';
-            document.body.appendChild(monkey);
-            setTimeout(() => monkey.remove(), 800);
-        }
-        const msg = document.createElement('div');
-        msg.textContent = '🐵 ¡LLUVIA DE MONOS! ¡SUPERTILLA@DEV! 🐵';
-        msg.style.position = 'fixed';
-        msg.style.bottom = '20%';
-        msg.style.left = '50%';
-        msg.style.transform = 'translateX(-50%)';
-        msg.style.background = '#0ff';
-        msg.style.color = '#000';
-        msg.style.padding = '12px 24px';
-        msg.style.borderRadius = '40px';
-        msg.style.fontFamily = 'Orbitron';
-        msg.style.fontWeight = 'bold';
-        msg.style.zIndex = '10001';
-        msg.style.boxShadow = '0 0 30px #0ff';
-        document.body.appendChild(msg);
-        setTimeout(() => msg.remove(), 2000);
-    }
-    
-    function triggerBananaBlastEgg() {
-        for (let i = 0; i < 100; i++) {
-            const banana = document.createElement('div');
-            banana.className = 'banana-burst';
-            banana.textContent = ['🍌', '🍌💥', '💥🍌', '🍌✨'][Math.floor(Math.random() * 4)];
-            banana.style.left = Math.random() * 100 + '%';
-            banana.style.top = Math.random() * 100 + '%';
-            banana.style.fontSize = (20 + Math.random() * 45) + 'px';
-            document.body.appendChild(banana);
-            setTimeout(() => banana.remove(), 800);
-        }
-        const msg = document.createElement('div');
-        msg.textContent = '🍌💥 ¡EXPLOSIÓN DE PLÁTANOS! ¡SUPERTILLA@DEV! 💥🍌';
-        msg.style.position = 'fixed';
-        msg.style.bottom = '20%';
-        msg.style.left = '50%';
-        msg.style.transform = 'translateX(-50%)';
-        msg.style.background = '#ffaa00';
-        msg.style.color = '#000';
-        msg.style.padding = '12px 24px';
-        msg.style.borderRadius = '40px';
-        msg.style.fontFamily = 'Orbitron';
-        msg.style.fontWeight = 'bold';
-        msg.style.zIndex = '10001';
-        msg.style.boxShadow = '0 0 30px #fa0';
-        document.body.appendChild(msg);
-        setTimeout(() => msg.remove(), 2000);
-    }
-    
-    function handleEasterEgg(e) {
-        e.stopPropagation();
-        clickCount++;
-        if (clickTimeout) clearTimeout(clickTimeout);
-        clickTimeout = setTimeout(() => { clickCount = 0; }, 800);
-        if (clickCount === 2) {
-            triggerMonkeyRainEgg();
-            clickCount = 0;
-        } else if (clickCount === 3) {
-            triggerBananaBlastEgg();
-            clickCount = 0;
-        }
-    }
-    
-    const easterTrigger = document.getElementById('easterEggTrigger');
-    if (easterTrigger) easterTrigger.addEventListener('click', handleEasterEgg);
     
     // ============================================================
     // 📡 OPENWEATHER API REAL + PERSISTENCIA LOCAL
@@ -609,7 +526,96 @@
         if (historialData.timestamps.length > max) historialData.timestamps.shift();
         
         saveHistory();
-        updateChartsFromHistory();
+        updateAllCharts();
+    }
+    
+    // ============================================================
+    // 📊 GRÁFICOS DINÁMICOS CON DATOS REALES
+    // ============================================================
+    let waveChart, swellChart, tideChart, windChart, tempChart, powerChart, pressureChart, periodChart;
+    
+    function initCharts() {
+        const ctxWave = document.getElementById('waveForecastChart').getContext('2d');
+        const ctxSwell = document.getElementById('waveSpectrumChart').getContext('2d');
+        const ctxTide = document.getElementById('tideChart').getContext('2d');
+        const ctxWind = document.getElementById('windForecastChart').getContext('2d');
+        const ctxTemp = document.getElementById('tempChart').getContext('2d');
+        const ctxPower = document.getElementById('powerChart').getContext('2d');
+        const ctxPressure = document.getElementById('pressureChart').getContext('2d');
+        const ctxPeriod = document.getElementById('periodChart').getContext('2d');
+        
+        waveChart = new Chart(ctxWave, { type: 'line', data: { labels: [], datasets: [{ label: 'Altura ola (m)', borderColor: '#0ff', backgroundColor: '#0ff1', fill: true, data: [] }] }, options: { responsive: true, maintainAspectRatio: true } });
+        swellChart = new Chart(ctxSwell, { type: 'bar', data: { labels: ['0.1Hz', '0.2Hz', '0.3Hz'], datasets: [{ label: 'Energía', backgroundColor: '#0ff', data: [0,0,0] }] }, options: { responsive: true } });
+        tideChart = new Chart(ctxTide, { type: 'line', data: { labels: [], datasets: [{ label: 'Nivel marea (m)', borderColor: '#f0f', data: [] }] }, options: { responsive: true } });
+        windChart = new Chart(ctxWind, { type: 'line', data: { labels: [], datasets: [{ label: 'Viento (km/h)', borderColor: '#ff0', data: [] }, { label: 'Rachas (km/h)', borderColor: '#f90', data: [] }] }, options: { responsive: true } });
+        tempChart = new Chart(ctxTemp, { type: 'line', data: { labels: [], datasets: [{ label: 'Temp. agua (°C)', borderColor: '#f90', data: [] }] }, options: { responsive: true } });
+        powerChart = new Chart(ctxPower, { type: 'line', data: { labels: [], datasets: [{ label: 'Potencia (kW/m)', borderColor: '#ff66ff', data: [] }] }, options: { responsive: true } });
+        pressureChart = new Chart(ctxPressure, { type: 'line', data: { labels: [], datasets: [{ label: 'Presión (hPa)', borderColor: '#0fa', data: [] }] }, options: { responsive: true } });
+        periodChart = new Chart(ctxPeriod, { type: 'line', data: { labels: [], datasets: [{ label: 'Período (s)', borderColor: '#0ff', data: [] }] }, options: { responsive: true } });
+    }
+    
+    function updateAllCharts() {
+        if (!waveChart) return;
+        const labels = historialData.timestamps.length ? historialData.timestamps : ['sin datos'];
+        
+        waveChart.data.labels = labels;
+        waveChart.data.datasets[0].data = historialData.waveHeights.length ? historialData.waveHeights : [0];
+        waveChart.update();
+        
+        windChart.data.labels = labels;
+        windChart.data.datasets[0].data = historialData.windSpeeds.length ? historialData.windSpeeds : [0];
+        windChart.data.datasets[1].data = historialData.windSpeeds.length ? historialData.windSpeeds.map(w => w * 1.4) : [0];
+        windChart.update();
+        
+        pressureChart.data.labels = labels;
+        pressureChart.data.datasets[0].data = historialData.pressures.length ? historialData.pressures : [1013];
+        pressureChart.update();
+        
+        tempChart.data.labels = labels;
+        tempChart.data.datasets[0].data = historialData.waterTemps.length ? historialData.waterTemps : [15];
+        tempChart.update();
+        
+        // Datos simulados para gráficos adicionales
+        const tideHours = ['00:00', '03:00', '06:00', '09:00', '12:00', '15:00', '18:00', '21:00'];
+        tideChart.data.labels = tideHours;
+        tideChart.data.datasets[0].data = [0.8, 0.4, 0.1, 0.3, 0.9, 1.2, 0.7, 0.3];
+        tideChart.update();
+        
+        const swellFreq = ['0.05Hz', '0.10Hz', '0.15Hz', '0.20Hz', '0.25Hz'];
+        swellChart.data.labels = swellFreq;
+        swellChart.data.datasets[0].data = [120, 280, 340, 210, 95];
+        swellChart.update();
+        
+        powerChart.data.labels = labels;
+        powerChart.data.datasets[0].data = historialData.waveHeights.length ? historialData.waveHeights.map(h => Math.pow(h, 2) * 8) : [0];
+        powerChart.update();
+        
+        periodChart.data.labels = labels;
+        periodChart.data.datasets[0].data = historialData.waveHeights.length ? historialData.waveHeights.map(h => 5 + h * 2) : [5];
+        periodChart.update();
+        
+        // Datos de mareas y otros fijos
+        document.getElementById('highTide1').innerHTML = "05:12 / 17:31";
+        document.getElementById('lowTide1').innerHTML = "11:12 / 23:33";
+        document.getElementById('tideCoef').innerHTML = "61";
+        document.getElementById('moonPhase').innerHTML = "🌕 LUNA LLENA";
+        document.getElementById('moonIllum').innerHTML = "96%";
+        
+        // Datos de corrientes y propiedades físicas (simulados)
+        document.getElementById('currentSurface').innerHTML = (Math.random() * 1.5 + 0.3).toFixed(1) + " km/h";
+        document.getElementById('currentDir').innerHTML = ["N", "NE", "E", "SE", "S", "SW", "W", "NW"][Math.floor(Math.random() * 8)];
+        document.getElementById('currentBottom').innerHTML = (Math.random() * 0.6 + 0.1).toFixed(1) + " km/h";
+        document.getElementById('ekman').innerHTML = Math.floor(Math.random() * 400 + 100);
+        document.getElementById('salinity').innerHTML = (35 + Math.random() * 2).toFixed(1) + " PSU";
+        document.getElementById('density').innerHTML = (1024 + Math.random() * 3).toFixed(1);
+        document.getElementById('clarity').innerHTML = (4 + Math.random() * 4).toFixed(1) + " m";
+        document.getElementById('thermo').innerHTML = Math.floor(8 + Math.random() * 8) + " m";
+        document.getElementById('swellHeight').innerHTML = (parseFloat(document.getElementById('waveHeight').innerText) * 0.8).toFixed(2) + " m";
+        document.getElementById('swellPeriod').innerHTML = (parseFloat(document.getElementById('wavePeriod').innerText) * 1.2).toFixed(1) + " s";
+        document.getElementById('swellDir').innerHTML = document.getElementById('waveDir').innerText;
+        document.getElementById('swellEnergy').innerHTML = Math.floor(Math.random() * 500 + 200);
+        document.getElementById('swellClass').innerHTML = parseFloat(document.getElementById('waveHeight').innerText) > 1 ? "MODERADO" : "SUAVE";
+        document.getElementById('windDir').innerHTML = document.getElementById('waveDir').innerText;
     }
     
     async function fetchRealData(portKey) {
@@ -668,14 +674,17 @@
             };
         } catch (error) {
             console.warn("API fallback, usando datos simulados");
+            const fallbackWave = (Math.random() * 1.2 + 0.3).toFixed(2);
+            const fallbackWind = (Math.random() * 25 + 5).toFixed(1);
+            addToHistory(fallbackWave, fallbackWind, 1012 + Math.floor(Math.random() * 10), (14 + Math.random() * 6).toFixed(1));
             return {
-                waveSignificant: (Math.random() * 1.2 + 0.3).toFixed(2),
-                waveMax: (Math.random() * 1.8 + 0.5).toFixed(2),
+                waveSignificant: fallbackWave,
+                waveMax: (parseFloat(fallbackWave) * 1.8).toFixed(2),
                 period: (Math.random() * 5 + 3).toFixed(1),
                 waveDir: "SW",
                 power: Math.floor(Math.random() * 200 + 30),
-                windMean: (Math.random() * 25 + 5).toFixed(1),
-                windGust: (Math.random() * 35 + 8).toFixed(1),
+                windMean: fallbackWind,
+                windGust: (parseFloat(fallbackWind) * 1.4).toFixed(1),
                 pressure: 1012 + Math.floor(Math.random() * 10),
                 waterTemp: (14 + Math.random() * 6).toFixed(1),
                 ripRisk: "BAJO",
@@ -712,7 +721,6 @@
             
             document.getElementById('lastUpdateTime').innerHTML = `🕒 ÚLTIMA ACTUALIZACIÓN: ${data.timestamp}`;
             
-            // Alertas
             let waveAlert = parseFloat(data.waveSignificant) > 2.5 ? "⚠️ OLEAJE FUERTE, PRECAUCIÓN" : "🌊 OLEAJE MODERADO - SEGURO";
             let windAlert = parseFloat(data.windMean) > 35 ? "⚠️ VIENTO FUERTE" : "🌬️ VIENTO MODERADO";
             document.getElementById('alertWave').innerHTML = `🌊 ALERTA OLEAJE: ${waveAlert}`;
@@ -723,19 +731,8 @@
             document.getElementById('swimAdvice').innerHTML = swimAdvice;
             document.getElementById('navAdvice').innerHTML = navAdvice;
             
-            // Mareas y otros datos fijos
-            document.getElementById('highTide1').innerHTML = "05:12 / 17:31";
-            document.getElementById('lowTide1').innerHTML = "11:12 / 23:33";
-            document.getElementById('tideCoef').innerHTML = "61";
-            document.getElementById('moonPhase').innerHTML = "🌕 LUNA LLENA";
-            document.getElementById('moonIllum').innerHTML = "96%";
+            updateAllCharts();
         }
-    }
-    
-    function updateChartsFromHistory() {
-        // Aquí se actualizarían los 8 gráficos con los datos históricos
-        // (manteniendo la lógica original de tus gráficos)
-        console.log("Historial actualizado:", historialData.timestamps.length, "registros");
     }
     
     function shareWhatsApp() {
@@ -743,6 +740,57 @@
         const portNombre = PUERTOS_COORD[currentPort]?.nombre || "Puerto";
         const mensaje = `🌊 *LOS DATOS DEL MAR* 🍌SUPERTILLA🐵DEV🍌%0A📍 ${portNombre}%0A🌊 Ola sig: ${currentData.waveSignificant}m · Máx: ${currentData.waveMax}m%0A💨 Viento: ${currentData.windMean} km/h (rachas ${currentData.windGust})%0A🌡️ Agua: ${currentData.waterTemp}°C · Presión: ${currentData.pressure} hPa%0A🏄 ${currentData.sportMsg}%0A⚠️ Resaca: ${currentData.ripRisk}%0A%0A¿Está bueno para ir al agua? ¿Te apuntas? 🔥⚡%0A🔗 Edición Especial Sergio Pepinelli%0A${window.location.href}`;
         window.open(`https://wa.me/?text=${mensaje}`, '_blank');
+    }
+    
+    // ============================================================
+    // 🥚 EASTER EGG: AL CERRAR EL MODAL DE CRÉDITOS
+    // ============================================================
+    function triggerEasterEgg() {
+        // Lluvia de monos
+        for (let i = 0; i < 60; i++) {
+            const monkey = document.createElement('div');
+            monkey.className = 'monkey-burst';
+            monkey.textContent = ['🐵', '🙈', '🙉', '🙊', '🐒'][Math.floor(Math.random() * 5)];
+            monkey.style.left = Math.random() * 100 + '%';
+            monkey.style.top = Math.random() * 100 + '%';
+            monkey.style.fontSize = (24 + Math.random() * 40) + 'px';
+            document.body.appendChild(monkey);
+            setTimeout(() => monkey.remove(), 800);
+        }
+        
+        // Explosión de plátanos
+        for (let i = 0; i < 80; i++) {
+            const banana = document.createElement('div');
+            banana.className = 'banana-burst';
+            banana.textContent = ['🍌', '🍌💥', '💥🍌', '🍌✨'][Math.floor(Math.random() * 4)];
+            banana.style.left = Math.random() * 100 + '%';
+            banana.style.top = Math.random() * 100 + '%';
+            banana.style.fontSize = (20 + Math.random() * 45) + 'px';
+            document.body.appendChild(banana);
+            setTimeout(() => banana.remove(), 800);
+        }
+        
+        // Mensaje especial
+        const msg = document.createElement('div');
+        msg.textContent = '🍌✨ EDICIÓN ESPECIAL PLÁTANO SERGIO PEPINELLI ✨🍌\n\n🍌 PLÁTANO 🍌';
+        msg.style.position = 'fixed';
+        msg.style.bottom = '30%';
+        msg.style.left = '50%';
+        msg.style.transform = 'translateX(-50%)';
+        msg.style.background = 'linear-gradient(135deg, #ffaa00, #ff6600)';
+        msg.style.color = '#000';
+        msg.style.padding = '20px 40px';
+        msg.style.borderRadius = '60px';
+        msg.style.fontFamily = 'Orbitron';
+        msg.style.fontWeight = 'bold';
+        msg.style.fontSize = '1.2rem';
+        msg.style.textAlign = 'center';
+        msg.style.zIndex = '10001';
+        msg.style.boxShadow = '0 0 50px #ffaa00';
+        msg.style.border = '2px solid #ff0';
+        msg.style.whiteSpace = 'pre-line';
+        document.body.appendChild(msg);
+        setTimeout(() => msg.remove(), 4000);
     }
     
     // Eventos
@@ -753,12 +801,6 @@
         updateAllData();
     });
     
-    // Inicialización
-    loadHistory();
-    updateAllData();
-    setInterval(() => updateAllData(), 15 * 60 * 1000);
-    
-    // PDF y Créditos (tus funciones originales)
     document.getElementById('pdfBtn').addEventListener('click', () => {
         const element = document.getElementById('dashboardContent');
         html2pdf().from(element).save('cyber_meteo.pdf');
@@ -774,11 +816,20 @@
             <p>🤖 ASISTENCIA: DeepSeek AI</p>
             <p>🌊 DATOS EN TIEMPO REAL: OpenWeather API</p>
             <p>📊 8 GRÁFICOS INTERACTIVOS · PERSISTENCIA LOCAL</p>
-            <button id="closeModal">🔥 CERRAR 🔥</button>
+            <button id="closeModal">🍌 CERRAR 🍌</button>
         `;
         document.body.appendChild(modal);
-        document.getElementById('closeModal').addEventListener('click', () => modal.remove());
+        document.getElementById('closeModal').addEventListener('click', () => {
+            modal.remove();
+            triggerEasterEgg();  // ← EASTER EGG AL CERRAR
+        });
     });
+    
+    // Inicialización
+    loadHistory();
+    initCharts();
+    updateAllData();
+    setInterval(() => updateAllData(), 15 * 60 * 1000);
 </script>
 </body>
 </html>
