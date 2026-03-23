@@ -389,4 +389,97 @@
         msg.textContent = '🐵 ¡LLUVIA DE MONOS! ¡OOK OOK! 🐵';
         msg.style.position = 'fixed';
         msg.style.bottom = '20%';
-        m
+        msg.style.left = '50%';
+        msg.style.transform = 'translateX(-50%)';
+        msg.style.background = '#0ff';
+        msg.style.color = '#000';
+        msg.style.padding = '10px 20px';
+        msg.style.borderRadius = '30px';
+        msg.style.fontFamily = 'monospace';
+        msg.style.fontWeight = 'bold';
+        msg.style.zIndex = '10001';
+        msg.style.boxShadow = '0 0 20px #0ff';
+        document.body.appendChild(msg);
+        setTimeout(() => msg.remove(), 2000);
+    }
+    
+    function triggerBananaBlast() {
+        const container = document.createElement('div');
+        container.className = 'banana-blast';
+        document.body.appendChild(container);
+        const bananas = ['🍌', '🍌💥', '💥🍌', '🍌✨', '🍌🔥', '🍌🍌'];
+        for(let i = 0; i < 150; i++) {
+            const banana = document.createElement('div');
+            banana.className = 'banana-particle';
+            banana.textContent = bananas[Math.floor(Math.random() * bananas.length)];
+            const angle = Math.random() * Math.PI * 2;
+            const distance = 150 + Math.random() * 300;
+            const tx = Math.cos(angle) * distance;
+            const ty = Math.sin(angle) * distance - 100;
+            banana.style.setProperty('--tx', tx + 'px');
+            banana.style.setProperty('--ty', ty + 'px');
+            banana.style.left = (50 + (Math.random() - 0.5) * 40) + '%';
+            banana.style.top = (50 + (Math.random() - 0.5) * 30) + '%';
+            banana.style.fontSize = (24 + Math.random() * 40) + 'px';
+            banana.style.animationDuration = (0.6 + Math.random() * 0.6) + 's';
+            container.appendChild(banana);
+        }
+        setTimeout(() => container.remove(), 1200);
+        
+        const msg = document.createElement('div');
+        msg.textContent = '🍌💥 ¡EXPLOSIÓN DE PLÁTANOS! ¡POW! 💥🍌';
+        msg.style.position = 'fixed';
+        msg.style.bottom = '20%';
+        msg.style.left = '50%';
+        msg.style.transform = 'translateX(-50%)';
+        msg.style.background = '#ffaa00';
+        msg.style.color = '#000';
+        msg.style.padding = '10px 20px';
+        msg.style.borderRadius = '30px';
+        msg.style.fontFamily = 'monospace';
+        msg.style.fontWeight = 'bold';
+        msg.style.zIndex = '10001';
+        msg.style.boxShadow = '0 0 20px #fa0';
+        document.body.appendChild(msg);
+        setTimeout(() => msg.remove(), 2000);
+    }
+    
+    function handleEasterEgg(e) {
+        e.stopPropagation();
+        clickCount++;
+        if(clickTimeout) clearTimeout(clickTimeout);
+        clickTimeout = setTimeout(() => { clickCount = 0; }, 800);
+        if(clickCount === 2) {
+            triggerMonkeyRain();
+            clickCount = 0;
+        } else if(clickCount === 3) {
+            triggerBananaBlast();
+            clickCount = 0;
+        }
+    }
+    
+    function initPortSelector() {
+        const select = document.getElementById('portSelect');
+        PUERTOS.forEach((p, idx) => { const opt = document.createElement('option'); opt.value = idx; opt.textContent = p.nombre; select.appendChild(opt); });
+        select.addEventListener('change', (e) => { currentPortIndex = parseInt(e.target.value); loadAndDisplayData(); });
+        currentPortIndex = 0; select.value = "0";
+    }
+    
+    async function startup() {
+        loadHistory();
+        initCharts();
+        initPortSelector();
+        await loadAndDisplayData();
+        document.getElementById('refreshBtn').addEventListener('click', () => loadAndDisplayData());
+        document.getElementById('whatsappShareBtn').addEventListener('click', shareWhatsApp);
+        setInterval(() => loadAndDisplayData(), 15 * 60 * 1000);
+        
+        // ACTIVAR EASTER EGG EN EL HEADER
+        const trigger = document.getElementById('easterEggTrigger');
+        trigger.addEventListener('click', handleEasterEgg);
+    }
+    
+    startup();
+</script>
+</body>
+</html>
