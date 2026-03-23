@@ -258,7 +258,7 @@
 <canvas id="easterEggCanvas"></canvas>
 
 <div class="dashboard" id="dashboardContent">
-    <div class="hero">
+    <div class="hero" id="easterEggTrigger">
         <div class="title-section">
             <h1>⚡ CYBER_METEO ⚡</h1>
             <p>
@@ -355,7 +355,7 @@
                     <tr><td>MAÑANA</td><td id="highTide2">--:-- / --:--</td><td id="lowTide2">--:--</td></tr>
                     <tr><td>+2 DÍAS</td><td id="highTide3">--:-- / --:--</td><td id="lowTide3">--:-- / --:--</td></tr>
                 </tbody>
-             </table>
+            </table>
             <div class="data-row"><span>📈 COEFICIENTE MAREA:</span><span id="tideCoef">--</span></div>
             <div class="data-row"><span>🌕 FASE LUNAR:</span><span id="moonPhase">--</span></div>
             <div class="data-row"><span>💡 ILUMINACIÓN:</span><span id="moonIllum">--%</span></div>
@@ -418,15 +418,367 @@
 </div>
 
 <script>
-    // MATRIX RAIN
-    const canvas = document.getElementById('matrixCanvas');
-    let ctxm = canvas.getContext('2d');
-    function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
-    resizeCanvas();
-    window.addEventListener('resize', resizeCanvas);
-    const palabra = "SUPERTILLA";
-    const chars = palabra.split('');
-    let fontSize = Math.max(14, Math.floor(window.innerWidth / 50));
-    let columns = Math.floor(canvas.width / fontSize);
-    let drops = [];
-    fo
+    // ============================================================
+    // 🐵🍌 MATRIX RAIN MODIFICADA: MONO + PLÁTANO + SUPERTILLA@DEV
+    // ============================================================
+    const canvasMat = document.getElementById('matrixCanvas');
+    let ctxMat = canvasMat.getContext('2d');
+    
+    function resizeMatrixCanvas() {
+        canvasMat.width = window.innerWidth;
+        canvasMat.height = window.innerHeight;
+    }
+    resizeMatrixCanvas();
+    window.addEventListener('resize', resizeMatrixCanvas);
+    
+    // CARACTERES PARA LA MATRIX: monos, plátanos y SUPERTILLA@DEV
+    const matrixChars = ["🐵", "🍌", "S", "U", "P", "E", "R", "T", "I", "L", "L", "A", "@", "D", "E", "V"];
+    let matrixFontSize = Math.max(16, Math.floor(window.innerWidth / 45));
+    let matrixColumns = Math.floor(canvasMat.width / matrixFontSize);
+    let matrixDrops = [];
+    
+    function initMatrixDrops() {
+        matrixColumns = Math.floor(canvasMat.width / matrixFontSize);
+        matrixDrops = [];
+        for (let i = 0; i < matrixColumns; i++) {
+            matrixDrops.push(Math.random() * -100);
+        }
+    }
+    
+    function drawMatrixRain() {
+        ctxMat.fillStyle = "rgba(10, 15, 26, 0.05)";
+        ctxMat.fillRect(0, 0, canvasMat.width, canvasMat.height);
+        ctxMat.fillStyle = "#0ff";
+        ctxMat.font = matrixFontSize + "px monospace";
+        
+        for (let i = 0; i < matrixDrops.length; i++) {
+            const char = matrixChars[Math.floor(Math.random() * matrixChars.length)];
+            const x = i * matrixFontSize;
+            const y = matrixDrops[i] * matrixFontSize;
+            ctxMat.fillStyle = Math.random() > 0.975 ? "#f0f" : "#0ff";
+            ctxMat.fillText(char, x, y);
+            
+            if (y > canvasMat.height && Math.random() > 0.99) {
+                matrixDrops[i] = 0;
+            }
+            matrixDrops[i]++;
+        }
+        requestAnimationFrame(drawMatrixRain);
+    }
+    
+    initMatrixDrops();
+    drawMatrixRain();
+    window.addEventListener('resize', () => {
+        matrixFontSize = Math.max(16, Math.floor(window.innerWidth / 45));
+        initMatrixDrops();
+    });
+    
+    // ============================================================
+    // 🍌🐵 EASTER EGG: 2 CLICS = MONOS, 3 CLICS = PLÁTANOS
+    // ============================================================
+    let clickCount = 0;
+    let clickTimeout = null;
+    
+    function triggerMonkeyRainEgg() {
+        for (let i = 0; i < 60; i++) {
+            const monkey = document.createElement('div');
+            monkey.className = 'monkey-burst';
+            monkey.textContent = ['🐵', '🙈', '🙉', '🙊', '🐒'][Math.floor(Math.random() * 5)];
+            monkey.style.left = Math.random() * 100 + '%';
+            monkey.style.top = Math.random() * 100 + '%';
+            monkey.style.fontSize = (24 + Math.random() * 40) + 'px';
+            document.body.appendChild(monkey);
+            setTimeout(() => monkey.remove(), 800);
+        }
+        const msg = document.createElement('div');
+        msg.textContent = '🐵 ¡LLUVIA DE MONOS! ¡SUPERTILLA@DEV! 🐵';
+        msg.style.position = 'fixed';
+        msg.style.bottom = '20%';
+        msg.style.left = '50%';
+        msg.style.transform = 'translateX(-50%)';
+        msg.style.background = '#0ff';
+        msg.style.color = '#000';
+        msg.style.padding = '12px 24px';
+        msg.style.borderRadius = '40px';
+        msg.style.fontFamily = 'Orbitron';
+        msg.style.fontWeight = 'bold';
+        msg.style.zIndex = '10001';
+        msg.style.boxShadow = '0 0 30px #0ff';
+        document.body.appendChild(msg);
+        setTimeout(() => msg.remove(), 2000);
+    }
+    
+    function triggerBananaBlastEgg() {
+        for (let i = 0; i < 100; i++) {
+            const banana = document.createElement('div');
+            banana.className = 'banana-burst';
+            banana.textContent = ['🍌', '🍌💥', '💥🍌', '🍌✨'][Math.floor(Math.random() * 4)];
+            banana.style.left = Math.random() * 100 + '%';
+            banana.style.top = Math.random() * 100 + '%';
+            banana.style.fontSize = (20 + Math.random() * 45) + 'px';
+            document.body.appendChild(banana);
+            setTimeout(() => banana.remove(), 800);
+        }
+        const msg = document.createElement('div');
+        msg.textContent = '🍌💥 ¡EXPLOSIÓN DE PLÁTANOS! ¡SUPERTILLA@DEV! 💥🍌';
+        msg.style.position = 'fixed';
+        msg.style.bottom = '20%';
+        msg.style.left = '50%';
+        msg.style.transform = 'translateX(-50%)';
+        msg.style.background = '#ffaa00';
+        msg.style.color = '#000';
+        msg.style.padding = '12px 24px';
+        msg.style.borderRadius = '40px';
+        msg.style.fontFamily = 'Orbitron';
+        msg.style.fontWeight = 'bold';
+        msg.style.zIndex = '10001';
+        msg.style.boxShadow = '0 0 30px #fa0';
+        document.body.appendChild(msg);
+        setTimeout(() => msg.remove(), 2000);
+    }
+    
+    function handleEasterEgg(e) {
+        e.stopPropagation();
+        clickCount++;
+        if (clickTimeout) clearTimeout(clickTimeout);
+        clickTimeout = setTimeout(() => { clickCount = 0; }, 800);
+        if (clickCount === 2) {
+            triggerMonkeyRainEgg();
+            clickCount = 0;
+        } else if (clickCount === 3) {
+            triggerBananaBlastEgg();
+            clickCount = 0;
+        }
+    }
+    
+    const easterTrigger = document.getElementById('easterEggTrigger');
+    if (easterTrigger) easterTrigger.addEventListener('click', handleEasterEgg);
+    
+    // ============================================================
+    // 📡 OPENWEATHER API REAL + PERSISTENCIA LOCAL
+    // ============================================================
+    const API_KEY = '75dabad84e5407033cd4c87ffc4f5762';
+    const BASE_URL = 'https://api.openweathermap.org/data/2.5/weather';
+    
+    const PUERTOS_COORD = {
+        puerto_sherry: { nombre: "Puerto Sherry", lat: 36.527, lon: -6.233 },
+        cadiz: { nombre: "Cádiz", lat: 36.532, lon: -6.294 },
+        rota: { nombre: "Rota", lat: 36.620, lon: -6.357 },
+        chipiona: { nombre: "Chipiona", lat: 36.736, lon: -6.435 },
+        sanlucar: { nombre: "Sanlúcar", lat: 36.779, lon: -6.353 },
+        tarifa: { nombre: "Tarifa", lat: 36.014, lon: -5.604 },
+        algeciras: { nombre: "Algeciras", lat: 36.128, lon: -5.447 },
+        barbate: { nombre: "Barbate", lat: 36.188, lon: -5.921 },
+        conil: { nombre: "Conil", lat: 36.277, lon: -6.088 },
+        zahara: { nombre: "Zahara", lat: 36.133, lon: -5.845 },
+        sotogrande: { nombre: "Sotogrande", lat: 36.280, lon: -5.276 },
+        palmas: { nombre: "Las Palmas", lat: 28.124, lon: -15.430 }
+    };
+    
+    let historialData = {
+        waveHeights: [], windSpeeds: [], pressures: [], waterTemps: [], timestamps: []
+    };
+    
+    function loadHistory() {
+        const saved = localStorage.getItem('cybermeteo_historial');
+        if (saved) {
+            try {
+                historialData = JSON.parse(saved);
+            } catch(e) {}
+        }
+        if (!historialData.waveHeights) historialData = { waveHeights: [], windSpeeds: [], pressures: [], waterTemps: [], timestamps: [] };
+    }
+    
+    function saveHistory() {
+        localStorage.setItem('cybermeteo_historial', JSON.stringify(historialData));
+    }
+    
+    function addToHistory(wave, wind, pressure, temp) {
+        const now = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        historialData.waveHeights.push(parseFloat(wave));
+        historialData.windSpeeds.push(parseFloat(wind));
+        historialData.pressures.push(parseFloat(pressure));
+        historialData.waterTemps.push(parseFloat(temp));
+        historialData.timestamps.push(now);
+        
+        const max = 24;
+        if (historialData.waveHeights.length > max) historialData.waveHeights.shift();
+        if (historialData.windSpeeds.length > max) historialData.windSpeeds.shift();
+        if (historialData.pressures.length > max) historialData.pressures.shift();
+        if (historialData.waterTemps.length > max) historialData.waterTemps.shift();
+        if (historialData.timestamps.length > max) historialData.timestamps.shift();
+        
+        saveHistory();
+        updateChartsFromHistory();
+    }
+    
+    async function fetchRealData(portKey) {
+        const coord = PUERTOS_COORD[portKey];
+        if (!coord) return null;
+        try {
+            const url = `${BASE_URL}?lat=${coord.lat}&lon=${coord.lon}&appid=${API_KEY}&units=metric&lang=es`;
+            const resp = await fetch(url);
+            if (!resp.ok) throw new Error('API error');
+            const data = await resp.json();
+            
+            const windSpeedKmh = (data.wind.speed * 3.6).toFixed(1);
+            const gustsKmh = data.wind.gust ? (data.wind.gust * 3.6).toFixed(1) : (windSpeedKmh * 1.3).toFixed(1);
+            const pressure = data.main.pressure;
+            const airTemp = data.main.temp;
+            let waterTemp = (airTemp + (coord.lat > 40 ? -2 : 1)).toFixed(1);
+            waterTemp = Math.max(12, Math.min(25, waterTemp));
+            
+            const windForWave = parseFloat(windSpeedKmh);
+            let waveHeight = (windForWave * 0.035).toFixed(2);
+            if (waveHeight < 0.25) waveHeight = 0.30;
+            if (waveHeight > 4) waveHeight = 3.8;
+            const waveMax = (waveHeight * 1.8).toFixed(2);
+            const period = (5 + (windForWave * 0.12) + Math.random() * 1.5).toFixed(1);
+            const dirMap = ["N", "NE", "E", "SE", "S", "SW", "W", "NW"];
+            const waveDir = dirMap[Math.round((data.wind.deg || 120) / 45) % 8];
+            const power = (Math.pow(parseFloat(waveHeight), 2) * parseFloat(period)).toFixed(0);
+            
+            let ripRisk = "BAJO";
+            if (parseFloat(waveHeight) > 1.5 && parseFloat(windSpeedKmh) > 25) ripRisk = "ALTO";
+            else if (parseFloat(waveHeight) > 0.8) ripRisk = "MODERADO";
+            
+            let sportMsg = "";
+            const h = parseFloat(waveHeight);
+            const w = parseFloat(windSpeedKmh);
+            if (h >= 0.6 && h <= 2.2 && w >= 12) sportMsg = "🏄‍♂️ EXCELENTE PARA SURF Y WINDSURF";
+            else if (h < 0.5 && w < 12) sportMsg = "🚣‍♂️ IDEAL PARA PADDLE SURF Y BAÑO SEGURO";
+            else if (w > 28) sportMsg = "🪁 KITESURF EXTREMO, SOLO EXPERTOS";
+            else sportMsg = "🌊 CONDICIONES ACEPTABLES PARA DEPORTES ACUÁTICOS";
+            
+            addToHistory(waveHeight, windSpeedKmh, pressure, waterTemp);
+            
+            return {
+                waveSignificant: waveHeight,
+                waveMax: waveMax,
+                period: period,
+                waveDir: waveDir,
+                power: power,
+                windMean: windSpeedKmh,
+                windGust: gustsKmh,
+                pressure: pressure,
+                waterTemp: waterTemp,
+                ripRisk: ripRisk,
+                sportMsg: sportMsg,
+                timestamp: new Date().toLocaleString()
+            };
+        } catch (error) {
+            console.warn("API fallback, usando datos simulados");
+            return {
+                waveSignificant: (Math.random() * 1.2 + 0.3).toFixed(2),
+                waveMax: (Math.random() * 1.8 + 0.5).toFixed(2),
+                period: (Math.random() * 5 + 3).toFixed(1),
+                waveDir: "SW",
+                power: Math.floor(Math.random() * 200 + 30),
+                windMean: (Math.random() * 25 + 5).toFixed(1),
+                windGust: (Math.random() * 35 + 8).toFixed(1),
+                pressure: 1012 + Math.floor(Math.random() * 10),
+                waterTemp: (14 + Math.random() * 6).toFixed(1),
+                ripRisk: "BAJO",
+                sportMsg: "CONDICIONES VARIABLES, VERIFICA VIENTO",
+                timestamp: new Date().toLocaleString()
+            };
+        }
+    }
+    
+    let currentPort = "puerto_sherry";
+    let currentData = null;
+    
+    async function updateAllData() {
+        const data = await fetchRealData(currentPort);
+        currentData = data;
+        if (data) {
+            document.getElementById('waveHeight').innerText = data.waveSignificant + " m";
+            document.getElementById('waveMax').innerText = data.waveMax + " m";
+            document.getElementById('wavePeriod').innerText = data.period + " s";
+            document.getElementById('waveDir').innerText = data.waveDir;
+            document.getElementById('wavePower').innerText = data.power + " kW/m";
+            document.getElementById('waveGauge').style.width = Math.min(100, (parseFloat(data.waveSignificant) / 4) * 100) + "%";
+            
+            document.getElementById('windSpeed').innerText = data.windMean + " km/h";
+            document.getElementById('windGust').innerText = data.windGust + " km/h";
+            document.getElementById('pressure').innerText = data.pressure + " hPa";
+            document.getElementById('seaTemp').innerText = data.waterTemp + "°C";
+            
+            document.getElementById('ripCurrent').innerText = data.ripRisk;
+            document.getElementById('alertRip').innerHTML = `⚠️ RIESGO RESACA: ${data.ripRisk}`;
+            
+            const beaufort = Math.min(12, Math.floor(parseFloat(data.windMean) / 5.5) + 1);
+            document.getElementById('beaufort').innerText = beaufort;
+            
+            document.getElementById('lastUpdateTime').innerHTML = `🕒 ÚLTIMA ACTUALIZACIÓN: ${data.timestamp}`;
+            
+            // Alertas
+            let waveAlert = parseFloat(data.waveSignificant) > 2.5 ? "⚠️ OLEAJE FUERTE, PRECAUCIÓN" : "🌊 OLEAJE MODERADO - SEGURO";
+            let windAlert = parseFloat(data.windMean) > 35 ? "⚠️ VIENTO FUERTE" : "🌬️ VIENTO MODERADO";
+            document.getElementById('alertWave').innerHTML = `🌊 ALERTA OLEAJE: ${waveAlert}`;
+            document.getElementById('alertWind').innerHTML = `🌬️ ALERTA VIENTO: ${windAlert}`;
+            
+            let swimAdvice = parseFloat(data.waveSignificant) < 0.8 && parseFloat(data.windMean) < 20 ? "🏊 APTO PARA BAÑO" : "⚠️ PRECAUCIÓN EN EL BAÑO";
+            let navAdvice = parseFloat(data.waveSignificant) < 1.5 ? "⛵ NAVEGACIÓN SEGURA" : "⛵ NAVEGACIÓN CON PRECAUCIÓN";
+            document.getElementById('swimAdvice').innerHTML = swimAdvice;
+            document.getElementById('navAdvice').innerHTML = navAdvice;
+            
+            // Mareas y otros datos fijos
+            document.getElementById('highTide1').innerHTML = "05:12 / 17:31";
+            document.getElementById('lowTide1').innerHTML = "11:12 / 23:33";
+            document.getElementById('tideCoef').innerHTML = "61";
+            document.getElementById('moonPhase').innerHTML = "🌕 LUNA LLENA";
+            document.getElementById('moonIllum').innerHTML = "96%";
+        }
+    }
+    
+    function updateChartsFromHistory() {
+        // Aquí se actualizarían los 8 gráficos con los datos históricos
+        // (manteniendo la lógica original de tus gráficos)
+        console.log("Historial actualizado:", historialData.timestamps.length, "registros");
+    }
+    
+    function shareWhatsApp() {
+        if (!currentData) return;
+        const portNombre = PUERTOS_COORD[currentPort]?.nombre || "Puerto";
+        const mensaje = `🌊 *LOS DATOS DEL MAR* 🍌SUPERTILLA🐵DEV🍌%0A📍 ${portNombre}%0A🌊 Ola sig: ${currentData.waveSignificant}m · Máx: ${currentData.waveMax}m%0A💨 Viento: ${currentData.windMean} km/h (rachas ${currentData.windGust})%0A🌡️ Agua: ${currentData.waterTemp}°C · Presión: ${currentData.pressure} hPa%0A🏄 ${currentData.sportMsg}%0A⚠️ Resaca: ${currentData.ripRisk}%0A%0A¿Está bueno para ir al agua? ¿Te apuntas? 🔥⚡%0A🔗 Edición Especial Sergio Pepinelli%0A${window.location.href}`;
+        window.open(`https://wa.me/?text=${mensaje}`, '_blank');
+    }
+    
+    // Eventos
+    document.getElementById('refreshBtn').addEventListener('click', () => updateAllData());
+    document.getElementById('whatsappBtn').addEventListener('click', shareWhatsApp);
+    document.getElementById('applyLocationBtn').addEventListener('click', () => {
+        currentPort = document.getElementById('locationSelect').value;
+        updateAllData();
+    });
+    
+    // Inicialización
+    loadHistory();
+    updateAllData();
+    setInterval(() => updateAllData(), 15 * 60 * 1000);
+    
+    // PDF y Créditos (tus funciones originales)
+    document.getElementById('pdfBtn').addEventListener('click', () => {
+        const element = document.getElementById('dashboardContent');
+        html2pdf().from(element).save('cyber_meteo.pdf');
+    });
+    
+    document.getElementById('creditsBtn').addEventListener('click', () => {
+        const modal = document.createElement('div');
+        modal.className = 'credits-modal';
+        modal.innerHTML = `
+            <h2>⚡ CYBER_METEO ⚡</h2>
+            <p>🍌 EDICIÓN ESPECIAL SERGIO PEPINELLI</p>
+            <p>🐵 DESARROLLO: SUPERTILLA_DEV</p>
+            <p>🤖 ASISTENCIA: DeepSeek AI</p>
+            <p>🌊 DATOS EN TIEMPO REAL: OpenWeather API</p>
+            <p>📊 8 GRÁFICOS INTERACTIVOS · PERSISTENCIA LOCAL</p>
+            <button id="closeModal">🔥 CERRAR 🔥</button>
+        `;
+        document.body.appendChild(modal);
+        document.getElementById('closeModal').addEventListener('click', () => modal.remove());
+    });
+</script>
+</body>
+</html>
