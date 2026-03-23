@@ -277,7 +277,18 @@
         .credits-modal p { color: #0ff; margin: 10px 0; font-size: 0.85rem; text-shadow: 0 0 5px #0ff; }
         .credits-modal button { margin-top: 20px; padding: 10px 30px; background: #ff00ff; color: #000; border: none; border-radius: 40px; font-weight: bold; cursor: pointer; font-family: 'Orbitron'; box-shadow: 0 0 20px #ff00ff; }
         
-        .monkey-burst, .banana-burst { display: none; }
+        .monkey-burst, .banana-burst {
+            position: fixed;
+            pointer-events: none;
+            z-index: 10001;
+            animation: fallDown 1s ease-out forwards;
+            font-size: 2rem;
+            filter: drop-shadow(0 0 8px #0ff);
+        }
+        @keyframes fallDown {
+            0% { transform: translateY(-10vh) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
+        }
     </style>
 </head>
 <body>
@@ -375,7 +386,7 @@
         <div class="card">
             <div class="card-header"><span>🌙</span><h2>MAREAS · PREDICCIÓN</h2></div>
             <table class="tide-table">
-                <thead><tr><th>🐵 FECHA</th><th>🌕 PLEAMAR</th><th>🌑 BAJAMAR</th></tr></thead>
+                <thead>  <th>🐵 FECHA</th><th>🌕 PLEAMAR</th><th>🌑 BAJAMAR</th>  </thead>
                 <tbody>
                     <tr><td>🐵 HOY</td><td id="highTide1">05:12 / 17:31</td><td id="lowTide1">11:12 / 23:33</td></tr>
                     <tr><td>🐵 MAÑANA</td><td id="highTide2">05:55 / 18:15</td><td id="lowTide2">11:53</td></tr>
@@ -756,31 +767,41 @@
     }
     
     // ============================================================
-    // ℹ️ INFO: Información de la app
+    // 🥚 EASTER EGG: lluvia de 30 monos y 30 plátanos
     // ============================================================
-    function showInfo() {
-        const modal = document.createElement('div');
-        modal.className = 'info-modal';
-        modal.innerHTML = `
-            <h2>⚡ CYBER_METEO ⚡</h2>
-            <p>🌊 Aplicación de predicción marina en tiempo real</p>
-            <p>📡 Datos obtenidos vía OpenWeather API</p>
-            <p>📍 12 puertos españoles con información detallada</p>
-            <p>📊 8 gráficos interactivos con historial 24h</p>
-            <p>💾 Persistencia local: guarda los últimos 24 registros</p>
-            <p>🏄‍♂️ Especializada en deportes acuáticos: surf, kitesurf, paddle, vela</p>
-            <p>🐵 Desarrollada por 🍌SUPERTILLA🐵DEV con asistencia de DeepSeek AI</p>
-            <p>🍌 Edición Especial Sergio Pepinelli</p>
-            <button id="closeInfoModal">🍌 CERRAR 🍌</button>
-        `;
-        document.body.appendChild(modal);
-        document.getElementById('closeInfoModal').addEventListener('click', () => modal.remove());
+    function triggerLluviaMonosPlatanos() {
+        // 30 monos cayendo
+        for (let i = 0; i < 30; i++) {
+            setTimeout(() => {
+                const monkey = document.createElement('div');
+                monkey.className = 'monkey-burst';
+                monkey.textContent = ['🐵', '🙈', '🙉', '🙊', '🐒'][Math.floor(Math.random() * 5)];
+                monkey.style.left = Math.random() * 100 + '%';
+                monkey.style.top = -10 + '%';
+                monkey.style.fontSize = (24 + Math.random() * 35) + 'px';
+                monkey.style.animationDuration = (0.8 + Math.random() * 0.5) + 's';
+                document.body.appendChild(monkey);
+                setTimeout(() => monkey.remove(), 1000);
+            }, i * 50);
+        }
+        
+        // 30 plátanos cayendo
+        for (let i = 0; i < 30; i++) {
+            setTimeout(() => {
+                const banana = document.createElement('div');
+                banana.className = 'banana-burst';
+                banana.textContent = ['🍌', '🍌💥', '💥🍌', '🍌✨'][Math.floor(Math.random() * 4)];
+                banana.style.left = Math.random() * 100 + '%';
+                banana.style.top = -10 + '%';
+                banana.style.fontSize = (22 + Math.random() * 40) + 'px';
+                banana.style.animationDuration = (0.8 + Math.random() * 0.6) + 's';
+                document.body.appendChild(banana);
+                setTimeout(() => banana.remove(), 1000);
+            }, i * 60);
+        }
     }
     
-    // ============================================================
-    // 🥚 EASTER EGG: solo mensaje técnico
-    // ============================================================
-    function triggerEasterEgg() {
+    function triggerMensajeTecnico() {
         const msg = document.createElement('div');
         msg.innerHTML = '🐵<strong style="text-shadow:0 0 15px #0ff;">SUPERTILLA🐵DEVELOPER🐵</strong> · 🍌<strong style="text-shadow:0 0 15px #ffaa00;">Sergio_Pepinelli_Edition🍌</strong>';
         msg.style.position = 'fixed';
@@ -802,6 +823,32 @@
         msg.style.backdropFilter = 'blur(20px)';
         document.body.appendChild(msg);
         setTimeout(() => msg.remove(), 3500);
+    }
+    
+    // ============================================================
+    // ℹ️ INFO: Información de la app
+    // ============================================================
+    function showInfo() {
+        const modal = document.createElement('div');
+        modal.className = 'info-modal';
+        modal.innerHTML = `
+            <h2>⚡ CYBER_METEO ⚡</h2>
+            <p>🌊 Aplicación de predicción marina en tiempo real</p>
+            <p>📡 Datos obtenidos vía OpenWeather API</p>
+            <p>📍 12 puertos españoles con información detallada</p>
+            <p>📊 8 gráficos interactivos con historial 24h</p>
+            <p>💾 Persistencia local: guarda los últimos 24 registros</p>
+            <p>🏄‍♂️ Especializada en deportes acuáticos: surf, kitesurf, paddle, vela</p>
+            <p>🐵 Desarrollada por 🍌SUPERTILLA🐵DEV con asistencia de DeepSeek AI</p>
+            <p>🍌 Edición Especial Sergio Pepinelli</p>
+            <button id="closeInfoModal">🍌 CERRAR 🍌</button>
+        `;
+        document.body.appendChild(modal);
+        document.getElementById('closeInfoModal').addEventListener('click', () => {
+            modal.remove();
+            triggerLluviaMonosPlatanos();
+            triggerMensajeTecnico();
+        });
     }
     
     // Eventos
@@ -829,7 +876,8 @@
         document.body.appendChild(modal);
         document.getElementById('closeModal').addEventListener('click', () => {
             modal.remove();
-            triggerEasterEgg();
+            triggerLluviaMonosPlatanos();
+            triggerMensajeTecnico();
         });
     });
     
