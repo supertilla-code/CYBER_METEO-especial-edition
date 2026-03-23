@@ -54,15 +54,19 @@
 
         @keyframes neonPulse {
             0% { text-shadow: 0 0 2px #0ff, 0 0 5px #0ff; }
-            100% { text-shadow: 0 0 5px #0ff, 0 0 15px #0ff, 0 0 25px #0ff; }
+            100% { text-shadow: 0 0 10px #0ff, 0 0 20px #0ff, 0 0 35px #0ff, 0 0 45px #f0f; }
         }
         @keyframes borderGlow {
-            0% { box-shadow: 0 0 5px rgba(0, 255, 255, 0.3); }
-            100% { box-shadow: 0 0 20px rgba(0, 255, 255, 0.8); }
+            0% { box-shadow: 0 0 5px rgba(0, 255, 255, 0.3), inset 0 0 5px rgba(0, 255, 255, 0.1); }
+            100% { box-shadow: 0 0 30px rgba(0, 255, 255, 0.9), inset 0 0 15px rgba(0, 255, 255, 0.4); }
         }
         @keyframes float {
             0% { transform: translateY(0px); }
             100% { transform: translateY(-5px); }
+        }
+        @keyframes cardGlow {
+            0% { box-shadow: 0 0 5px #0ff, 0 0 10px #0ff; }
+            100% { box-shadow: 0 0 20px #0ff, 0 0 30px #f0f; }
         }
 
         .hero {
@@ -82,13 +86,13 @@
         .title-section h1 {
             font-size: 1.5rem;
             font-weight: 800;
-            background: linear-gradient(135deg, #0ff, #f0f, #ff0);
+            background: linear-gradient(135deg, #0ff, #f0f, #ff0, #0ff);
             background-clip: text;
             -webkit-background-clip: text;
             color: transparent;
             text-align: center;
             letter-spacing: 2px;
-            animation: neonPulse 1.5s infinite alternate;
+            animation: neonPulse 1.2s infinite alternate;
         }
 
         .title-section p {
@@ -108,6 +112,7 @@
             font-family: 'Share Tech Mono', monospace;
             cursor: pointer;
             transition: all 0.2s;
+            animation: borderGlow 1s infinite alternate;
         }
 
         .location-selector {
@@ -121,6 +126,7 @@
             flex-wrap: wrap;
             justify-content: center;
             margin-bottom: 16px;
+            animation: borderGlow 2s infinite alternate;
         }
         .location-selector select {
             background: #0a0f1a;
@@ -164,6 +170,7 @@
             transition: all 0.2s;
             min-width: 110px;
             text-align: center;
+            animation: borderGlow 1.5s infinite alternate;
         }
         .btn:active { transform: scale(0.96); }
         .btn-wa { background: linear-gradient(135deg, #25D36630, #128C7E30); border-color: #25D366; color: #25D366; }
@@ -192,7 +199,7 @@
             padding: 14px;
             border: 1px solid rgba(0, 255, 255, 0.5);
             transition: all 0.2s;
-            animation: float 3s infinite alternate;
+            animation: float 3s infinite alternate, cardGlow 2s infinite alternate;
         }
 
         .card-header {
@@ -216,17 +223,17 @@
         .warning { background: rgba(255, 0, 255, 0.15); border-left: 3px solid #f0f; padding: 8px; border-radius: 10px; margin-top: 8px; font-size: 0.65rem; }
         .gauge { background: #0a0f1a; border-radius: 20px; height: 6px; margin: 8px 0; overflow: hidden; }
         .gauge-fill { height: 100%; background: linear-gradient(90deg, #0ff, #f0f); width: 0%; border-radius: 20px; transition: width 0.3s; }
-        .value-big { font-size: 1rem; font-weight: bold; color: #ff66ff; }
+        .value-big { font-size: 1rem; font-weight: bold; color: #ff66ff; text-shadow: 0 0 8px #ff66ff; }
         .tide-table { width: 100%; border-collapse: collapse; font-size: 0.65rem; }
         .tide-table td, .tide-table th { padding: 5px 3px; border-bottom: 1px solid #0ff3; color: #0ff; }
 
         .splash-animation { position: fixed; pointer-events: none; z-index: 10000; font-size: 1.2rem; animation: splash 0.5s ease-out forwards; }
         @keyframes splash { 0% { transform: scale(1); opacity: 1; } 100% { transform: scale(1.5); opacity: 0; } }
         
-        .monkey-burst { position: fixed; pointer-events: none; z-index: 10001; animation: monkeyFly 0.8s ease-out forwards; font-size: 2rem; }
-        .banana-burst { position: fixed; pointer-events: none; z-index: 10001; animation: bananaSpin 0.8s ease-out forwards; font-size: 1.8rem; }
-        @keyframes monkeyFly { 0% { transform: translateY(0) rotate(0deg); opacity: 1; } 100% { transform: translateY(-120px) rotate(540deg); opacity: 0; } }
-        @keyframes bananaSpin { 0% { transform: translateY(0) rotate(0deg); opacity: 1; } 100% { transform: translateY(80px) rotate(360deg); opacity: 0; } }
+        .monkey-burst { position: fixed; pointer-events: none; z-index: 10001; animation: monkeyFly 1s ease-out forwards; font-size: 2rem; filter: drop-shadow(0 0 10px #0ff); }
+        .banana-burst { position: fixed; pointer-events: none; z-index: 10001; animation: bananaSpin 1s ease-out forwards; font-size: 1.8rem; filter: drop-shadow(0 0 15px #ffaa00); }
+        @keyframes monkeyFly { 0% { transform: translateY(0) rotate(0deg); opacity: 1; } 100% { transform: translateY(-150px) rotate(720deg); opacity: 0; } }
+        @keyframes bananaSpin { 0% { transform: translateY(0) rotate(0deg) scale(0.5); opacity: 1; } 50% { transform: translateY(-50px) rotate(180deg) scale(1.2); } 100% { transform: translateY(100px) rotate(540deg) scale(0.8); opacity: 0; } }
 
         footer { text-align: center; margin-top: 20px; padding-top: 16px; border-top: 1px solid #0ff; font-size: 0.6rem; }
         .last-update { text-align: right; font-size: 0.6rem; margin-bottom: 8px; }
@@ -244,13 +251,14 @@
             text-align: center;
             font-family: 'Orbitron';
             backdrop-filter: blur(20px);
-            box-shadow: 0 0 100px #ff00ff;
+            box-shadow: 0 0 100px #ff00ff, 0 0 50px #0ff;
             min-width: 280px;
             max-width: 90%;
+            animation: borderGlow 0.5s infinite alternate;
         }
-        .credits-modal h2 { color: #ff00ff; font-size: 1.4rem; margin-bottom: 15px; }
-        .credits-modal p { color: #0ff; margin: 10px 0; font-size: 0.85rem; }
-        .credits-modal button { margin-top: 20px; padding: 10px 30px; background: #ff00ff; color: #000; border: none; border-radius: 40px; font-weight: bold; cursor: pointer; font-family: 'Orbitron'; }
+        .credits-modal h2 { color: #ff00ff; font-size: 1.4rem; margin-bottom: 15px; text-shadow: 0 0 15px #ff00ff; }
+        .credits-modal p { color: #0ff; margin: 10px 0; font-size: 0.85rem; text-shadow: 0 0 5px #0ff; }
+        .credits-modal button { margin-top: 20px; padding: 10px 30px; background: #ff00ff; color: #000; border: none; border-radius: 40px; font-weight: bold; cursor: pointer; font-family: 'Orbitron'; box-shadow: 0 0 20px #ff00ff; }
     </style>
 </head>
 <body>
@@ -349,16 +357,16 @@
         <div class="card">
             <div class="card-header"><span>🌙</span><h2>MAREAS · PREDICCIÓN</h2></div>
             <table class="tide-table">
-                <thead>大学<th>FECHA</th><th>🌕 PLEAMAR</th><th>🌑 BAJAMAR</th> </thead>
+                <thead><tr><th>🐵 FECHA</th><th>🌕 PLEAMAR</th><th>🌑 BAJAMAR</th></tr></thead>
                 <tbody>
-                    <tr><td>HOY</td><td id="highTide1">--:-- / --:--</td><td id="lowTide1">--:-- / --:--</td></tr>
-                    <tr><td>MAÑANA</td><td id="highTide2">--:-- / --:--</td><td id="lowTide2">--:--</td></tr>
-                    <tr><td>+2 DÍAS</td><td id="highTide3">--:-- / --:--</td><td id="lowTide3">--:-- / --:--</td></tr>
+                    <tr><td>🐵 HOY</td><td id="highTide1">05:12 / 17:31</td><td id="lowTide1">11:12 / 23:33</td></tr>
+                    <tr><td>🐵 MAÑANA</td><td id="highTide2">05:55 / 18:15</td><td id="lowTide2">11:53</td></tr>
+                    <tr><td>🐵 +2 DÍAS</td><td id="highTide3">06:46 / 19:09</td><td id="lowTide3">00:20 / 12:41</td></tr>
                 </tbody>
             </table>
-            <div class="data-row"><span>📈 COEFICIENTE MAREA:</span><span id="tideCoef">--</span></div>
-            <div class="data-row"><span>🌕 FASE LUNAR:</span><span id="moonPhase">--</span></div>
-            <div class="data-row"><span>💡 ILUMINACIÓN:</span><span id="moonIllum">--%</span></div>
+            <div class="data-row"><span>📈 COEFICIENTE MAREA:</span><span id="tideCoef">61</span></div>
+            <div class="data-row"><span>🌕 FASE LUNAR:</span><span id="moonPhase">🌕 LUNA LLENA</span></div>
+            <div class="data-row"><span>💡 ILUMINACIÓN:</span><span id="moonIllum">96%</span></div>
         </div>
         <div class="card">
             <div class="card-header"><span>📈</span><h2>EVOLUCIÓN OLEAJE (24h)</h2></div>
@@ -412,14 +420,14 @@
 
     <footer>
         <div>⚡ FUENTES: PUERTOS DEL ESTADO · AEMET · INSTITUTO HIDROGRÁFICO DE LA MARINA · BOYAS OCEANOGRÁFICAS</div>
-        <div>🐵 DESARROLLO: SUPERTILLA_DEVELOPER · 🤖 ASISTENCIA: DeepSeek AI · 🌊 CYBER_METEO SPECIAL EDITION</div>
-        <div>🍌 EDICIÓN ESPECIAL SERGIO PEPINELLI · 8 GRÁFICOS INTERACTIVOS · TODOS LOS DATOS OCEANOGRÁFICOS</div>
+        <div>🐵 DESARROLLO: 🍌SUPERTILLA🐵DEVELOPER🍌 · 🤖 ASISTENCIA: DeepSeek AI · 🌊 CYBER_METEO SPECIAL EDITION</div>
+        <div>🍌 EDICIÓN ESPECIAL 🍌Sergio🐵Pepinelli🍌🐵Edition🐵 · 8 GRÁFICOS INTERACTIVOS · TODOS LOS DATOS OCEANOGRÁFICOS</div>
     </footer>
 </div>
 
 <script>
     // ============================================================
-    // 🐵🍌 MATRIX RAIN MODIFICADA: MONO + PLÁTANO + SUPERTILLA@DEV
+    // 🐵🍌 MATRIX RAIN: MONOS + PLÁTANOS + SUPERTILLA@DEV
     // ============================================================
     const canvasMat = document.getElementById('matrixCanvas');
     let ctxMat = canvasMat.getContext('2d');
@@ -431,7 +439,7 @@
     resizeMatrixCanvas();
     window.addEventListener('resize', resizeMatrixCanvas);
     
-    const matrixChars = ["🐵", "🍌", "S", "U", "P", "E", "R", "T", "I", "L", "L", "A", "@", "D", "E", "V"];
+    const matrixChars = ["🐵", "🍌", "🍌", "🐵", "S", "U", "P", "E", "R", "T", "I", "L", "L", "A", "@", "D", "E", "V", "🍌", "🐵"];
     let matrixFontSize = Math.max(16, Math.floor(window.innerWidth / 45));
     let matrixColumns = Math.floor(canvasMat.width / matrixFontSize);
     let matrixDrops = [];
@@ -453,7 +461,9 @@
             const char = matrixChars[Math.floor(Math.random() * matrixChars.length)];
             const x = i * matrixFontSize;
             const y = matrixDrops[i] * matrixFontSize;
-            ctxMat.fillStyle = Math.random() > 0.975 ? "#f0f" : "#0ff";
+            ctxMat.fillStyle = Math.random() > 0.95 ? "#f0f" : "#0ff";
+            ctxMat.shadowBlur = 10;
+            ctxMat.shadowColor = "#0ff";
             ctxMat.fillText(char, x, y);
             
             if (y > canvasMat.height && Math.random() > 0.99) {
@@ -530,7 +540,7 @@
     }
     
     // ============================================================
-    // 📊 GRÁFICOS DINÁMICOS CON DATOS REALES
+    // 📊 GRÁFICOS DINÁMICOS CON HISTORIAL
     // ============================================================
     let waveChart, swellChart, tideChart, windChart, tempChart, powerChart, pressureChart, periodChart;
     
@@ -544,14 +554,14 @@
         const ctxPressure = document.getElementById('pressureChart').getContext('2d');
         const ctxPeriod = document.getElementById('periodChart').getContext('2d');
         
-        waveChart = new Chart(ctxWave, { type: 'line', data: { labels: [], datasets: [{ label: 'Altura ola (m)', borderColor: '#0ff', backgroundColor: '#0ff1', fill: true, data: [] }] }, options: { responsive: true, maintainAspectRatio: true } });
-        swellChart = new Chart(ctxSwell, { type: 'bar', data: { labels: ['0.1Hz', '0.2Hz', '0.3Hz'], datasets: [{ label: 'Energía', backgroundColor: '#0ff', data: [0,0,0] }] }, options: { responsive: true } });
-        tideChart = new Chart(ctxTide, { type: 'line', data: { labels: [], datasets: [{ label: 'Nivel marea (m)', borderColor: '#f0f', data: [] }] }, options: { responsive: true } });
-        windChart = new Chart(ctxWind, { type: 'line', data: { labels: [], datasets: [{ label: 'Viento (km/h)', borderColor: '#ff0', data: [] }, { label: 'Rachas (km/h)', borderColor: '#f90', data: [] }] }, options: { responsive: true } });
-        tempChart = new Chart(ctxTemp, { type: 'line', data: { labels: [], datasets: [{ label: 'Temp. agua (°C)', borderColor: '#f90', data: [] }] }, options: { responsive: true } });
-        powerChart = new Chart(ctxPower, { type: 'line', data: { labels: [], datasets: [{ label: 'Potencia (kW/m)', borderColor: '#ff66ff', data: [] }] }, options: { responsive: true } });
-        pressureChart = new Chart(ctxPressure, { type: 'line', data: { labels: [], datasets: [{ label: 'Presión (hPa)', borderColor: '#0fa', data: [] }] }, options: { responsive: true } });
-        periodChart = new Chart(ctxPeriod, { type: 'line', data: { labels: [], datasets: [{ label: 'Período (s)', borderColor: '#0ff', data: [] }] }, options: { responsive: true } });
+        waveChart = new Chart(ctxWave, { type: 'line', data: { labels: [], datasets: [{ label: 'Altura ola (m)', borderColor: '#0ff', backgroundColor: '#0ff2', borderWidth: 2, pointRadius: 3, pointBackgroundColor: '#0ff', fill: true, data: [] }] }, options: { responsive: true, maintainAspectRatio: true, plugins: { legend: { labels: { color: '#0ff' } } } } });
+        swellChart = new Chart(ctxSwell, { type: 'bar', data: { labels: ['0.05Hz', '0.10Hz', '0.15Hz', '0.20Hz', '0.25Hz'], datasets: [{ label: 'Energía (kJ/m²)', backgroundColor: '#0ff', borderColor: '#f0f', data: [] }] }, options: { responsive: true, plugins: { legend: { labels: { color: '#0ff' } } } } });
+        tideChart = new Chart(ctxTide, { type: 'line', data: { labels: ['00:00', '03:00', '06:00', '09:00', '12:00', '15:00', '18:00', '21:00'], datasets: [{ label: 'Nivel marea (m)', borderColor: '#f0f', borderWidth: 2, pointBackgroundColor: '#f0f', data: [] }] }, options: { responsive: true, plugins: { legend: { labels: { color: '#0ff' } } } } });
+        windChart = new Chart(ctxWind, { type: 'line', data: { labels: [], datasets: [{ label: 'Viento (km/h)', borderColor: '#ff0', borderWidth: 2, data: [] }, { label: 'Rachas (km/h)', borderColor: '#f90', borderWidth: 2, data: [] }] }, options: { responsive: true, plugins: { legend: { labels: { color: '#0ff' } } } } });
+        tempChart = new Chart(ctxTemp, { type: 'line', data: { labels: [], datasets: [{ label: 'Temp. agua (°C)', borderColor: '#f90', borderWidth: 2, pointBackgroundColor: '#f90', data: [] }] }, options: { responsive: true, plugins: { legend: { labels: { color: '#0ff' } } } } });
+        powerChart = new Chart(ctxPower, { type: 'line', data: { labels: [], datasets: [{ label: 'Potencia (kW/m)', borderColor: '#ff66ff', borderWidth: 2, data: [] }] }, options: { responsive: true, plugins: { legend: { labels: { color: '#0ff' } } } } });
+        pressureChart = new Chart(ctxPressure, { type: 'line', data: { labels: [], datasets: [{ label: 'Presión (hPa)', borderColor: '#0fa', borderWidth: 2, data: [] }] }, options: { responsive: true, plugins: { legend: { labels: { color: '#0ff' } } } } });
+        periodChart = new Chart(ctxPeriod, { type: 'line', data: { labels: [], datasets: [{ label: 'Período (s)', borderColor: '#0ff', borderWidth: 2, data: [] }] }, options: { responsive: true, plugins: { legend: { labels: { color: '#0ff' } } } } });
     }
     
     function updateAllCharts() {
@@ -575,17 +585,6 @@
         tempChart.data.datasets[0].data = historialData.waterTemps.length ? historialData.waterTemps : [15];
         tempChart.update();
         
-        // Datos simulados para gráficos adicionales
-        const tideHours = ['00:00', '03:00', '06:00', '09:00', '12:00', '15:00', '18:00', '21:00'];
-        tideChart.data.labels = tideHours;
-        tideChart.data.datasets[0].data = [0.8, 0.4, 0.1, 0.3, 0.9, 1.2, 0.7, 0.3];
-        tideChart.update();
-        
-        const swellFreq = ['0.05Hz', '0.10Hz', '0.15Hz', '0.20Hz', '0.25Hz'];
-        swellChart.data.labels = swellFreq;
-        swellChart.data.datasets[0].data = [120, 280, 340, 210, 95];
-        swellChart.update();
-        
         powerChart.data.labels = labels;
         powerChart.data.datasets[0].data = historialData.waveHeights.length ? historialData.waveHeights.map(h => Math.pow(h, 2) * 8) : [0];
         powerChart.update();
@@ -594,14 +593,12 @@
         periodChart.data.datasets[0].data = historialData.waveHeights.length ? historialData.waveHeights.map(h => 5 + h * 2) : [5];
         periodChart.update();
         
-        // Datos de mareas y otros fijos
-        document.getElementById('highTide1').innerHTML = "05:12 / 17:31";
-        document.getElementById('lowTide1').innerHTML = "11:12 / 23:33";
-        document.getElementById('tideCoef').innerHTML = "61";
-        document.getElementById('moonPhase').innerHTML = "🌕 LUNA LLENA";
-        document.getElementById('moonIllum').innerHTML = "96%";
+        tideChart.data.datasets[0].data = [0.8, 0.4, 0.2, 0.3, 0.9, 1.3, 0.8, 0.4];
+        tideChart.update();
         
-        // Datos de corrientes y propiedades físicas (simulados)
+        swellChart.data.datasets[0].data = [120, 280, 340, 210, 95];
+        swellChart.update();
+        
         document.getElementById('currentSurface').innerHTML = (Math.random() * 1.5 + 0.3).toFixed(1) + " km/h";
         document.getElementById('currentDir').innerHTML = ["N", "NE", "E", "SE", "S", "SW", "W", "NW"][Math.floor(Math.random() * 8)];
         document.getElementById('currentBottom').innerHTML = (Math.random() * 0.6 + 0.1).toFixed(1) + " km/h";
@@ -743,54 +740,71 @@
     }
     
     // ============================================================
-    // 🥚 EASTER EGG: AL CERRAR EL MODAL DE CRÉDITOS
+    // 🥚 EASTER EGG: CASCADA DE MONOS MATRIX + TRIPLE EXPLOSIÓN
     // ============================================================
+    function triggerCascadaMonosMatrix() {
+        for (let i = 0; i < 100; i++) {
+            setTimeout(() => {
+                for (let j = 0; j < 15; j++) {
+                    const monkey = document.createElement('div');
+                    monkey.className = 'monkey-burst';
+                    monkey.textContent = ['🐵', '🙈', '🙉', '🙊', '🐒', '🍌🐵', '🐵🍌'][Math.floor(Math.random() * 7)];
+                    monkey.style.left = Math.random() * 100 + '%';
+                    monkey.style.top = -10 + '%';
+                    monkey.style.fontSize = (24 + Math.random() * 45) + 'px';
+                    monkey.style.animationDuration = (0.8 + Math.random() * 0.6) + 's';
+                    document.body.appendChild(monkey);
+                    setTimeout(() => monkey.remove(), 1200);
+                }
+            }, i * 30);
+        }
+    }
+    
+    function triggerTripleExplosionPlatanos() {
+        const waves = [0, 300, 600];
+        waves.forEach(delay => {
+            setTimeout(() => {
+                for (let i = 0; i < 120; i++) {
+                    const banana = document.createElement('div');
+                    banana.className = 'banana-burst';
+                    banana.textContent = ['🍌', '🍌💥', '💥🍌', '🍌✨', '🍌🔥', '💥🍌💥'][Math.floor(Math.random() * 6)];
+                    banana.style.left = Math.random() * 100 + '%';
+                    banana.style.top = Math.random() * 100 + '%';
+                    banana.style.fontSize = (22 + Math.random() * 50) + 'px';
+                    banana.style.animationDuration = (0.8 + Math.random() * 0.5) + 's';
+                    document.body.appendChild(banana);
+                    setTimeout(() => banana.remove(), 1000);
+                }
+            }, delay);
+        });
+    }
+    
     function triggerEasterEgg() {
-        // Lluvia de monos
-        for (let i = 0; i < 60; i++) {
-            const monkey = document.createElement('div');
-            monkey.className = 'monkey-burst';
-            monkey.textContent = ['🐵', '🙈', '🙉', '🙊', '🐒'][Math.floor(Math.random() * 5)];
-            monkey.style.left = Math.random() * 100 + '%';
-            monkey.style.top = Math.random() * 100 + '%';
-            monkey.style.fontSize = (24 + Math.random() * 40) + 'px';
-            document.body.appendChild(monkey);
-            setTimeout(() => monkey.remove(), 800);
-        }
+        triggerCascadaMonosMatrix();
+        triggerTripleExplosionPlatanos();
         
-        // Explosión de plátanos
-        for (let i = 0; i < 80; i++) {
-            const banana = document.createElement('div');
-            banana.className = 'banana-burst';
-            banana.textContent = ['🍌', '🍌💥', '💥🍌', '🍌✨'][Math.floor(Math.random() * 4)];
-            banana.style.left = Math.random() * 100 + '%';
-            banana.style.top = Math.random() * 100 + '%';
-            banana.style.fontSize = (20 + Math.random() * 45) + 'px';
-            document.body.appendChild(banana);
-            setTimeout(() => banana.remove(), 800);
-        }
-        
-        // Mensaje especial
         const msg = document.createElement('div');
-        msg.textContent = '🍌✨ EDICIÓN ESPECIAL PLÁTANO SERGIO PEPINELLI ✨🍌\n\n🍌 PLÁTANO 🍌';
+        msg.innerHTML = '🍌✨ <strong style="text-shadow:0 0 20px #ffaa00;">🍌SUPERTILLA🐵DEVELOPER🍌</strong> ✨🍌<br>🍌✨ <strong style="text-shadow:0 0 20px #ff66ff;">🍌Sergio🐵Pepinelli🍌🐵Edition🐵</strong> ✨🍌';
         msg.style.position = 'fixed';
         msg.style.bottom = '30%';
         msg.style.left = '50%';
         msg.style.transform = 'translateX(-50%)';
-        msg.style.background = 'linear-gradient(135deg, #ffaa00, #ff6600)';
-        msg.style.color = '#000';
-        msg.style.padding = '20px 40px';
-        msg.style.borderRadius = '60px';
+        msg.style.background = 'linear-gradient(135deg, #000000cc, #0a0f1acc)';
+        msg.style.color = '#ffaa00';
+        msg.style.padding = '25px 45px';
+        msg.style.borderRadius = '80px';
         msg.style.fontFamily = 'Orbitron';
         msg.style.fontWeight = 'bold';
-        msg.style.fontSize = '1.2rem';
+        msg.style.fontSize = '1.3rem';
         msg.style.textAlign = 'center';
         msg.style.zIndex = '10001';
-        msg.style.boxShadow = '0 0 50px #ffaa00';
-        msg.style.border = '2px solid #ff0';
+        msg.style.boxShadow = '0 0 80px #ffaa00, 0 0 40px #ff6600';
+        msg.style.border = '3px solid #ffaa00';
         msg.style.whiteSpace = 'pre-line';
+        msg.style.backdropFilter = 'blur(20px)';
+        msg.style.letterSpacing = '2px';
         document.body.appendChild(msg);
-        setTimeout(() => msg.remove(), 4000);
+        setTimeout(() => msg.remove(), 5000);
     }
     
     // Eventos
@@ -812,16 +826,17 @@
         modal.innerHTML = `
             <h2>⚡ CYBER_METEO ⚡</h2>
             <p>🍌 EDICIÓN ESPECIAL SERGIO PEPINELLI</p>
-            <p>🐵 DESARROLLO: SUPERTILLA_DEV</p>
+            <p>🐵 DESARROLLO: 🍌SUPERTILLA🐵DEVELOPER🍌</p>
             <p>🤖 ASISTENCIA: DeepSeek AI</p>
             <p>🌊 DATOS EN TIEMPO REAL: OpenWeather API</p>
             <p>📊 8 GRÁFICOS INTERACTIVOS · PERSISTENCIA LOCAL</p>
-            <button id="closeModal">🍌 CERRAR 🍌</button>
+            <p>🍌🐵🍌🐵🍌🐵🍌🐵🍌🐵🍌🐵</p>
+            <button id="closeModal">🍌✨ CERRAR ✨🍌</button>
         `;
         document.body.appendChild(modal);
         document.getElementById('closeModal').addEventListener('click', () => {
             modal.remove();
-            triggerEasterEgg();  // ← EASTER EGG AL CERRAR
+            triggerEasterEgg();
         });
     });
     
