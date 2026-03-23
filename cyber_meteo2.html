@@ -7,7 +7,6 @@
     <title>⚡ CYBER_METEO ⚡ | Estado del Mar · Todos los Puertos</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <style>
         * {
             margin: 0;
@@ -52,21 +51,30 @@
             z-index: 2;
         }
 
-        @keyframes neonPulse {
-            0% { text-shadow: 0 0 2px #0ff, 0 0 5px #0ff; }
-            100% { text-shadow: 0 0 10px #0ff, 0 0 20px #0ff, 0 0 35px #0ff, 0 0 45px #f0f; }
+        /* EFECTO GLOW MÍNIMO ARCOÍRIS GIRATORIO */
+        @keyframes rainbowGlow {
+            0% { box-shadow: 0 0 3px #ff0000, 0 0 5px #ff0000, inset 0 0 2px #ff0000; border-color: #ff0000; }
+            14% { box-shadow: 0 0 3px #ff7f00, 0 0 5px #ff7f00, inset 0 0 2px #ff7f00; border-color: #ff7f00; }
+            28% { box-shadow: 0 0 3px #ffff00, 0 0 5px #ffff00, inset 0 0 2px #ffff00; border-color: #ffff00; }
+            42% { box-shadow: 0 0 3px #00ff00, 0 0 5px #00ff00, inset 0 0 2px #00ff00; border-color: #00ff00; }
+            57% { box-shadow: 0 0 3px #00ffff, 0 0 5px #00ffff, inset 0 0 2px #00ffff; border-color: #00ffff; }
+            71% { box-shadow: 0 0 3px #0000ff, 0 0 5px #0000ff, inset 0 0 2px #0000ff; border-color: #0000ff; }
+            85% { box-shadow: 0 0 3px #8b00ff, 0 0 5px #8b00ff, inset 0 0 2px #8b00ff; border-color: #8b00ff; }
+            100% { box-shadow: 0 0 3px #ff0000, 0 0 5px #ff0000, inset 0 0 2px #ff0000; border-color: #ff0000; }
         }
+
         @keyframes borderGlow {
-            0% { box-shadow: 0 0 5px rgba(0, 255, 255, 0.3), inset 0 0 5px rgba(0, 255, 255, 0.1); }
-            100% { box-shadow: 0 0 30px rgba(0, 255, 255, 0.9), inset 0 0 15px rgba(0, 255, 255, 0.4); }
+            0% { box-shadow: 0 0 3px rgba(0, 255, 255, 0.3), inset 0 0 3px rgba(0, 255, 255, 0.1); }
+            100% { box-shadow: 0 0 8px rgba(0, 255, 255, 0.6), inset 0 0 5px rgba(0, 255, 255, 0.2); }
         }
+        
         @keyframes float {
             0% { transform: translateY(0px); }
-            100% { transform: translateY(-5px); }
+            100% { transform: translateY(-3px); }
         }
-        @keyframes cardGlow {
-            0% { box-shadow: 0 0 5px #0ff, 0 0 10px #0ff; }
-            100% { box-shadow: 0 0 20px #0ff, 0 0 30px #f0f; }
+
+        .hero, .card, .location-selector, .btn, .badge {
+            animation: rainbowGlow 8s infinite linear, float 3s infinite alternate;
         }
 
         .hero {
@@ -80,7 +88,6 @@
             border-radius: 20px;
             padding: 16px;
             margin-bottom: 16px;
-            animation: borderGlow 2s infinite alternate;
         }
 
         .title-section h1 {
@@ -92,7 +99,7 @@
             color: transparent;
             text-align: center;
             letter-spacing: 2px;
-            animation: neonPulse 1.2s infinite alternate;
+            text-shadow: 0 0 5px rgba(0,255,255,0.3);
         }
 
         .title-section p {
@@ -112,7 +119,6 @@
             font-family: 'Share Tech Mono', monospace;
             cursor: pointer;
             transition: all 0.2s;
-            animation: borderGlow 1s infinite alternate;
         }
 
         .location-selector {
@@ -126,7 +132,6 @@
             flex-wrap: wrap;
             justify-content: center;
             margin-bottom: 16px;
-            animation: borderGlow 2s infinite alternate;
         }
         .location-selector select {
             background: #0a0f1a;
@@ -170,11 +175,10 @@
             transition: all 0.2s;
             min-width: 110px;
             text-align: center;
-            animation: borderGlow 1.5s infinite alternate;
         }
         .btn:active { transform: scale(0.96); }
         .btn-wa { background: linear-gradient(135deg, #25D36630, #128C7E30); border-color: #25D366; color: #25D366; }
-        .btn-credits { background: linear-gradient(135deg, #ff00ff30, #ff660030); border-color: #ff00ff; color: #ff00ff; animation: neonPulse 1s infinite alternate; font-size: 0.75rem; }
+        .btn-info { background: linear-gradient(135deg, #ff00ff30, #ff660030); border-color: #ff00ff; color: #ff00ff; font-size: 0.75rem; }
 
         @media (min-width: 768px) {
             .btn { padding: 12px 24px; font-size: 0.85rem; }
@@ -199,7 +203,6 @@
             padding: 14px;
             border: 1px solid rgba(0, 255, 255, 0.5);
             transition: all 0.2s;
-            animation: float 3s infinite alternate, cardGlow 2s infinite alternate;
         }
 
         .card-header {
@@ -227,16 +230,30 @@
         .tide-table { width: 100%; border-collapse: collapse; font-size: 0.65rem; }
         .tide-table td, .tide-table th { padding: 5px 3px; border-bottom: 1px solid #0ff3; color: #0ff; }
 
-        .splash-animation { position: fixed; pointer-events: none; z-index: 10000; font-size: 1.2rem; animation: splash 0.5s ease-out forwards; }
-        @keyframes splash { 0% { transform: scale(1); opacity: 1; } 100% { transform: scale(1.5); opacity: 0; } }
-        
-        .monkey-burst { position: fixed; pointer-events: none; z-index: 10001; animation: monkeyFly 1s ease-out forwards; font-size: 2rem; filter: drop-shadow(0 0 10px #0ff); }
-        .banana-burst { position: fixed; pointer-events: none; z-index: 10001; animation: bananaSpin 1s ease-out forwards; font-size: 1.8rem; filter: drop-shadow(0 0 15px #ffaa00); }
-        @keyframes monkeyFly { 0% { transform: translateY(0) rotate(0deg); opacity: 1; } 100% { transform: translateY(-150px) rotate(720deg); opacity: 0; } }
-        @keyframes bananaSpin { 0% { transform: translateY(0) rotate(0deg) scale(0.5); opacity: 1; } 50% { transform: translateY(-50px) rotate(180deg) scale(1.2); } 100% { transform: translateY(100px) rotate(540deg) scale(0.8); opacity: 0; } }
-
         footer { text-align: center; margin-top: 20px; padding-top: 16px; border-top: 1px solid #0ff; font-size: 0.6rem; }
         .last-update { text-align: right; font-size: 0.6rem; margin-bottom: 8px; }
+        
+        .info-modal {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.98);
+            border: 3px solid #ff00ff;
+            border-radius: 30px;
+            padding: 28px;
+            z-index: 10010;
+            text-align: center;
+            font-family: 'Orbitron';
+            backdrop-filter: blur(20px);
+            box-shadow: 0 0 100px #ff00ff, 0 0 50px #0ff;
+            min-width: 300px;
+            max-width: 90%;
+            animation: rainbowGlow 4s infinite linear;
+        }
+        .info-modal h2 { color: #ff00ff; font-size: 1.4rem; margin-bottom: 15px; text-shadow: 0 0 15px #ff00ff; }
+        .info-modal p { color: #0ff; margin: 10px 0; font-size: 0.85rem; text-shadow: 0 0 5px #0ff; }
+        .info-modal button { margin-top: 20px; padding: 10px 30px; background: #ff00ff; color: #000; border: none; border-radius: 40px; font-weight: bold; cursor: pointer; font-family: 'Orbitron'; box-shadow: 0 0 20px #ff00ff; }
         
         .credits-modal {
             position: fixed;
@@ -254,11 +271,13 @@
             box-shadow: 0 0 100px #ff00ff, 0 0 50px #0ff;
             min-width: 280px;
             max-width: 90%;
-            animation: borderGlow 0.5s infinite alternate;
+            animation: rainbowGlow 4s infinite linear;
         }
         .credits-modal h2 { color: #ff00ff; font-size: 1.4rem; margin-bottom: 15px; text-shadow: 0 0 15px #ff00ff; }
         .credits-modal p { color: #0ff; margin: 10px 0; font-size: 0.85rem; text-shadow: 0 0 5px #0ff; }
         .credits-modal button { margin-top: 20px; padding: 10px 30px; background: #ff00ff; color: #000; border: none; border-radius: 40px; font-weight: bold; cursor: pointer; font-family: 'Orbitron'; box-shadow: 0 0 20px #ff00ff; }
+        
+        .monkey-burst, .banana-burst { display: none; }
     </style>
 </head>
 <body>
@@ -278,12 +297,11 @@
         <div class="action-buttons">
             <button class="btn" id="refreshBtn">🔄 ACTUALIZAR</button>
             <button class="btn btn-wa" id="whatsappBtn">💬 COMPARTIR</button>
-            <button class="btn" id="pdfBtn">📄 PDF</button>
+            <button class="btn btn-info" id="infoBtn">ℹ️ INFO</button>
             <button class="btn btn-credits" id="creditsBtn">⚡ CRÉDITOS ⚡</button>
         </div>
     </div>
 
-    <!-- SELECTOR DE PUERTOS (12 UBICACIONES) -->
     <div class="location-selector">
         <span>📍 SELECCIONAR PUERTO:</span>
         <select id="locationSelect">
@@ -427,7 +445,7 @@
 
 <script>
     // ============================================================
-    // 🐵🍌 MATRIX RAIN: MONOS + PLÁTANOS + SUPERTILLA@DEV
+    // 🐵🍌 MATRIX RAIN (fondo original)
     // ============================================================
     const canvasMat = document.getElementById('matrixCanvas');
     let ctxMat = canvasMat.getContext('2d');
@@ -439,8 +457,8 @@
     resizeMatrixCanvas();
     window.addEventListener('resize', resizeMatrixCanvas);
     
-    const matrixChars = ["🐵", "🍌", "🍌", "🐵", "S", "U", "P", "E", "R", "T", "I", "L", "L", "A", "@", "D", "E", "V", "🍌", "🐵"];
-    let matrixFontSize = Math.max(16, Math.floor(window.innerWidth / 45));
+    const matrixChars = ["🐵", "🍌", "S", "U", "P", "E", "R", "T", "I", "L", "L", "A", "@", "D", "E", "V"];
+    let matrixFontSize = Math.max(14, Math.floor(window.innerWidth / 50));
     let matrixColumns = Math.floor(canvasMat.width / matrixFontSize);
     let matrixDrops = [];
     
@@ -461,9 +479,7 @@
             const char = matrixChars[Math.floor(Math.random() * matrixChars.length)];
             const x = i * matrixFontSize;
             const y = matrixDrops[i] * matrixFontSize;
-            ctxMat.fillStyle = Math.random() > 0.95 ? "#f0f" : "#0ff";
-            ctxMat.shadowBlur = 10;
-            ctxMat.shadowColor = "#0ff";
+            ctxMat.fillStyle = Math.random() > 0.975 ? "#f0f" : "#0ff";
             ctxMat.fillText(char, x, y);
             
             if (y > canvasMat.height && Math.random() > 0.99) {
@@ -477,12 +493,12 @@
     initMatrixDrops();
     drawMatrixRain();
     window.addEventListener('resize', () => {
-        matrixFontSize = Math.max(16, Math.floor(window.innerWidth / 45));
+        matrixFontSize = Math.max(14, Math.floor(window.innerWidth / 50));
         initMatrixDrops();
     });
     
     // ============================================================
-    // 📡 OPENWEATHER API REAL + PERSISTENCIA LOCAL
+    // 📡 OPENWEATHER API REAL + PERSISTENCIA LOCAL 24h
     // ============================================================
     const API_KEY = '75dabad84e5407033cd4c87ffc4f5762';
     const BASE_URL = 'https://api.openweathermap.org/data/2.5/weather';
@@ -540,7 +556,7 @@
     }
     
     // ============================================================
-    // 📊 GRÁFICOS DINÁMICOS CON HISTORIAL
+    // 📊 GRÁFICOS DINÁMICOS CON HISTORIAL 24h
     // ============================================================
     let waveChart, swellChart, tideChart, windChart, tempChart, powerChart, pressureChart, periodChart;
     
@@ -740,84 +756,61 @@
     }
     
     // ============================================================
-    // 🥚 EASTER EGG: CASCADA DE MONOS MATRIX + TRIPLE EXPLOSIÓN
+    // ℹ️ INFO: Información de la app
     // ============================================================
-    function triggerCascadaMonosMatrix() {
-        for (let i = 0; i < 100; i++) {
-            setTimeout(() => {
-                for (let j = 0; j < 15; j++) {
-                    const monkey = document.createElement('div');
-                    monkey.className = 'monkey-burst';
-                    monkey.textContent = ['🐵', '🙈', '🙉', '🙊', '🐒', '🍌🐵', '🐵🍌'][Math.floor(Math.random() * 7)];
-                    monkey.style.left = Math.random() * 100 + '%';
-                    monkey.style.top = -10 + '%';
-                    monkey.style.fontSize = (24 + Math.random() * 45) + 'px';
-                    monkey.style.animationDuration = (0.8 + Math.random() * 0.6) + 's';
-                    document.body.appendChild(monkey);
-                    setTimeout(() => monkey.remove(), 1200);
-                }
-            }, i * 30);
-        }
+    function showInfo() {
+        const modal = document.createElement('div');
+        modal.className = 'info-modal';
+        modal.innerHTML = `
+            <h2>⚡ CYBER_METEO ⚡</h2>
+            <p>🌊 Aplicación de predicción marina en tiempo real</p>
+            <p>📡 Datos obtenidos vía OpenWeather API</p>
+            <p>📍 12 puertos españoles con información detallada</p>
+            <p>📊 8 gráficos interactivos con historial 24h</p>
+            <p>💾 Persistencia local: guarda los últimos 24 registros</p>
+            <p>🏄‍♂️ Especializada en deportes acuáticos: surf, kitesurf, paddle, vela</p>
+            <p>🐵 Desarrollada por 🍌SUPERTILLA🐵DEV con asistencia de DeepSeek AI</p>
+            <p>🍌 Edición Especial Sergio Pepinelli</p>
+            <button id="closeInfoModal">🍌 CERRAR 🍌</button>
+        `;
+        document.body.appendChild(modal);
+        document.getElementById('closeInfoModal').addEventListener('click', () => modal.remove());
     }
     
-    function triggerTripleExplosionPlatanos() {
-        const waves = [0, 300, 600];
-        waves.forEach(delay => {
-            setTimeout(() => {
-                for (let i = 0; i < 120; i++) {
-                    const banana = document.createElement('div');
-                    banana.className = 'banana-burst';
-                    banana.textContent = ['🍌', '🍌💥', '💥🍌', '🍌✨', '🍌🔥', '💥🍌💥'][Math.floor(Math.random() * 6)];
-                    banana.style.left = Math.random() * 100 + '%';
-                    banana.style.top = Math.random() * 100 + '%';
-                    banana.style.fontSize = (22 + Math.random() * 50) + 'px';
-                    banana.style.animationDuration = (0.8 + Math.random() * 0.5) + 's';
-                    document.body.appendChild(banana);
-                    setTimeout(() => banana.remove(), 1000);
-                }
-            }, delay);
-        });
-    }
-    
+    // ============================================================
+    // 🥚 EASTER EGG: solo mensaje técnico
+    // ============================================================
     function triggerEasterEgg() {
-        triggerCascadaMonosMatrix();
-        triggerTripleExplosionPlatanos();
-        
         const msg = document.createElement('div');
-        msg.innerHTML = '🍌✨ <strong style="text-shadow:0 0 20px #ffaa00;">🍌SUPERTILLA🐵DEVELOPER🍌</strong> ✨🍌<br>🍌✨ <strong style="text-shadow:0 0 20px #ff66ff;">🍌Sergio🐵Pepinelli🍌🐵Edition🐵</strong> ✨🍌';
+        msg.innerHTML = '🐵<strong style="text-shadow:0 0 15px #0ff;">SUPERTILLA🐵DEVELOPER🐵</strong> · 🍌<strong style="text-shadow:0 0 15px #ffaa00;">Sergio_Pepinelli_Edition🍌</strong>';
         msg.style.position = 'fixed';
         msg.style.bottom = '30%';
         msg.style.left = '50%';
         msg.style.transform = 'translateX(-50%)';
         msg.style.background = 'linear-gradient(135deg, #000000cc, #0a0f1acc)';
-        msg.style.color = '#ffaa00';
-        msg.style.padding = '25px 45px';
-        msg.style.borderRadius = '80px';
+        msg.style.color = '#0ff';
+        msg.style.padding = '20px 40px';
+        msg.style.borderRadius = '60px';
         msg.style.fontFamily = 'Orbitron';
         msg.style.fontWeight = 'bold';
-        msg.style.fontSize = '1.3rem';
+        msg.style.fontSize = '1.1rem';
         msg.style.textAlign = 'center';
         msg.style.zIndex = '10001';
-        msg.style.boxShadow = '0 0 80px #ffaa00, 0 0 40px #ff6600';
-        msg.style.border = '3px solid #ffaa00';
-        msg.style.whiteSpace = 'pre-line';
+        msg.style.boxShadow = '0 0 40px #0ff, 0 0 20px #f0f';
+        msg.style.border = '2px solid #0ff';
+        msg.style.whiteSpace = 'nowrap';
         msg.style.backdropFilter = 'blur(20px)';
-        msg.style.letterSpacing = '2px';
         document.body.appendChild(msg);
-        setTimeout(() => msg.remove(), 5000);
+        setTimeout(() => msg.remove(), 3500);
     }
     
     // Eventos
     document.getElementById('refreshBtn').addEventListener('click', () => updateAllData());
     document.getElementById('whatsappBtn').addEventListener('click', shareWhatsApp);
+    document.getElementById('infoBtn').addEventListener('click', showInfo);
     document.getElementById('applyLocationBtn').addEventListener('click', () => {
         currentPort = document.getElementById('locationSelect').value;
         updateAllData();
-    });
-    
-    document.getElementById('pdfBtn').addEventListener('click', () => {
-        const element = document.getElementById('dashboardContent');
-        html2pdf().from(element).save('cyber_meteo.pdf');
     });
     
     document.getElementById('creditsBtn').addEventListener('click', () => {
@@ -829,7 +822,7 @@
             <p>🐵 DESARROLLO: 🍌SUPERTILLA🐵DEVELOPER🍌</p>
             <p>🤖 ASISTENCIA: DeepSeek AI</p>
             <p>🌊 DATOS EN TIEMPO REAL: OpenWeather API</p>
-            <p>📊 8 GRÁFICOS INTERACTIVOS · PERSISTENCIA LOCAL</p>
+            <p>📊 8 GRÁFICOS INTERACTIVOS · PERSISTENCIA LOCAL 24h</p>
             <p>🍌🐵🍌🐵🍌🐵🍌🐵🍌🐵🍌🐵</p>
             <button id="closeModal">🍌✨ CERRAR ✨🍌</button>
         `;
