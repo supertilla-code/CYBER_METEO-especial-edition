@@ -9,6 +9,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <style>
+        /* ========== TU CSS ORIGINAL COMPLETO ========== */
         * {
             margin: 0;
             padding: 0;
@@ -258,7 +259,7 @@
 <canvas id="easterEggCanvas"></canvas>
 
 <div class="dashboard" id="dashboardContent">
-    <div class="hero" id="easterEggTrigger">
+    <div class="hero">
         <div class="title-section">
             <h1>⚡ CYBER_METEO ⚡</h1>
             <p>
@@ -419,7 +420,7 @@
 
 <script>
     // ============================================================
-    // 🐵🍌 MATRIX RAIN MODIFICADA: MONO + PLÁTANO + SUPERTILLA@DEV
+    // MATRIX RAIN MODIFICADA: MONOS + PLÁTANOS + SUPERTILLA@DEV
     // ============================================================
     const canvasMat = document.getElementById('matrixCanvas');
     let ctxMat = canvasMat.getContext('2d');
@@ -431,7 +432,6 @@
     resizeMatrixCanvas();
     window.addEventListener('resize', resizeMatrixCanvas);
     
-    // CARACTERES PARA LA MATRIX: monos, plátanos y SUPERTILLA@DEV
     const matrixChars = ["🐵", "🍌", "S", "U", "P", "E", "R", "T", "I", "L", "L", "A", "@", "D", "E", "V"];
     let matrixFontSize = Math.max(16, Math.floor(window.innerWidth / 45));
     let matrixColumns = Math.floor(canvasMat.width / matrixFontSize);
@@ -448,7 +448,6 @@
     function drawMatrixRain() {
         ctxMat.fillStyle = "rgba(10, 15, 26, 0.05)";
         ctxMat.fillRect(0, 0, canvasMat.width, canvasMat.height);
-        ctxMat.fillStyle = "#0ff";
         ctxMat.font = matrixFontSize + "px monospace";
         
         for (let i = 0; i < matrixDrops.length; i++) {
@@ -474,88 +473,7 @@
     });
     
     // ============================================================
-    // 🍌🐵 EASTER EGG: 2 CLICS = MONOS, 3 CLICS = PLÁTANOS
-    // ============================================================
-    let clickCount = 0;
-    let clickTimeout = null;
-    
-    function triggerMonkeyRainEgg() {
-        for (let i = 0; i < 60; i++) {
-            const monkey = document.createElement('div');
-            monkey.className = 'monkey-burst';
-            monkey.textContent = ['🐵', '🙈', '🙉', '🙊', '🐒'][Math.floor(Math.random() * 5)];
-            monkey.style.left = Math.random() * 100 + '%';
-            monkey.style.top = Math.random() * 100 + '%';
-            monkey.style.fontSize = (24 + Math.random() * 40) + 'px';
-            document.body.appendChild(monkey);
-            setTimeout(() => monkey.remove(), 800);
-        }
-        const msg = document.createElement('div');
-        msg.textContent = '🐵 ¡LLUVIA DE MONOS! ¡SUPERTILLA@DEV! 🐵';
-        msg.style.position = 'fixed';
-        msg.style.bottom = '20%';
-        msg.style.left = '50%';
-        msg.style.transform = 'translateX(-50%)';
-        msg.style.background = '#0ff';
-        msg.style.color = '#000';
-        msg.style.padding = '12px 24px';
-        msg.style.borderRadius = '40px';
-        msg.style.fontFamily = 'Orbitron';
-        msg.style.fontWeight = 'bold';
-        msg.style.zIndex = '10001';
-        msg.style.boxShadow = '0 0 30px #0ff';
-        document.body.appendChild(msg);
-        setTimeout(() => msg.remove(), 2000);
-    }
-    
-    function triggerBananaBlastEgg() {
-        for (let i = 0; i < 100; i++) {
-            const banana = document.createElement('div');
-            banana.className = 'banana-burst';
-            banana.textContent = ['🍌', '🍌💥', '💥🍌', '🍌✨'][Math.floor(Math.random() * 4)];
-            banana.style.left = Math.random() * 100 + '%';
-            banana.style.top = Math.random() * 100 + '%';
-            banana.style.fontSize = (20 + Math.random() * 45) + 'px';
-            document.body.appendChild(banana);
-            setTimeout(() => banana.remove(), 800);
-        }
-        const msg = document.createElement('div');
-        msg.textContent = '🍌💥 ¡EXPLOSIÓN DE PLÁTANOS! ¡SUPERTILLA@DEV! 💥🍌';
-        msg.style.position = 'fixed';
-        msg.style.bottom = '20%';
-        msg.style.left = '50%';
-        msg.style.transform = 'translateX(-50%)';
-        msg.style.background = '#ffaa00';
-        msg.style.color = '#000';
-        msg.style.padding = '12px 24px';
-        msg.style.borderRadius = '40px';
-        msg.style.fontFamily = 'Orbitron';
-        msg.style.fontWeight = 'bold';
-        msg.style.zIndex = '10001';
-        msg.style.boxShadow = '0 0 30px #fa0';
-        document.body.appendChild(msg);
-        setTimeout(() => msg.remove(), 2000);
-    }
-    
-    function handleEasterEgg(e) {
-        e.stopPropagation();
-        clickCount++;
-        if (clickTimeout) clearTimeout(clickTimeout);
-        clickTimeout = setTimeout(() => { clickCount = 0; }, 800);
-        if (clickCount === 2) {
-            triggerMonkeyRainEgg();
-            clickCount = 0;
-        } else if (clickCount === 3) {
-            triggerBananaBlastEgg();
-            clickCount = 0;
-        }
-    }
-    
-    const easterTrigger = document.getElementById('easterEggTrigger');
-    if (easterTrigger) easterTrigger.addEventListener('click', handleEasterEgg);
-    
-    // ============================================================
-    // 📡 OPENWEATHER API REAL + PERSISTENCIA LOCAL
+    // OPENWEATHER API REAL
     // ============================================================
     const API_KEY = '75dabad84e5407033cd4c87ffc4f5762';
     const BASE_URL = 'https://api.openweathermap.org/data/2.5/weather';
@@ -575,42 +493,8 @@
         palmas: { nombre: "Las Palmas", lat: 28.124, lon: -15.430 }
     };
     
-    let historialData = {
-        waveHeights: [], windSpeeds: [], pressures: [], waterTemps: [], timestamps: []
-    };
-    
-    function loadHistory() {
-        const saved = localStorage.getItem('cybermeteo_historial');
-        if (saved) {
-            try {
-                historialData = JSON.parse(saved);
-            } catch(e) {}
-        }
-        if (!historialData.waveHeights) historialData = { waveHeights: [], windSpeeds: [], pressures: [], waterTemps: [], timestamps: [] };
-    }
-    
-    function saveHistory() {
-        localStorage.setItem('cybermeteo_historial', JSON.stringify(historialData));
-    }
-    
-    function addToHistory(wave, wind, pressure, temp) {
-        const now = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-        historialData.waveHeights.push(parseFloat(wave));
-        historialData.windSpeeds.push(parseFloat(wind));
-        historialData.pressures.push(parseFloat(pressure));
-        historialData.waterTemps.push(parseFloat(temp));
-        historialData.timestamps.push(now);
-        
-        const max = 24;
-        if (historialData.waveHeights.length > max) historialData.waveHeights.shift();
-        if (historialData.windSpeeds.length > max) historialData.windSpeeds.shift();
-        if (historialData.pressures.length > max) historialData.pressures.shift();
-        if (historialData.waterTemps.length > max) historialData.waterTemps.shift();
-        if (historialData.timestamps.length > max) historialData.timestamps.shift();
-        
-        saveHistory();
-        updateChartsFromHistory();
-    }
+    let currentPort = "puerto_sherry";
+    let currentData = null;
     
     async function fetchRealData(portKey) {
         const coord = PUERTOS_COORD[portKey];
@@ -650,8 +534,6 @@
             else if (w > 28) sportMsg = "🪁 KITESURF EXTREMO, SOLO EXPERTOS";
             else sportMsg = "🌊 CONDICIONES ACEPTABLES PARA DEPORTES ACUÁTICOS";
             
-            addToHistory(waveHeight, windSpeedKmh, pressure, waterTemp);
-            
             return {
                 waveSignificant: waveHeight,
                 waveMax: waveMax,
@@ -685,9 +567,6 @@
         }
     }
     
-    let currentPort = "puerto_sherry";
-    let currentData = null;
-    
     async function updateAllData() {
         const data = await fetchRealData(currentPort);
         currentData = data;
@@ -712,7 +591,6 @@
             
             document.getElementById('lastUpdateTime').innerHTML = `🕒 ÚLTIMA ACTUALIZACIÓN: ${data.timestamp}`;
             
-            // Alertas
             let waveAlert = parseFloat(data.waveSignificant) > 2.5 ? "⚠️ OLEAJE FUERTE, PRECAUCIÓN" : "🌊 OLEAJE MODERADO - SEGURO";
             let windAlert = parseFloat(data.windMean) > 35 ? "⚠️ VIENTO FUERTE" : "🌬️ VIENTO MODERADO";
             document.getElementById('alertWave').innerHTML = `🌊 ALERTA OLEAJE: ${waveAlert}`;
@@ -723,19 +601,12 @@
             document.getElementById('swimAdvice').innerHTML = swimAdvice;
             document.getElementById('navAdvice').innerHTML = navAdvice;
             
-            // Mareas y otros datos fijos
             document.getElementById('highTide1').innerHTML = "05:12 / 17:31";
             document.getElementById('lowTide1').innerHTML = "11:12 / 23:33";
             document.getElementById('tideCoef').innerHTML = "61";
             document.getElementById('moonPhase').innerHTML = "🌕 LUNA LLENA";
             document.getElementById('moonIllum').innerHTML = "96%";
         }
-    }
-    
-    function updateChartsFromHistory() {
-        // Aquí se actualizarían los 8 gráficos con los datos históricos
-        // (manteniendo la lógica original de tus gráficos)
-        console.log("Historial actualizado:", historialData.timestamps.length, "registros");
     }
     
     function shareWhatsApp() {
@@ -745,25 +616,60 @@
         window.open(`https://wa.me/?text=${mensaje}`, '_blank');
     }
     
-    // Eventos
-    document.getElementById('refreshBtn').addEventListener('click', () => updateAllData());
-    document.getElementById('whatsappBtn').addEventListener('click', shareWhatsApp);
-    document.getElementById('applyLocationBtn').addEventListener('click', () => {
-        currentPort = document.getElementById('locationSelect').value;
-        updateAllData();
-    });
+    // ============================================================
+    // EASTER EGG: AL CERRAR EL MODAL DE CRÉDITOS
+    // ============================================================
+    function triggerEasterEgg() {
+        // Lluvia de monos
+        for (let i = 0; i < 60; i++) {
+            const monkey = document.createElement('div');
+            monkey.className = 'monkey-burst';
+            monkey.textContent = ['🐵', '🙈', '🙉', '🙊', '🐒'][Math.floor(Math.random() * 5)];
+            monkey.style.left = Math.random() * 100 + '%';
+            monkey.style.top = Math.random() * 100 + '%';
+            monkey.style.fontSize = (24 + Math.random() * 40) + 'px';
+            document.body.appendChild(monkey);
+            setTimeout(() => monkey.remove(), 800);
+        }
+        
+        // Explosión de plátanos
+        for (let i = 0; i < 80; i++) {
+            const banana = document.createElement('div');
+            banana.className = 'banana-burst';
+            banana.textContent = ['🍌', '🍌💥', '💥🍌', '🍌✨'][Math.floor(Math.random() * 4)];
+            banana.style.left = Math.random() * 100 + '%';
+            banana.style.top = Math.random() * 100 + '%';
+            banana.style.fontSize = (20 + Math.random() * 45) + 'px';
+            document.body.appendChild(banana);
+            setTimeout(() => banana.remove(), 800);
+        }
+        
+        // Mensaje especial
+        const msg = document.createElement('div');
+        msg.textContent = '🍌✨ EDICIÓN ESPECIAL PLÁTANO SERGIO PEPINELLI ✨🍌\n\n🍌 PLÁTANO 🍌';
+        msg.style.position = 'fixed';
+        msg.style.bottom = '30%';
+        msg.style.left = '50%';
+        msg.style.transform = 'translateX(-50%)';
+        msg.style.background = 'linear-gradient(135deg, #ffaa00, #ff6600)';
+        msg.style.color = '#000';
+        msg.style.padding = '20px 40px';
+        msg.style.borderRadius = '60px';
+        msg.style.fontFamily = 'Orbitron';
+        msg.style.fontWeight = 'bold';
+        msg.style.fontSize = '1.2rem';
+        msg.style.textAlign = 'center';
+        msg.style.zIndex = '10001';
+        msg.style.boxShadow = '0 0 50px #ffaa00';
+        msg.style.border = '2px solid #ff0';
+        msg.style.whiteSpace = 'pre-line';
+        document.body.appendChild(msg);
+        setTimeout(() => msg.remove(), 4000);
+    }
     
-    // Inicialización
-    loadHistory();
-    updateAllData();
-    setInterval(() => updateAllData(), 15 * 60 * 1000);
-    
-    // PDF y Créditos (tus funciones originales)
-    document.getElementById('pdfBtn').addEventListener('click', () => {
-        const element = document.getElementById('dashboardContent');
-        html2pdf().from(element).save('cyber_meteo.pdf');
-    });
-    
+    // ============================================================
+    // MODAL DE CRÉDITOS CON EASTER EGG AL CERRAR
+    // ============================================================
     document.getElementById('creditsBtn').addEventListener('click', () => {
         const modal = document.createElement('div');
         modal.className = 'credits-modal';
@@ -774,11 +680,33 @@
             <p>🤖 ASISTENCIA: DeepSeek AI</p>
             <p>🌊 DATOS EN TIEMPO REAL: OpenWeather API</p>
             <p>📊 8 GRÁFICOS INTERACTIVOS · PERSISTENCIA LOCAL</p>
-            <button id="closeModal">🔥 CERRAR 🔥</button>
+            <button id="closeModal">🍌 CERRAR 🍌</button>
         `;
         document.body.appendChild(modal);
-        document.getElementById('closeModal').addEventListener('click', () => modal.remove());
+        
+        const closeBtn = document.getElementById('closeModal');
+        closeBtn.addEventListener('click', () => {
+            modal.remove();
+            triggerEasterEgg();  // ← EASTER EGG AL CERRAR
+        });
     });
+    
+    // Eventos
+    document.getElementById('refreshBtn').addEventListener('click', () => updateAllData());
+    document.getElementById('whatsappBtn').addEventListener('click', shareWhatsApp);
+    document.getElementById('applyLocationBtn').addEventListener('click', () => {
+        currentPort = document.getElementById('locationSelect').value;
+        updateAllData();
+    });
+    
+    document.getElementById('pdfBtn').addEventListener('click', () => {
+        const element = document.getElementById('dashboardContent');
+        html2pdf().from(element).save('cyber_meteo.pdf');
+    });
+    
+    // Inicialización
+    updateAllData();
+    setInterval(() => updateAllData(), 15 * 60 * 1000);
 </script>
 </body>
 </html>
