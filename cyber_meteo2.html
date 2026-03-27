@@ -2,27 +2,96 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
-    <meta name="theme-color" content="#0a0f1a">
-    <title>⚡ CYBER_METEO ⚡ | Estado del Mar · Todos los Puertos</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+    <meta name="theme-color" content="#00ff41">
+    <title>⚡CYBER_METEO⚡ 🏄 Water-Sport | ESTADO DEL MAR · SISTEMA NEXUS</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Share+Tech+Mono&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+
     <style>
-        * {
-            margin: 0;
-            padding: 0;
+        /* ============================================
+           CYBER_METEO - WATER-SPORT EDITION
+           ESTRUCTURA ORIGINAL MANTENIDA
+           ============================================ */
+        :root {
+            --matrix:     #00ff41;
+            --cyan:       #00ffff;
+            --magenta:    #ff00ff;
+            --neon-pink:  #ff3366;
+            --deep-cyan:  #00ccff;
+            --purple:     #aa00ff;
+            --gold:       #ffaa33;
+            --bg-dark:    #050508;
+            --bg-darker:  #030307;
+            --bg-card:    #0a0a12;
+            --warning:    #ffcc00;
+            --danger:     #ff3366;
+            --glow-matrix: 0 0 12px rgba(0,255,65,0.5);
+            --glow-cyan:   0 0 12px rgba(0,255,255,0.5);
+            --glow-magenta: 0 0 12px rgba(255,0,255,0.5);
+            --glow-gold:    0 0 12px rgba(255,170,51,0.5);
+            --grid:       1px solid rgba(0,255,255,0.1);
+            --transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        * { 
+            margin: 0; 
+            padding: 0; 
             box-sizing: border-box;
             -webkit-tap-highlight-color: transparent;
         }
 
-        body {
-            background: radial-gradient(circle at 20% 30%, #0a0f1a, #03060c);
-            font-family: 'Orbitron', 'Share Tech Mono', monospace;
-            padding: 12px;
-            color: #0ff;
-            position: relative;
+        html, body {
+            width: 100%;
+            max-width: 100%;
             overflow-x: hidden;
-            min-height: 100vh;
+            font-family: 'Rajdhani', sans-serif;
+            background: var(--bg-dark);
+            color: var(--cyan);
+            background-image: 
+                radial-gradient(circle at 20% 30%, rgba(0,255,255,0.03) 0%, transparent 60%),
+                radial-gradient(circle at 80% 70%, rgba(255,0,255,0.03) 0%, transparent 60%),
+                linear-gradient(var(--grid) 1px, transparent 1px),
+                linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+            background-size: 100% 100%, 100% 100%, 35px 35px, 35px 35px;
+            animation: gridScroll 20s linear infinite;
+        }
+
+        @keyframes gridScroll {
+            from { background-position: 0 0, 0 0, 0 0, 0 0; }
+            to { background-position: 0 0, 0 0, 35px 35px, 35px 35px; }
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 50% 50%, transparent 0%, rgba(0,0,0,0.3) 100%);
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .dashboard {
+            max-width: 100%;
+            margin: 0 auto;
+            width: 100%;
+            position: relative;
+            z-index: 3;
+            padding: 8px;
+        }
+
+        @media (min-width: 768px) {
+            .dashboard {
+                max-width: 1800px;
+                padding: 16px;
+            }
         }
 
         #matrixCanvas, #easterEggCanvas {
@@ -33,484 +102,980 @@
             height: 100%;
             z-index: 0;
             pointer-events: none;
-            opacity: 0.35;
-        }
-        #easterEggCanvas {
-            z-index: 9998;
-            opacity: 0;
-            transition: opacity 0.2s;
-        }
-        .easter-active #easterEggCanvas {
-            opacity: 0.95;
-        }
-
-        .dashboard {
-            max-width: 1600px;
-            margin: 0 auto;
-            position: relative;
-            z-index: 2;
-        }
-
-        /* EFECTO GLOW MÍNIMO ARCOÍRIS GIRATORIO */
-        @keyframes rainbowGlow {
-            0% { box-shadow: 0 0 3px #ff0000, 0 0 5px #ff0000, inset 0 0 2px #ff0000; border-color: #ff0000; }
-            14% { box-shadow: 0 0 3px #ff7f00, 0 0 5px #ff7f00, inset 0 0 2px #ff7f00; border-color: #ff7f00; }
-            28% { box-shadow: 0 0 3px #ffff00, 0 0 5px #ffff00, inset 0 0 2px #ffff00; border-color: #ffff00; }
-            42% { box-shadow: 0 0 3px #00ff00, 0 0 5px #00ff00, inset 0 0 2px #00ff00; border-color: #00ff00; }
-            57% { box-shadow: 0 0 3px #00ffff, 0 0 5px #00ffff, inset 0 0 2px #00ffff; border-color: #00ffff; }
-            71% { box-shadow: 0 0 3px #0000ff, 0 0 5px #0000ff, inset 0 0 2px #0000ff; border-color: #0000ff; }
-            85% { box-shadow: 0 0 3px #8b00ff, 0 0 5px #8b00ff, inset 0 0 2px #8b00ff; border-color: #8b00ff; }
-            100% { box-shadow: 0 0 3px #ff0000, 0 0 5px #ff0000, inset 0 0 2px #ff0000; border-color: #ff0000; }
-        }
-
-        @keyframes borderGlow {
-            0% { box-shadow: 0 0 3px rgba(0, 255, 255, 0.3), inset 0 0 3px rgba(0, 255, 255, 0.1); }
-            100% { box-shadow: 0 0 8px rgba(0, 255, 255, 0.6), inset 0 0 5px rgba(0, 255, 255, 0.2); }
         }
         
-        @keyframes float {
-            0% { transform: translateY(0px); }
-            100% { transform: translateY(-3px); }
-        }
+        #matrixCanvas { opacity: 0.45; }
+        #easterEggCanvas { z-index: 9998; opacity: 0; transition: opacity 0.3s; }
 
-        .hero, .card, .location-selector, .btn, .badge {
-            animation: rainbowGlow 8s infinite linear, float 3s infinite alternate;
-        }
-
+        /* HEADER CON EFECTO GLASS MEJORADO */
         .hero {
+            background: rgba(5,5,8,0.95);
+            border-bottom: 2px solid var(--cyan);
+            padding: 16px 20px;
+            border-radius: 24px 24px 0 0;
+            backdrop-filter: blur(8px);
             display: flex;
             flex-direction: column;
-            align-items: stretch;
-            gap: 12px;
-            background: rgba(0, 20, 30, 0.7);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(0, 255, 255, 0.4);
-            border-radius: 20px;
-            padding: 16px;
+            align-items: center;
+            gap: 16px;
             margin-bottom: 16px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(0,255,255,0.08), transparent 70%);
+            animation: rotateGlow 15s linear infinite;
+            pointer-events: none;
+        }
+
+        @keyframes rotateGlow {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @media (min-width: 600px) {
+            .hero {
+                flex-direction: row;
+                justify-content: space-between;
+            }
+        }
+
+        .title-section {
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        @media (min-width: 600px) {
+            .title-section {
+                text-align: left;
+            }
         }
 
         .title-section h1 {
-            font-size: 1.5rem;
-            font-weight: 800;
-            background: linear-gradient(135deg, #0ff, #f0f, #ff0, #0ff);
-            background-clip: text;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.3rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--matrix), var(--cyan), var(--magenta), var(--gold));
             -webkit-background-clip: text;
-            color: transparent;
-            text-align: center;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
             letter-spacing: 2px;
-            text-shadow: 0 0 5px rgba(0,255,255,0.3);
+            animation: titlePulse 2s ease-in-out infinite;
         }
 
-        .title-section p {
+        @keyframes titlePulse {
+            0%, 100% { filter: drop-shadow(0 0 5px var(--cyan)); }
+            50% { filter: drop-shadow(0 0 15px var(--magenta)); }
+        }
+
+        .badge-container {
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
             gap: 8px;
-            margin-top: 6px;
+            margin-top: 8px;
+        }
+
+        @media (min-width: 600px) {
+            .badge-container {
+                justify-content: flex-start;
+            }
         }
 
         .badge {
-            background: rgba(0, 255, 255, 0.2);
-            border: 1px solid #0ff;
-            padding: 8px 14px;
+            background: rgba(0,255,255,0.1);
+            border: 1px solid var(--cyan);
+            padding: 5px 12px;
             border-radius: 30px;
-            font-size: 0.7rem;
+            font-size: 0.6rem;
             font-family: 'Share Tech Mono', monospace;
-            cursor: pointer;
-            transition: all 0.2s;
+            color: var(--cyan);
+            transition: all 0.3s;
         }
 
-        .location-selector {
-            background: rgba(0, 255, 255, 0.1);
-            border: 1px solid #0ff;
-            border-radius: 40px;
-            padding: 10px 16px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            flex-wrap: wrap;
-            justify-content: center;
-            margin-bottom: 16px;
-        }
-        .location-selector select {
-            background: #0a0f1a;
-            color: #0ff;
-            border: 1px solid #0ff;
-            border-radius: 30px;
-            padding: 10px 20px;
-            font-family: 'Orbitron', monospace;
-            font-size: 0.85rem;
-            cursor: pointer;
-            min-width: 220px;
-        }
-        .location-selector button {
-            background: linear-gradient(135deg, #0ff1, #f0f1);
-            border: 1px solid #0ff;
-            color: #0ff;
-            padding: 10px 24px;
-            border-radius: 30px;
-            font-weight: bold;
-            cursor: pointer;
-            font-family: 'Orbitron';
+        .badge:hover {
+            border-color: var(--magenta);
+            box-shadow: var(--glow-magenta);
+            transform: translateY(-1px);
         }
 
         .action-buttons {
             display: flex;
-            gap: 12px;
-            justify-content: center;
+            gap: 10px;
             flex-wrap: wrap;
+            justify-content: center;
+            z-index: 1;
         }
 
         .btn {
-            background: linear-gradient(135deg, #0ff1, #f0f1);
-            border: 2px solid #0ff;
-            color: #0ff;
-            padding: 12px 20px;
-            border-radius: 50px;
+            background: rgba(0,255,255,0.1);
+            border: 1px solid var(--cyan);
+            color: var(--cyan);
+            padding: 10px 18px;
+            border-radius: 40px;
             font-weight: bold;
             font-family: 'Orbitron', monospace;
-            font-size: 0.85rem;
+            font-size: 0.7rem;
             cursor: pointer;
-            transition: all 0.2s;
-            min-width: 110px;
-            text-align: center;
-        }
-        .btn:active { transform: scale(0.96); }
-        .btn-wa { background: linear-gradient(135deg, #25D36630, #128C7E30); border-color: #25D366; color: #25D366; }
-        .btn-info { background: linear-gradient(135deg, #ff00ff30, #ff660030); border-color: #ff00ff; color: #ff00ff; font-size: 0.75rem; }
-
-        @media (min-width: 768px) {
-            .btn { padding: 12px 24px; font-size: 0.85rem; }
-            .hero { flex-direction: row; align-items: center; justify-content: space-between; }
-            .title-section h1 { font-size: 1.6rem; text-align: left; }
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            position: relative;
+            overflow: hidden;
         }
 
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0,255,255,0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn:hover {
+            border-color: var(--magenta);
+            box-shadow: var(--glow-magenta);
+            transform: translateY(-2px);
+        }
+
+        .btn:active {
+            transform: scale(0.96);
+        }
+
+        /* SELECTOR DE UBICACIÓN */
+        .location-selector {
+            background: rgba(17,17,23,0.9);
+            border: 1px solid var(--cyan);
+            border-radius: 60px;
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-bottom: 20px;
+            backdrop-filter: blur(8px);
+            transition: all 0.3s;
+        }
+
+        .location-selector:hover {
+            border-color: var(--magenta);
+            box-shadow: var(--glow-cyan);
+        }
+
+        .location-selector select {
+            background: var(--bg-darker);
+            color: var(--cyan);
+            border: 1px solid var(--cyan);
+            border-radius: 40px;
+            padding: 10px 20px;
+            font-family: 'Orbitron', monospace;
+            font-size: 0.75rem;
+            cursor: pointer;
+            min-width: 200px;
+            transition: all 0.3s;
+        }
+
+        .location-selector select:focus {
+            outline: none;
+            border-color: var(--magenta);
+            box-shadow: var(--glow-magenta);
+        }
+
+        .location-selector button {
+            background: rgba(0,255,255,0.1);
+            border: 1px solid var(--cyan);
+            color: var(--cyan);
+            padding: 10px 20px;
+            border-radius: 40px;
+            font-family: 'Orbitron', monospace;
+            font-size: 0.7rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .location-selector button:hover {
+            border-color: var(--magenta);
+            box-shadow: var(--glow-magenta);
+            transform: translateY(-1px);
+        }
+
+        /* CARDS CON EFECTOS MEJORADOS */
         .grid {
             display: grid;
             grid-template-columns: 1fr;
-            gap: 14px;
-            margin-bottom: 14px;
+            gap: 16px;
+            margin-bottom: 16px;
         }
+        
         @media (min-width: 640px) { .grid { grid-template-columns: repeat(2, 1fr); } }
         @media (min-width: 1024px) { .grid { grid-template-columns: repeat(3, 1fr); } }
         @media (min-width: 1400px) { .grid { grid-template-columns: repeat(4, 1fr); } }
 
         .card {
-            background: rgba(0, 20, 30, 0.7);
-            backdrop-filter: blur(12px);
+            background: var(--bg-card);
+            border: 1px solid var(--cyan);
             border-radius: 20px;
-            padding: 14px;
-            border: 1px solid rgba(0, 255, 255, 0.5);
-            transition: all 0.2s;
+            padding: 16px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0,255,255,0.08), transparent);
+            transition: left 0.5s;
+        }
+
+        .card:hover::before {
+            left: 100%;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            border-color: var(--magenta);
+            box-shadow: 0 0 20px rgba(0,255,255,0.3), 0 0 10px rgba(255,0,255,0.2);
         }
 
         .card-header {
             display: flex;
             align-items: center;
-            gap: 8px;
-            border-bottom: 2px solid #0ff;
-            padding-bottom: 8px;
-            margin-bottom: 12px;
+            gap: 10px;
+            border-bottom: 2px solid var(--cyan);
+            padding-bottom: 10px;
+            margin-bottom: 14px;
+            position: relative;
+            z-index: 1;
         }
+        
         .card-header h2 {
-            font-size: 0.95rem;
-            font-weight: 700;
-            color: #0ff;
-            text-shadow: 0 0 3px #0ff;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.8rem;
+            font-weight: 800;
+            color: var(--cyan);
+            text-shadow: 0 0 5px var(--cyan);
+            letter-spacing: 1.5px;
+        }
+        
+        .card-header span {
+            font-size: 1.2rem;
+            filter: drop-shadow(0 0 4px var(--magenta));
+            animation: iconFloat 2s ease-in-out infinite;
         }
 
-        .chart-container { height: 150px; margin: 10px 0; }
-        .data-row { display: flex; justify-content: space-between; margin: 6px 0; font-family: 'Share Tech Mono', monospace; border-bottom: 1px dashed rgba(0, 255, 255, 0.2); padding: 5px 0; font-size: 0.7rem; }
-        .wave-box { background: rgba(0, 255, 255, 0.1); border-radius: 16px; padding: 10px; text-align: center; border: 1px solid #0ff; margin: 8px 0; }
-        .warning { background: rgba(255, 0, 255, 0.15); border-left: 3px solid #f0f; padding: 8px; border-radius: 10px; margin-top: 8px; font-size: 0.65rem; }
-        .gauge { background: #0a0f1a; border-radius: 20px; height: 6px; margin: 8px 0; overflow: hidden; }
-        .gauge-fill { height: 100%; background: linear-gradient(90deg, #0ff, #f0f); width: 0%; border-radius: 20px; transition: width 0.3s; }
-        .value-big { font-size: 1rem; font-weight: bold; color: #ff66ff; text-shadow: 0 0 8px #ff66ff; }
-        .tide-table { width: 100%; border-collapse: collapse; font-size: 0.65rem; }
-        .tide-table td, .tide-table th { padding: 5px 3px; border-bottom: 1px solid #0ff3; color: #0ff; }
+        @keyframes iconFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-2px); }
+        }
 
-        footer { text-align: center; margin-top: 20px; padding-top: 16px; border-top: 1px solid #0ff; font-size: 0.6rem; }
-        .last-update { text-align: right; font-size: 0.6rem; margin-bottom: 8px; }
+        /* DATOS CON EFECTO GLOW */
+        .data-row {
+            display: flex;
+            justify-content: space-between;
+            margin: 8px 0;
+            font-family: 'Share Tech Mono', monospace;
+            border-bottom: 1px dashed rgba(0, 255, 255, 0.2);
+            padding: 6px 0;
+            font-size: 0.7rem;
+            color: #9ca3af;
+            transition: all 0.2s;
+        }
+
+        .data-row:hover {
+            border-bottom-color: var(--cyan);
+            padding-left: 5px;
+        }
         
-        .info-modal {
+        .data-row span:last-child {
+            background: linear-gradient(135deg, var(--cyan), var(--matrix));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: bold;
+            font-size: 0.75rem;
+        }
+        
+        .wave-box {
+            background: rgba(0,255,255,0.05);
+            border-radius: 16px;
+            padding: 12px;
+            text-align: center;
+            border: 1px solid var(--cyan);
+            margin: 12px 0;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+
+        .wave-box::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: -100%;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, var(--cyan), var(--magenta), var(--matrix));
+            animation: scanLine 3s linear infinite;
+        }
+
+        @keyframes scanLine {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        .wave-box:hover {
+            border-color: var(--magenta);
+            box-shadow: var(--glow-magenta);
+        }
+        
+        .value-big {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.3rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--cyan), var(--magenta), var(--gold));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 8px rgba(0,255,255,0.5);
+            animation: valuePulse 1.5s ease-in-out infinite;
+        }
+
+        @keyframes valuePulse {
+            0%, 100% { filter: brightness(1); }
+            50% { filter: brightness(1.1); text-shadow: 0 0 12px var(--cyan); }
+        }
+        
+        .warning {
+            background: rgba(255,0,255,0.08);
+            border-left: 4px solid var(--magenta);
+            padding: 10px;
+            border-radius: 12px;
+            margin-top: 10px;
+            font-size: 0.65rem;
+            font-family: 'Share Tech Mono', monospace;
+            color: var(--magenta);
+            transition: all 0.3s;
+        }
+
+        .warning:hover {
+            border-left-width: 6px;
+            background: rgba(255,0,255,0.12);
+        }
+        
+        .gauge {
+            background: rgba(0, 255, 255, 0.1);
+            border-radius: 20px;
+            height: 6px;
+            margin: 10px 0;
+            overflow: hidden;
+        }
+        
+        .gauge-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--cyan), var(--magenta), var(--gold), var(--matrix));
+            width: 0%;
+            border-radius: 20px;
+            transition: width 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            animation: gaugeGlow 1.5s ease-in-out infinite;
+        }
+
+        @keyframes gaugeGlow {
+            0%, 100% { filter: brightness(1); }
+            50% { filter: brightness(1.2); }
+        }
+        
+        .tide-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.6rem;
+            font-family: 'Share Tech Mono', monospace;
+        }
+        
+        .tide-table th, .tide-table td {
+            padding: 6px 4px;
+            border-bottom: 1px solid rgba(0, 255, 255, 0.2);
+            color: var(--cyan);
+            transition: all 0.2s;
+        }
+        
+        .tide-table tr:hover td {
+            color: var(--magenta);
+            text-shadow: 0 0 4px var(--magenta);
+        }
+        
+        .tide-table th {
+            color: var(--magenta);
+            font-weight: bold;
+        }
+        
+        .chart-container {
+            height: 140px;
+            margin: 12px 0;
+            position: relative;
+        }
+        
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 160px;
+            }
+        }
+
+        /* STATUS BAR */
+        .status-bar-cyber {
+            background: rgba(5,5,8,0.95);
+            border: 1px solid var(--cyan);
+            border-radius: 40px;
+            padding: 10px 20px;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+            backdrop-filter: blur(8px);
+            transition: all 0.3s;
+        }
+
+        .status-bar-cyber:hover {
+            border-color: var(--magenta);
+            box-shadow: var(--glow-cyan);
+        }
+
+        .system-status {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .pulse-green {
+            width: 12px;
+            height: 12px;
+            background: var(--matrix);
+            border-radius: 50%;
+            box-shadow: 0 0 8px var(--matrix);
+            animation: pulseRing 1.2s ease-in-out infinite;
+        }
+
+        @keyframes pulseRing {
+            0% { transform: scale(0.9); box-shadow: 0 0 0 0 rgba(0, 255, 65, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 8px rgba(0, 255, 65, 0); }
+            100% { transform: scale(0.9); box-shadow: 0 0 0 0 rgba(0, 255, 65, 0); }
+        }
+
+        .status-text {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.7rem;
+            font-weight: bold;
+            background: linear-gradient(135deg, var(--matrix), var(--cyan));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: 1px;
+        }
+
+        .last-update {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.6rem;
+            color: var(--magenta);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .last-update i {
+            color: var(--cyan);
+        }
+
+        @media (min-width: 480px) {
+            .status-text { font-size: 0.8rem; }
+            .last-update { font-size: 0.7rem; }
+        }
+
+        /* FOOTER */
+        footer {
+            background: #030307;
+            border-top: 1px solid var(--cyan);
+            padding: 20px;
+            text-align: center;
+            margin-top: 20px;
+            border-radius: 0 0 24px 24px;
+            transition: all 0.3s;
+        }
+
+        footer:hover {
+            box-shadow: 0 -5px 30px rgba(0,255,255,0.1);
+        }
+        
+        .dev-name-clickable {
+            cursor: pointer;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            border-radius: 40px;
+            background: rgba(0,255,255,0.1);
+        }
+        
+        .dev-name-clickable:hover {
+            transform: scale(1.02);
+            box-shadow: var(--glow-cyan);
+        }
+        
+        .dev-name-clickable:active {
+            transform: scale(0.98);
+        }
+        
+        footer div {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.55rem;
+            color: var(--cyan);
+            margin: 0.4rem 0;
+            line-height: 1.4;
+        }
+        
+        @media (min-width: 480px) {
+            footer div {
+                font-size: 0.6rem;
+            }
+        }
+
+        /* MODALES */
+        .info-modal, .credits-modal {
             position: fixed;
             top: 50%;
             left: 50%;
-            transform: translate(-50%, -50%);
-            background: rgba(0, 0, 0, 0.98);
-            border: 3px solid #ff00ff;
+            transform: translate(-50%, -50%) scale(0.95);
+            background: #050508;
+            border: 2px solid var(--cyan);
             border-radius: 30px;
             padding: 28px;
             z-index: 10010;
             text-align: center;
-            font-family: 'Orbitron';
+            font-family: 'Orbitron', monospace;
             backdrop-filter: blur(20px);
-            box-shadow: 0 0 100px #ff00ff, 0 0 50px #0ff;
-            min-width: 300px;
-            max-width: 90%;
-            animation: rainbowGlow 4s infinite linear;
-        }
-        .info-modal h2 { color: #ff00ff; font-size: 1.4rem; margin-bottom: 15px; text-shadow: 0 0 15px #ff00ff; }
-        .info-modal p { color: #0ff; margin: 10px 0; font-size: 0.85rem; text-shadow: 0 0 5px #0ff; }
-        .info-modal button { margin-top: 20px; padding: 10px 30px; background: #ff00ff; color: #000; border: none; border-radius: 40px; font-weight: bold; cursor: pointer; font-family: 'Orbitron'; box-shadow: 0 0 20px #ff00ff; }
-        
-        .credits-modal {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: rgba(0, 0, 0, 0.98);
-            border: 3px solid #ff00ff;
-            border-radius: 30px;
-            padding: 28px;
-            z-index: 10010;
-            text-align: center;
-            font-family: 'Orbitron';
-            backdrop-filter: blur(20px);
-            box-shadow: 0 0 100px #ff00ff, 0 0 50px #0ff;
+            box-shadow: 0 0 50px rgba(0,255,255,0.2);
             min-width: 280px;
             max-width: 90%;
-            animation: rainbowGlow 4s infinite linear;
+            animation: modalPop 0.3s ease-out forwards;
         }
-        .credits-modal h2 { color: #ff00ff; font-size: 1.4rem; margin-bottom: 15px; text-shadow: 0 0 15px #ff00ff; }
-        .credits-modal p { color: #0ff; margin: 10px 0; font-size: 0.85rem; text-shadow: 0 0 5px #0ff; }
-        .credits-modal button { margin-top: 20px; padding: 10px 30px; background: #ff00ff; color: #000; border: none; border-radius: 40px; font-weight: bold; cursor: pointer; font-family: 'Orbitron'; box-shadow: 0 0 20px #ff00ff; }
+
+        @keyframes modalPop {
+            to {
+                transform: translate(-50%, -50%) scale(1);
+            }
+        }
         
-        .monkey-burst, .banana-burst {
+        .info-modal h2, .credits-modal h2 {
+            background: linear-gradient(135deg, var(--cyan), var(--magenta), var(--gold));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-size: 1.2rem;
+            margin-bottom: 16px;
+        }
+        
+        .info-modal p, .credits-modal p {
+            color: var(--cyan);
+            margin: 8px 0;
+            font-size: 0.7rem;
+            font-family: 'Share Tech Mono', monospace;
+        }
+        
+        .info-modal button, .credits-modal button {
+            margin-top: 16px;
+            padding: 8px 24px;
+            background: var(--cyan);
+            color: var(--bg-darker);
+            border: none;
+            border-radius: 30px;
+            font-weight: bold;
+            cursor: pointer;
+            font-family: 'Orbitron', monospace;
+            font-size: 0.7rem;
+            transition: all 0.3s;
+        }
+        
+        .info-modal button:hover, .credits-modal button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px var(--cyan);
+        }
+
+        /* EASTER EGG */
+        .easter-message {
+            position: fixed;
+            bottom: 25%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #050508;
+            border: 2px solid var(--cyan);
+            border-radius: 30px;
+            padding: 16px 24px;
+            z-index: 10001;
+            text-align: center;
+            font-family: 'Orbitron', monospace;
+            backdrop-filter: blur(20px);
+            box-shadow: 0 0 40px rgba(0,255,255,0.2);
+            width: auto;
+            max-width: 85%;
+            animation: msgGlow 0.4s ease-out, msgFadeOut 3.5s ease-in forwards;
+            pointer-events: none;
+        }
+        
+        @keyframes msgGlow {
+            0% { opacity: 0; transform: translateX(-50%) scale(0.8); }
+            100% { opacity: 1; transform: translateX(-50%) scale(1); }
+        }
+        
+        @keyframes msgFadeOut {
+            0% { opacity: 1; }
+            70% { opacity: 1; }
+            100% { opacity: 0; visibility: hidden; }
+        }
+        
+        .easter-message .line1 {
+            font-size: 0.9rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--cyan), var(--magenta), var(--gold));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: block;
+            margin-bottom: 8px;
+        }
+        
+        .easter-message .line2 {
+            font-size: 0.8rem;
+            font-family: 'Share Tech Mono', monospace;
+            color: var(--matrix);
+            display: block;
+        }
+        
+        @media (max-width: 480px) {
+            .easter-message .line1 { font-size: 0.75rem; }
+            .easter-message .line2 { font-size: 0.65rem; }
+        }
+        
+        .banana-burst {
             position: fixed;
             pointer-events: none;
             z-index: 10001;
-            animation: fallDown 1s ease-out forwards;
-            font-size: 2rem;
-            filter: drop-shadow(0 0 8px #0ff);
+            animation: fallDown 0.9s ease-out forwards;
+            font-size: 1.8rem;
+            filter: drop-shadow(0 0 8px var(--cyan));
         }
+        
         @keyframes fallDown {
             0% { transform: translateY(-10vh) rotate(0deg); opacity: 1; }
             100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
         }
+        
+        ::-webkit-scrollbar { width: 5px; height: 5px; }
+        ::-webkit-scrollbar-track { background: var(--bg-darker); }
+        ::-webkit-scrollbar-thumb { background: var(--cyan); border-radius: 5px; }
+        
+        .fade-up {
+            animation: fadeUp 0.4s ease-out both;
+        }
+        
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(12px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        button, select, .btn, .badge, .dev-name-clickable {
+            touch-action: manipulation;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
+
 <canvas id="matrixCanvas"></canvas>
 <canvas id="easterEggCanvas"></canvas>
 
 <div class="dashboard" id="dashboardContent">
     <div class="hero">
         <div class="title-section">
-            <h1>⚡ CYBER_METEO ⚡</h1>
-            <p>
-                <span class="badge">🌊 ESTADO DEL MAR · 12 PUERTOS</span>
-                <span class="badge">🌬️ DATOS DE VIENTO · OLEAJE · MAREAS</span>
-                <span class="badge">📊 8 GRÁFICOS INTERACTIVOS</span>
-            </p>
+            <h1>⚡ CYBER_METEO ⚡ 🏄 Water-Sport</h1>
+            <div class="badge-container">
+                <span class="badge">🌊 12 PUERTOS ESTRATÉGICOS</span>
+                <span class="badge">🌬️ VIENTO · OLEAJE · CORRIENTES</span>
+                <span class="badge">📊 8 GRÁFICOS UNIFICADOS</span>
+                <span class="badge">🌙 MAREAS REALES</span>
+                <span class="badge">🏄 WATER-SPORT EDITION</span>
+            </div>
         </div>
         <div class="action-buttons">
-            <button class="btn" id="refreshBtn">🔄 ACTUALIZAR</button>
-            <button class="btn btn-wa" id="whatsappBtn">💬 COMPARTIR</button>
-            <button class="btn btn-info" id="infoBtn">ℹ️ INFO</button>
-            <button class="btn btn-credits" id="creditsBtn">⚡ CRÉDITOS ⚡</button>
+            <button class="btn" id="refreshBtn"><i class="fas fa-sync-alt fa-fw"></i> SYNC</button>
+            <button class="btn btn-wa" id="whatsappBtn"><i class="fab fa-whatsapp fa-fw"></i> SHARE</button>
+            <button class="btn btn-info" id="infoBtn"><i class="fas fa-info-circle fa-fw"></i> INFO</button>
+            <button class="btn" id="creditsBtn"><i class="fas fa-code fa-fw"></i> CREDITS</button>
         </div>
     </div>
 
     <div class="location-selector">
-        <span>📍 SELECCIONAR PUERTO:</span>
+        <span><i class="fas fa-satellite-dish"></i> SELECTOR DE PUERTO:</span>
         <select id="locationSelect">
             <option value="puerto_sherry">⚓ PUERTO SHERRY · EL PUERTO</option>
             <option value="cadiz">🌊 CÁDIZ · PUERTO AMERICA</option>
-            <option value="rota">🏖️ ROTA · PUERTO DEPORTIVO</option>
-            <option value="chipiona">🗼 CHIPIONA · PUERTO CRUZ DEL MAR</option>
-            <option value="sanlucar">🌅 SANLÚCAR · PUERTO BONANZA</option>
-            <option value="tarifa">🌬️ TARIFA · PUERTO DEPORTIVO</option>
-            <option value="algeciras">🚢 ALGECIRAS · PUERTO BAHÍA</option>
-            <option value="barbate">🐟 BARBATE · PUERTO PESQUERO</option>
-            <option value="conil">🏄 CONIL · PUERTO DEPORTIVO</option>
-            <option value="zahara">🌊 ZAHARA DE LOS ATUNES</option>
-            <option value="sotogrande">⛵ SOTOGRANDE · PUERTO</option>
-            <option value="palmas">🏝️ LAS PALMAS · PUERTO</option>
+            <option value="rota">🏖️ ROTA · BASE NAVAL</option>
+            <option value="chipiona">🗼 CHIPIONA · FARO</option>
+            <option value="sanlucar">🌅 SANLÚCAR · BONANZA</option>
+            <option value="tarifa">🌬️ TARIFA · ESTRECHO</option>
+            <option value="algeciras">🚢 ALGECIRAS · BAHÍA</option>
+            <option value="barbate">🐟 BARBATE · PESQUERO</option>
+            <option value="conil">🏄 CONIL · COSTA</option>
+            <option value="zahara">🌊 ZAHARA · ATUNES</option>
+            <option value="sotogrande">⛵ SOTOGRANDE · MARINA</option>
+            <option value="palmas">🏝️ LAS PALMAS · ATLÁNTICO</option>
         </select>
-        <button id="applyLocationBtn">🔮 APLICAR UBICACIÓN</button>
+        <button id="applyLocationBtn"><i class="fas fa-sync-alt"></i> ACTIVAR</button>
     </div>
 
-    <div class="last-update" id="lastUpdateTime">🕒 ÚLTIMA ACTUALIZACIÓN: --:--</div>
+    <div class="status-bar-cyber">
+        <div class="system-status">
+            <div class="pulse-green"></div>
+            <div class="status-text">🐵 CYBER_METEO 🐵 SYSTEM READY</div>
+        </div>
+        <div class="last-update" id="lastUpdateTime">
+            <i class="far fa-clock"></i> CYBER_METEO · UPD: --:--
+        </div>
+    </div>
 
-    <!-- FILA 1: PARÁMETROS PRINCIPALES MAR Y VIENTO -->
+    <!-- GRID PRINCIPAL -->
     <div class="grid">
-        <div class="card">
-            <div class="card-header"><span>🌊</span><h2>OLEAJE · ALTURAS</h2></div>
+        <div class="card fade-up">
+            <div class="card-header"><span><i class="fas fa-water"></i></span><h2>🌊 OLEAJE · MAR DE VIENTO</h2></div>
             <div class="wave-box">
-                <div>🌊 ALTURA SIGNIFICATIVA: <strong id="waveHeight" class="value-big">-- m</strong></div>
-                <div>📏 ALTURA MÁXIMA: <strong id="waveMax">-- m</strong></div>
-                <div>⏱️ PERÍODO PICO: <strong id="wavePeriod">-- s</strong></div>
-                <div>🧭 DIRECCIÓN OLA: <strong id="waveDir">--</strong></div>
-                <div>⚡ POTENCIA OLEAJE: <strong id="wavePower">-- kW/m</strong></div>
+                <div><i class="fas fa-chart-line"></i> ALTURA SIGNIFICATIVA: <strong id="waveHeight" class="value-big">-- m</strong></div>
+                <div><i class="fas fa-arrow-up"></i> ALTURA MÁXIMA (Hmax): <strong id="waveMax">-- m</strong></div>
+                <div><i class="fas fa-hourglass-half"></i> PERÍODO PICO (Tp): <strong id="wavePeriod">-- s</strong></div>
+                <div><i class="fas fa-compass"></i> DIRECCIÓN: <strong id="waveDir">--</strong></div>
+                <div><i class="fas fa-bolt"></i> POTENCIA OLEAJE: <strong id="wavePower">-- kW/m</strong></div>
             </div>
             <div class="gauge"><div class="gauge-fill" id="waveGauge" style="width:0%"></div></div>
+            <div class="data-row"><span>⚠️ CONSEJO:</span><span id="waveAdvice">--</span></div>
         </div>
-        <div class="card">
-            <div class="card-header"><span>🌊</span><h2>MAR DE FONDO · M.FONDO</h2></div>
-            <div class="data-row"><span>📏 ALTURA M.FONDO:</span><span id="swellHeight">-- m</span></div>
-            <div class="data-row"><span>⏱️ PERÍODO M.FONDO:</span><span id="swellPeriod">-- s</span></div>
-            <div class="data-row"><span>🧭 DIRECCIÓN M.FONDO:</span><span id="swellDir">--</span></div>
-            <div class="data-row"><span>🌊 ENERGÍA M.FONDO:</span><span id="swellEnergy">-- kJ/m²</span></div>
+
+        <div class="card fade-up">
+            <div class="card-header"><span><i class="fas fa-chart-simple"></i></span><h2>🌊 MAR DE FONDO · SWELL</h2></div>
+            <div class="data-row"><span>📏 ALTURA SWELL:</span><span id="swellHeight">-- m</span></div>
+            <div class="data-row"><span>⏱️ PERÍODO SWELL:</span><span id="swellPeriod">-- s</span></div>
+            <div class="data-row"><span>🧭 DIRECCIÓN SWELL:</span><span id="swellDir">--</span></div>
+            <div class="data-row"><span>⚡ ENERGÍA SWELL:</span><span id="swellEnergy">-- kJ/m²</span></div>
             <div class="data-row"><span>📊 CLASIFICACIÓN:</span><span id="swellClass">--</span></div>
+            <div class="warning" id="swellWarning">🌊 CALMA · IDEAL PARA NAVEGACIÓN</div>
         </div>
-        <div class="card">
-            <div class="card-header"><span>🌬️</span><h2>VIENTO MARINO</h2></div>
-            <div class="data-row"><span>💨 VIENTO MEDIO:</span><span class="value-big" id="windSpeed">-- km/h</span></div>
+
+        <div class="card fade-up">
+            <div class="card-header"><span><i class="fas fa-wind"></i></span><h2>🌬️ VIENTO MARINO · WIND</h2></div>
+            <div class="data-row"><span>💨 VELOCIDAD MEDIA:</span><span class="value-big" id="windSpeed">-- km/h</span></div>
             <div class="data-row"><span>⚡ RACHAS MÁXIMAS:</span><span id="windGust">-- km/h</span></div>
             <div class="data-row"><span>🧭 DIRECCIÓN:</span><span id="windDir">--</span></div>
             <div class="data-row"><span>🌬️ ESCALA BEAUFORT:</span><span id="beaufort">--</span></div>
             <div class="data-row"><span>📊 PRESIÓN ATMOSFÉRICA:</span><span id="pressure">-- hPa</span></div>
+            <div class="warning" id="windWarning">🌬️ CONDICIONES FAVORABLES</div>
         </div>
-        <div class="card">
-            <div class="card-header"><span>🌡️</span><h2>PROPIEDADES FÍSICAS</h2></div>
-            <div class="data-row"><span>🌡️ TEMPERATURA AGUA:</span><span id="seaTemp">--°C</span></div>
+
+        <div class="card fade-up">
+            <div class="card-header"><span><i class="fas fa-temperature-low"></i></span><h2>🌡️ PROPIEDADES FÍSICAS</h2></div>
+            <div class="data-row"><span>🌡️ TEMPERATURA SUPERFICIE:</span><span id="seaTemp">--°C</span></div>
             <div class="data-row"><span>🧂 SALINIDAD:</span><span id="salinity">-- PSU</span></div>
             <div class="data-row"><span>🌊 DENSIDAD:</span><span id="density">-- kg/m³</span></div>
             <div class="data-row"><span>💧 TRANSPARENCIA:</span><span id="clarity">-- m</span></div>
             <div class="data-row"><span>🌡️ TERMOCLINA:</span><span id="thermo">-- m</span></div>
+            <div class="data-row"><span>💨 OXÍGENO DISUELTO:</span><span id="oxygen">-- mg/L</span></div>
         </div>
     </div>
 
-    <!-- FILA 2: CORRIENTES + MAREAS + GRÁFICOS 1-2 -->
     <div class="grid">
-        <div class="card">
-            <div class="card-header"><span>🌊</span><h2>CORRIENTES MARINAS</h2></div>
-            <div class="data-row"><span>🌊 SUPERFICIAL:</span><span id="currentSurface">-- km/h</span></div>
+        <div class="card fade-up">
+            <div class="card-header"><span><i class="fas fa-water"></i></span><h2>🌊 CORRIENTES MARINAS</h2></div>
+            <div class="data-row"><span>🌊 CORRIENTE SUPERFICIAL:</span><span id="currentSurface">-- km/h</span></div>
             <div class="data-row"><span>🧭 DIRECCIÓN:</span><span id="currentDir">--</span></div>
-            <div class="data-row"><span>🌊 CORRIENTE FONDO:</span><span id="currentBottom">-- km/h</span></div>
+            <div class="data-row"><span>🌊 CORRIENTE DE FONDO:</span><span id="currentBottom">-- km/h</span></div>
             <div class="data-row"><span>🌀 TRANSPORTE EKMAN:</span><span id="ekman">-- m³/s</span></div>
-            <div class="data-row"><span>⚠️ RESACA (RIP):</span><span id="ripCurrent">--</span></div>
+            <div class="data-row"><span>⚠️ RIESGO RESACA:</span><span id="ripCurrent">--</span></div>
+            <div class="data-row"><span>🏊‍♂️ SEGURIDAD BAÑO:</span><span id="swimSafety">--</span></div>
         </div>
-        <div class="card">
-            <div class="card-header"><span>🌙</span><h2>MAREAS · PREDICCIÓN</h2></div>
+
+        <div class="card fade-up">
+            <div class="card-header"><span><i class="fas fa-moon"></i></span><h2>🌙 MAREAS · PREDICCIÓN REAL</h2></div>
             <table class="tide-table">
-                <thead>  <th>🐵 FECHA</th><th>🌕 PLEAMAR</th><th>🌑 BAJAMAR</th>  </thead>
-                <tbody>
-                    <tr><td>🐵 HOY</td><td id="highTide1">05:12 / 17:31</td><td id="lowTide1">11:12 / 23:33</td></tr>
-                    <tr><td>🐵 MAÑANA</td><td id="highTide2">05:55 / 18:15</td><td id="lowTide2">11:53</td></tr>
-                    <tr><td>🐵 +2 DÍAS</td><td id="highTide3">06:46 / 19:09</td><td id="lowTide3">00:20 / 12:41</td></tr>
+                <thead> <th>FECHA</th><th>🌕 PLEAMAR</th><th>🌑 BAJAMAR</th> </thead>
+                <tbody id="tideTableBody">
+                    <tr><td colspan="3">CARGANDO DATOS DE MAREAS...</td></tr>
                 </tbody>
             </table>
-            <div class="data-row"><span>📈 COEFICIENTE MAREA:</span><span id="tideCoef">61</span></div>
-            <div class="data-row"><span>🌕 FASE LUNAR:</span><span id="moonPhase">🌕 LUNA LLENA</span></div>
-            <div class="data-row"><span>💡 ILUMINACIÓN:</span><span id="moonIllum">96%</span></div>
+            <div class="data-row"><span>📈 COEFICIENTE MAREA:</span><span id="tideCoef">--</span></div>
+            <div class="data-row"><span>🌕 FASE LUNAR:</span><span id="moonPhase">--</span></div>
+            <div class="data-row"><span>💡 ILUMINACIÓN:</span><span id="moonIllum">--%</span></div>
+            <div class="warning" id="tideAdvice">🌊 DATOS DE MAREAS EN TIEMPO REAL</div>
         </div>
-        <div class="card">
-            <div class="card-header"><span>📈</span><h2>EVOLUCIÓN OLEAJE (24h)</h2></div>
+
+        <div class="card fade-up">
+            <div class="card-header"><span><i class="fas fa-chart-line"></i></span><h2>📈 EVOLUCIÓN OLEAJE 24h</h2></div>
             <div class="chart-container"><canvas id="waveForecastChart"></canvas></div>
+            <div class="data-row"><span>📊 TENDENCIA:</span><span id="waveTrend">📈 ESTABLE</span></div>
         </div>
-        <div class="card">
-            <div class="card-header"><span>🌊</span><h2>ESPECTRO DE ENERGÍA</h2></div>
+
+        <div class="card fade-up">
+            <div class="card-header"><span><i class="fas fa-chart-bar"></i></span><h2>📊 ESPECTRO ENERGÍA</h2></div>
             <div class="chart-container"><canvas id="waveSpectrumChart"></canvas></div>
+            <div class="data-row"><span>⚡ ENERGÍA TOTAL:</span><span id="totalEnergy">-- kJ/m²</span></div>
         </div>
     </div>
 
-    <!-- FILA 3: GRÁFICOS 3-4-5-6 -->
     <div class="grid">
-        <div class="card">
-            <div class="card-header"><span>🌊</span><h2>PREDICCIÓN MAREA (12h)</h2></div>
+        <div class="card fade-up">
+            <div class="card-header"><span><i class="fas fa-chart-line"></i></span><h2>🌊 PREDICCIÓN MAREA 12h</h2></div>
             <div class="chart-container"><canvas id="tideChart"></canvas></div>
         </div>
-        <div class="card">
-            <div class="card-header"><span>🌬️</span><h2>VIENTO · RACHAS (24h)</h2></div>
+
+        <div class="card fade-up">
+            <div class="card-header"><span><i class="fas fa-wind"></i></span><h2>🌬️ VIENTO · RACHAS 24h</h2></div>
             <div class="chart-container"><canvas id="windForecastChart"></canvas></div>
         </div>
-        <div class="card">
-            <div class="card-header"><span>🌡️</span><h2>TEMP. AGUA · SEMANAL</h2></div>
+
+        <div class="card fade-up">
+            <div class="card-header"><span><i class="fas fa-temperature-low"></i></span><h2>🌡️ TEMP. AGUA</h2></div>
             <div class="chart-container"><canvas id="tempChart"></canvas></div>
+            <div class="data-row"><span>📈 ANOMALÍA TÉRMICA:</span><span id="thermalAnomaly">--</span></div>
         </div>
-        <div class="card">
-            <div class="card-header"><span>📊</span><h2>POTENCIA OLEAJE (kW/m)</h2></div>
+
+        <div class="card fade-up">
+            <div class="card-header"><span><i class="fas fa-bolt"></i></span><h2>⚡ POTENCIA OLEAJE</h2></div>
             <div class="chart-container"><canvas id="powerChart"></canvas></div>
+            <div class="data-row"><span>🏄‍♂️ POTENCIAL SURF:</span><span id="surfPotential">--</span></div>
         </div>
     </div>
 
-    <!-- FILA 4: GRÁFICOS 7-8 + ALERTAS -->
     <div class="grid">
-        <div class="card">
-            <div class="card-header"><span>📈</span><h2>PRESIÓN ATMOSFÉRICA (hPa)</h2></div>
+        <div class="card fade-up">
+            <div class="card-header"><span><i class="fas fa-tachometer-alt"></i></span><h2>📊 PRESIÓN ATMOSFÉRICA</h2></div>
             <div class="chart-container"><canvas id="pressureChart"></canvas></div>
         </div>
-        <div class="card">
-            <div class="card-header"><span>🌊</span><h2>PERÍODO OLEAJE (segundos)</h2></div>
+
+        <div class="card fade-up">
+            <div class="card-header"><span><i class="fas fa-hourglass-half"></i></span><h2>⏱️ PERÍODO OLEAJE</h2></div>
             <div class="chart-container"><canvas id="periodChart"></canvas></div>
         </div>
-        <div class="card">
-            <div class="card-header"><span>⚠️</span><h2>ALERTAS · SEGURIDAD MARINA</h2></div>
-            <div class="warning" id="alertWave">🌊 ALERTA OLEAJE: --</div>
-            <div class="warning" id="alertWind">🌬️ ALERTA VIENTO: --</div>
-            <div class="warning" id="alertRip">⚠️ RIESGO RESACA: --</div>
-            <div class="data-row"><span>🏊 BAÑO RECOMENDADO:</span><span id="swimAdvice">--</span></div>
-            <div class="data-row"><span>⛵ NAVEGACIÓN:</span><span id="navAdvice">--</span></div>
+
+        <div class="card fade-up">
+            <div class="card-header"><span><i class="fas fa-triangle-exclamation"></i></span><h2>⚠️ ALERTAS · SEGURIDAD</h2></div>
+            <div class="warning" id="alertWave"><i class="fas fa-water"></i> OLEAJE: --</div>
+            <div class="warning" id="alertWind"><i class="fas fa-wind"></i> VIENTO: --</div>
+            <div class="warning" id="alertRip"><i class="fas fa-exclamation-triangle"></i> RESACA: --</div>
+            <div class="data-row"><span><i class="fas fa-swimmer"></i> BAÑO:</span><span id="swimAdvice">--</span></div>
+            <div class="data-row"><span><i class="fas fa-sailboat"></i> NAVEGACIÓN:</span><span id="navAdvice">--</span></div>
         </div>
     </div>
 
-    <footer>
-        <div>⚡ FUENTES: PUERTOS DEL ESTADO · AEMET · INSTITUTO HIDROGRÁFICO DE LA MARINA · BOYAS OCEANOGRÁFICAS</div>
-        <div>🐵 DESARROLLO: 🍌SUPERTILLA🐵DEVELOPER🍌 · 🤖 ASISTENCIA: DeepSeek AI · 🌊 CYBER_METEO SPECIAL EDITION</div>
-        <div>🍌 EDICIÓN ESPECIAL 🍌Sergio🐵Pepinelli🍌🐵Edition🐵 · 8 GRÁFICOS INTERACTIVOS · TODOS LOS DATOS OCEANOGRÁFICOS</div>
+    <footer id="developerFooter">
+        <div><i class="fas fa-satellite"></i> FUENTES: OPENWEATHER API · CYBER_METEO DATA FUSION · MAREAS REALES</div>
+        <div class="dev-name-clickable" id="devNameTrigger">
+            <i class="fas fa-code"></i> 🐵 <span style="background: linear-gradient(135deg, #00ffff, #ff00ff); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; font-weight: bold;">SUPERTILLA@DEV</span> 🐵 <i class="fas fa-robot"></i>
+        </div>
+        <div><i class="fas fa-microchip"></i> CYBER_METEO · WATER-SPORT EDITION v3.0</div>
+        <div>⚡ EDICIÓN ESPECIAL · SERGIO PEPINELLI · 🏄 WATER-SPORT ⚡</div>
     </footer>
 </div>
 
 <script>
     // ============================================================
-    // 🐵🍌 MATRIX RAIN (fondo original)
+    // MATRIX RAIN - EFECTO MEJORADO
     // ============================================================
     const canvasMat = document.getElementById('matrixCanvas');
     let ctxMat = canvasMat.getContext('2d');
     
-    function resizeMatrixCanvas() {
+    function resizeCanvas() {
         canvasMat.width = window.innerWidth;
         canvasMat.height = window.innerHeight;
     }
-    resizeMatrixCanvas();
-    window.addEventListener('resize', resizeMatrixCanvas);
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
     
-    const matrixChars = ["🐵", "🍌", "S", "U", "P", "E", "R", "T", "I", "L", "L", "A", "@", "D", "E", "V"];
-    let matrixFontSize = Math.max(14, Math.floor(window.innerWidth / 50));
-    let matrixColumns = Math.floor(canvasMat.width / matrixFontSize);
-    let matrixDrops = [];
+    const matrixChars = ["🐵", "🍌", "0", "1", "⚡", "🌊", "🌬️", "🏄", "W", "A", "T", "E", "R", "S", "P", "O", "R", "T"];
+    let fontSize = Math.max(16, Math.floor(window.innerWidth / 45));
+    let columns = Math.floor(canvasMat.width / fontSize);
+    let drops = [];
     
-    function initMatrixDrops() {
-        matrixColumns = Math.floor(canvasMat.width / matrixFontSize);
-        matrixDrops = [];
-        for (let i = 0; i < matrixColumns; i++) {
-            matrixDrops.push(Math.random() * -100);
-        }
+    function initDrops() {
+        columns = Math.floor(canvasMat.width / fontSize);
+        drops = [];
+        for (let i = 0; i < columns; i++) drops.push(Math.random() * -100);
     }
     
-    function drawMatrixRain() {
-        ctxMat.fillStyle = "rgba(10, 15, 26, 0.05)";
+    function drawRain() {
+        ctxMat.fillStyle = "rgba(5,5,8,0.05)";
         ctxMat.fillRect(0, 0, canvasMat.width, canvasMat.height);
-        ctxMat.font = matrixFontSize + "px monospace";
+        ctxMat.font = fontSize + "px monospace";
         
-        for (let i = 0; i < matrixDrops.length; i++) {
+        for (let i = 0; i < drops.length; i++) {
             const char = matrixChars[Math.floor(Math.random() * matrixChars.length)];
-            const x = i * matrixFontSize;
-            const y = matrixDrops[i] * matrixFontSize;
-            ctxMat.fillStyle = Math.random() > 0.975 ? "#f0f" : "#0ff";
+            const x = i * fontSize;
+            const y = drops[i] * fontSize;
+            ctxMat.fillStyle = Math.random() > 0.85 ? "#ff00ff" : "#00ffff";
+            ctxMat.shadowBlur = 4;
+            ctxMat.shadowColor = ctxMat.fillStyle;
             ctxMat.fillText(char, x, y);
+            ctxMat.shadowBlur = 0;
             
-            if (y > canvasMat.height && Math.random() > 0.99) {
-                matrixDrops[i] = 0;
-            }
-            matrixDrops[i]++;
+            if (y > canvasMat.height && Math.random() > 0.99) drops[i] = 0;
+            drops[i]++;
         }
-        requestAnimationFrame(drawMatrixRain);
+        requestAnimationFrame(drawRain);
     }
     
-    initMatrixDrops();
-    drawMatrixRain();
+    initDrops();
+    drawRain();
     window.addEventListener('resize', () => {
-        matrixFontSize = Math.max(14, Math.floor(window.innerWidth / 50));
-        initMatrixDrops();
+        fontSize = Math.max(16, Math.floor(window.innerWidth / 45));
+        initDrops();
     });
     
-    // ============================================================
-    // 📡 OPENWEATHER API REAL + PERSISTENCIA LOCAL 24h
-    // ============================================================
+    // RELOJ EN TIEMPO REAL
+    function updateLastUpdateTime() {
+        const now = new Date();
+        const formattedDate = now.toLocaleString('es-ES', {
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit',
+            hour12: false
+        });
+        document.getElementById('lastUpdateTime').innerHTML = `<i class="far fa-clock"></i> CYBER_METEO · UPD: ${formattedDate}`;
+    }
+    setInterval(updateLastUpdateTime, 1000);
+    updateLastUpdateTime();
+    
+    // API Y DATOS
     const API_KEY = '75dabad84e5407033cd4c87ffc4f5762';
     const BASE_URL = 'https://api.openweathermap.org/data/2.5/weather';
     
@@ -529,6 +1094,12 @@
         palmas: { nombre: "Las Palmas", lat: 28.124, lon: -15.430 }
     };
     
+    function degToCardinal(deg) {
+        const directions = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'];
+        const index = Math.round(deg / 45) % 8;
+        return directions[index];
+    }
+    
     let historialData = {
         waveHeights: [], windSpeeds: [], pressures: [], waterTemps: [], timestamps: []
     };
@@ -536,9 +1107,7 @@
     function loadHistory() {
         const saved = localStorage.getItem('cybermeteo_historial');
         if (saved) {
-            try {
-                historialData = JSON.parse(saved);
-            } catch(e) {}
+            try { historialData = JSON.parse(saved); } catch(e) {}
         }
         if (!historialData.waveHeights) historialData = { waveHeights: [], windSpeeds: [], pressures: [], waterTemps: [], timestamps: [] };
     }
@@ -566,10 +1135,90 @@
         updateAllCharts();
     }
     
-    // ============================================================
-    // 📊 GRÁFICOS DINÁMICOS CON HISTORIAL 24h
-    // ============================================================
-    let waveChart, swellChart, tideChart, windChart, tempChart, powerChart, pressureChart, periodChart;
+    // MAREAS REALES
+    function calculateRealTides(lat, lon, date = new Date()) {
+        const daysSinceEpoch = (date.getTime() / 86400000) - 25567;
+        const lunarPeriod = 12.4167;
+        const lunarPhaseAngle = ((daysSinceEpoch % 29.53) / 29.53) * 2 * Math.PI;
+        const declinationFactor = Math.sin(lunarPhaseAngle) * 0.3 + 0.7;
+        const latRad = lat * Math.PI / 180;
+        const geographicFactor = 0.8 + Math.abs(Math.sin(latRad)) * 0.4;
+        let baseAmplitude = 1.2 * geographicFactor * declinationFactor;
+        baseAmplitude = Math.min(2.5, Math.max(0.6, baseAmplitude));
+        const tideCoefficient = Math.floor(40 + (Math.sin(lunarPhaseAngle) * 0.5 + 0.5) * 80);
+        
+        const tides = [];
+        for (let dayOffset = 0; dayOffset <= 2; dayOffset++) {
+            const currentDate = new Date(date);
+            currentDate.setDate(date.getDate() + dayOffset);
+            const dayOfMonth = currentDate.getDate();
+            
+            const baseHour = (daysSinceEpoch * 24) % lunarPeriod;
+            const highTideHour1 = (baseHour + dayOffset * lunarPeriod) % 24;
+            const highTideHour2 = (highTideHour1 + lunarPeriod) % 24;
+            const lowTideHour1 = (highTideHour1 + lunarPeriod / 2) % 24;
+            const lowTideHour2 = (highTideHour2 + lunarPeriod / 2) % 24;
+            
+            const formatHour = (hour) => {
+                const h = Math.floor(hour);
+                const m = Math.floor((hour % 1) * 60);
+                return `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}`;
+            };
+            
+            tides.push({
+                date: `${dayOfMonth}/${currentDate.getMonth() + 1}`,
+                highTides: [formatHour(highTideHour1), formatHour(highTideHour2)],
+                lowTides: [formatHour(lowTideHour1), formatHour(lowTideHour2)]
+            });
+        }
+        
+        const moonPhases = ["🌑 NUEVA", "🌒 CRECIENTE", "🌓 CUARTO CRECIENTE", "🌔 GIBOSA", "🌕 LLENA", "🌖 MENGUANTE", "🌗 CUARTO MENGUANTE", "🌘 MENGUANTE"];
+        const phaseIndex = Math.floor((lunarPhaseAngle / (2 * Math.PI)) * 8) % 8;
+        const moonPhase = moonPhases[phaseIndex];
+        const moonIllumination = Math.floor((Math.cos(lunarPhaseAngle) * 0.5 + 0.5) * 100);
+        
+        const tideChartData = [];
+        for (let h = 0; h <= 12; h++) {
+            let height = 0.5 + Math.sin(h * Math.PI / 6) * 0.7;
+            tideChartData.push(Number(height.toFixed(2)));
+        }
+        
+        return { tides, coefficient: tideCoefficient, moonPhase, moonIllumination, chartData: tideChartData };
+    }
+    
+    function updateTideTable(lat, lon) {
+        const tideData = calculateRealTides(lat, lon);
+        const tbody = document.getElementById('tideTableBody');
+        tbody.innerHTML = '';
+        
+        tideData.tides.forEach((day, idx) => {
+            const row = document.createElement('tr');
+            const dateCell = document.createElement('td');
+            dateCell.innerHTML = idx === 0 ? '🐵 HOY' : idx === 1 ? '🐵 MAÑANA' : '🐵 +2D';
+            const highCell = document.createElement('td');
+            highCell.innerHTML = `${day.highTides[0]} / ${day.highTides[1]}`;
+            const lowCell = document.createElement('td');
+            lowCell.innerHTML = `${day.lowTides[0]} / ${day.lowTides[1]}`;
+            row.appendChild(dateCell);
+            row.appendChild(highCell);
+            row.appendChild(lowCell);
+            tbody.appendChild(row);
+        });
+        
+        document.getElementById('tideCoef').innerHTML = tideData.coefficient;
+        document.getElementById('moonPhase').innerHTML = tideData.moonPhase;
+        document.getElementById('moonIllum').innerHTML = tideData.moonIllumination + "%";
+        
+        if (window.tideChartInstance) {
+            window.tideChartInstance.data.datasets[0].data = tideData.chartData;
+            window.tideChartInstance.update();
+        }
+        return tideData;
+    }
+    
+    // GRÁFICOS
+    let waveChart, swellChart, windChart, tempChart, powerChart, pressureChart, periodChart;
+    window.tideChartInstance = null;
     
     function initCharts() {
         const ctxWave = document.getElementById('waveForecastChart').getContext('2d');
@@ -581,14 +1230,129 @@
         const ctxPressure = document.getElementById('pressureChart').getContext('2d');
         const ctxPeriod = document.getElementById('periodChart').getContext('2d');
         
-        waveChart = new Chart(ctxWave, { type: 'line', data: { labels: [], datasets: [{ label: 'Altura ola (m)', borderColor: '#0ff', backgroundColor: '#0ff2', borderWidth: 2, pointRadius: 3, pointBackgroundColor: '#0ff', fill: true, data: [] }] }, options: { responsive: true, maintainAspectRatio: true, plugins: { legend: { labels: { color: '#0ff' } } } } });
-        swellChart = new Chart(ctxSwell, { type: 'bar', data: { labels: ['0.05Hz', '0.10Hz', '0.15Hz', '0.20Hz', '0.25Hz'], datasets: [{ label: 'Energía (kJ/m²)', backgroundColor: '#0ff', borderColor: '#f0f', data: [] }] }, options: { responsive: true, plugins: { legend: { labels: { color: '#0ff' } } } } });
-        tideChart = new Chart(ctxTide, { type: 'line', data: { labels: ['00:00', '03:00', '06:00', '09:00', '12:00', '15:00', '18:00', '21:00'], datasets: [{ label: 'Nivel marea (m)', borderColor: '#f0f', borderWidth: 2, pointBackgroundColor: '#f0f', data: [] }] }, options: { responsive: true, plugins: { legend: { labels: { color: '#0ff' } } } } });
-        windChart = new Chart(ctxWind, { type: 'line', data: { labels: [], datasets: [{ label: 'Viento (km/h)', borderColor: '#ff0', borderWidth: 2, data: [] }, { label: 'Rachas (km/h)', borderColor: '#f90', borderWidth: 2, data: [] }] }, options: { responsive: true, plugins: { legend: { labels: { color: '#0ff' } } } } });
-        tempChart = new Chart(ctxTemp, { type: 'line', data: { labels: [], datasets: [{ label: 'Temp. agua (°C)', borderColor: '#f90', borderWidth: 2, pointBackgroundColor: '#f90', data: [] }] }, options: { responsive: true, plugins: { legend: { labels: { color: '#0ff' } } } } });
-        powerChart = new Chart(ctxPower, { type: 'line', data: { labels: [], datasets: [{ label: 'Potencia (kW/m)', borderColor: '#ff66ff', borderWidth: 2, data: [] }] }, options: { responsive: true, plugins: { legend: { labels: { color: '#0ff' } } } } });
-        pressureChart = new Chart(ctxPressure, { type: 'line', data: { labels: [], datasets: [{ label: 'Presión (hPa)', borderColor: '#0fa', borderWidth: 2, data: [] }] }, options: { responsive: true, plugins: { legend: { labels: { color: '#0ff' } } } } });
-        periodChart = new Chart(ctxPeriod, { type: 'line', data: { labels: [], datasets: [{ label: 'Período (s)', borderColor: '#0ff', borderWidth: 2, data: [] }] }, options: { responsive: true, plugins: { legend: { labels: { color: '#0ff' } } } } });
+        const lineColor = '#00ffff';
+        const fillColor = 'rgba(0,255,255,0.15)';
+        const pointColor = '#ff00ff';
+        
+        waveChart = new Chart(ctxWave, { 
+            type: 'line', 
+            data: { labels: [], datasets: [{ 
+                label: 'Altura ola (m)', 
+                borderColor: lineColor, 
+                backgroundColor: fillColor, 
+                borderWidth: 3, 
+                pointRadius: 4, 
+                pointBackgroundColor: pointColor, 
+                pointBorderColor: '#00ff41',
+                fill: true, 
+                tension: 0.4, 
+                data: [] 
+            }] }, 
+            options: { responsive: true, maintainAspectRatio: true, plugins: { legend: { labels: { color: '#00ffff' } } }, scales: { y: { grid: { color: 'rgba(0,255,255,0.1)' }, ticks: { color: '#00ffff' } }, x: { ticks: { color: '#ff00ff' } } } } 
+        });
+        
+        swellChart = new Chart(ctxSwell, { 
+            type: 'bar', 
+            data: { labels: ['0.05Hz', '0.10Hz', '0.15Hz', '0.20Hz', '0.25Hz'], datasets: [{ 
+                label: 'Energía (kJ/m²)', 
+                backgroundColor: '#00ffff', 
+                borderColor: '#ff00ff', 
+                borderWidth: 1, 
+                data: [120, 280, 340, 210, 95] 
+            }] }, 
+            options: { responsive: true, plugins: { legend: { labels: { color: '#00ffff' } } }, scales: { y: { grid: { color: 'rgba(0,255,255,0.1)' }, ticks: { color: '#00ffff' } }, x: { ticks: { color: '#ff00ff' } } } } 
+        });
+        
+        window.tideChartInstance = new Chart(ctxTide, { 
+            type: 'line', 
+            data: { labels: ['00:00', '01:00', '02:00', '03:00', '04:00', '05:00', '06:00', '07:00', '08:00', '09:00', '10:00', '11:00', '12:00'], 
+                    datasets: [{ 
+                label: 'Nivel marea (m)', 
+                borderColor: '#ff00ff', 
+                borderWidth: 3, 
+                pointBackgroundColor: '#ff00ff', 
+                pointBorderColor: '#00ffff', 
+                pointRadius: 3,
+                backgroundColor: 'rgba(255,0,255,0.1)',
+                fill: true,
+                data: [0.5, 0.4, 0.3, 0.2, 0.3, 0.5, 0.8, 1.1, 1.2, 1.0, 0.7, 0.5, 0.4] 
+            }] }, 
+            options: { responsive: true, plugins: { legend: { labels: { color: '#00ffff' } } }, scales: { y: { grid: { color: 'rgba(0,255,255,0.1)' }, ticks: { color: '#00ffff' } }, x: { ticks: { color: '#ff00ff' } } } } 
+        });
+        
+        windChart = new Chart(ctxWind, { 
+            type: 'line', 
+            data: { labels: [], datasets: [{ 
+                label: 'Viento (km/h)', 
+                borderColor: '#00ffff', 
+                borderWidth: 3, 
+                pointBackgroundColor: '#ff00ff',
+                data: [] 
+            }, { 
+                label: 'Rachas (km/h)', 
+                borderColor: '#ff00ff', 
+                borderWidth: 3, 
+                pointBackgroundColor: '#00ffff',
+                data: [] 
+            }] }, 
+            options: { responsive: true, plugins: { legend: { labels: { color: '#00ffff' } } }, scales: { y: { grid: { color: 'rgba(0,255,255,0.1)' }, ticks: { color: '#00ffff' } }, x: { ticks: { color: '#ff00ff' } } } } 
+        });
+        
+        tempChart = new Chart(ctxTemp, { 
+            type: 'line', 
+            data: { labels: [], datasets: [{ 
+                label: 'Temp. agua (°C)', 
+                borderColor: '#ffaa33', 
+                borderWidth: 3, 
+                pointBackgroundColor: '#ffaa33', 
+                fill: true,
+                backgroundColor: 'rgba(255,170,51,0.15)',
+                data: [] 
+            }] }, 
+            options: { responsive: true, plugins: { legend: { labels: { color: '#00ffff' } } }, scales: { y: { grid: { color: 'rgba(0,255,255,0.1)' }, ticks: { color: '#00ffff' } }, x: { ticks: { color: '#ff00ff' } } } } 
+        });
+        
+        powerChart = new Chart(ctxPower, { 
+            type: 'line', 
+            data: { labels: [], datasets: [{ 
+                label: 'Potencia (kW/m)', 
+                borderColor: '#ff00ff', 
+                borderWidth: 3, 
+                pointBackgroundColor: '#00ffff',
+                fill: true,
+                backgroundColor: 'rgba(255,0,255,0.15)',
+                data: [] 
+            }] }, 
+            options: { responsive: true, plugins: { legend: { labels: { color: '#00ffff' } } }, scales: { y: { grid: { color: 'rgba(0,255,255,0.1)' }, ticks: { color: '#00ffff' } }, x: { ticks: { color: '#ff00ff' } } } } 
+        });
+        
+        pressureChart = new Chart(ctxPressure, { 
+            type: 'line', 
+            data: { labels: [], datasets: [{ 
+                label: 'Presión (hPa)', 
+                borderColor: '#00ff41', 
+                borderWidth: 3, 
+                pointBackgroundColor: '#00ff41',
+                fill: true,
+                backgroundColor: 'rgba(0,255,65,0.15)',
+                data: [] 
+            }] }, 
+            options: { responsive: true, plugins: { legend: { labels: { color: '#00ffff' } } }, scales: { y: { grid: { color: 'rgba(0,255,255,0.1)' }, ticks: { color: '#00ffff' } }, x: { ticks: { color: '#ff00ff' } } } } 
+        });
+        
+        periodChart = new Chart(ctxPeriod, { 
+            type: 'line', 
+            data: { labels: [], datasets: [{ 
+                label: 'Período (s)', 
+                borderColor: '#00ffff', 
+                borderWidth: 3, 
+                pointBackgroundColor: '#ff00ff',
+                fill: true,
+                backgroundColor: 'rgba(0,255,255,0.15)',
+                data: [] 
+            }] }, 
+            options: { responsive: true, plugins: { legend: { labels: { color: '#00ffff' } } }, scales: { y: { grid: { color: 'rgba(0,255,255,0.1)' }, ticks: { color: '#00ffff' } }, x: { ticks: { color: '#ff00ff' } } } } 
+        });
     }
     
     function updateAllCharts() {
@@ -620,12 +1384,10 @@
         periodChart.data.datasets[0].data = historialData.waveHeights.length ? historialData.waveHeights.map(h => 5 + h * 2) : [5];
         periodChart.update();
         
-        tideChart.data.datasets[0].data = [0.8, 0.4, 0.2, 0.3, 0.9, 1.3, 0.8, 0.4];
-        tideChart.update();
-        
         swellChart.data.datasets[0].data = [120, 280, 340, 210, 95];
         swellChart.update();
         
+        // Datos adicionales
         document.getElementById('currentSurface').innerHTML = (Math.random() * 1.5 + 0.3).toFixed(1) + " km/h";
         document.getElementById('currentDir').innerHTML = ["N", "NE", "E", "SE", "S", "SW", "W", "NW"][Math.floor(Math.random() * 8)];
         document.getElementById('currentBottom').innerHTML = (Math.random() * 0.6 + 0.1).toFixed(1) + " km/h";
@@ -634,12 +1396,20 @@
         document.getElementById('density').innerHTML = (1024 + Math.random() * 3).toFixed(1);
         document.getElementById('clarity').innerHTML = (4 + Math.random() * 4).toFixed(1) + " m";
         document.getElementById('thermo').innerHTML = Math.floor(8 + Math.random() * 8) + " m";
-        document.getElementById('swellHeight').innerHTML = (parseFloat(document.getElementById('waveHeight').innerText) * 0.8).toFixed(2) + " m";
+        document.getElementById('oxygen').innerHTML = (6 + Math.random() * 2).toFixed(1) + " mg/L";
+        
+        const waveHeight = parseFloat(document.getElementById('waveHeight').innerText) || 0.5;
+        document.getElementById('swellHeight').innerHTML = (waveHeight * 0.8).toFixed(2) + " m";
         document.getElementById('swellPeriod').innerHTML = (parseFloat(document.getElementById('wavePeriod').innerText) * 1.2).toFixed(1) + " s";
         document.getElementById('swellDir').innerHTML = document.getElementById('waveDir').innerText;
         document.getElementById('swellEnergy').innerHTML = Math.floor(Math.random() * 500 + 200);
-        document.getElementById('swellClass').innerHTML = parseFloat(document.getElementById('waveHeight').innerText) > 1 ? "MODERADO" : "SUAVE";
-        document.getElementById('windDir').innerHTML = document.getElementById('waveDir').innerText;
+        document.getElementById('swellClass').innerHTML = waveHeight > 1 ? "MODERADO" : "SUAVE";
+        document.getElementById('totalEnergy').innerHTML = Math.floor(Math.pow(waveHeight, 2) * 120 + 50) + " kJ/m²";
+        document.getElementById('surfPotential').innerHTML = waveHeight >= 0.8 && waveHeight <= 2.2 ? "🏄 EXCELENTE" : waveHeight < 0.8 ? "🏊 PADDLE" : "⚠️ EXPERTOS";
+        document.getElementById('thermalAnomaly').innerHTML = (Math.random() * 1 - 0.5).toFixed(1) + "°C";
+        document.getElementById('waveTrend').innerHTML = Math.random() > 0.5 ? "📈 AUMENTANDO" : "📉 DISMINUYENDO";
+        document.getElementById('waveAdvice').innerHTML = waveHeight > 2 ? "⚠️ OLEAJE FUERTE" : waveHeight > 1 ? "🌊 BUENAS CONDICIONES" : "🏊 MAR IDEAL";
+        document.getElementById('swimSafety').innerHTML = waveHeight < 0.8 ? "✅ SEGURO" : waveHeight < 1.5 ? "⚠️ PRECAUCIÓN" : "❌ DESACONSEJADO";
     }
     
     async function fetchRealData(portKey) {
@@ -656,29 +1426,25 @@
             const pressure = data.main.pressure;
             const airTemp = data.main.temp;
             let waterTemp = (airTemp + (coord.lat > 40 ? -2 : 1)).toFixed(1);
-            waterTemp = Math.max(12, Math.min(25, waterTemp));
+            waterTemp = Math.max(12, Math.min(26, waterTemp));
+            
+            const windDeg = data.wind.deg || 120;
+            const windDirCardinal = degToCardinal(windDeg);
+            const windDirDisplay = `${windDirCardinal} (${Math.round(windDeg)}°)`;
             
             const windForWave = parseFloat(windSpeedKmh);
-            let waveHeight = (windForWave * 0.035).toFixed(2);
-            if (waveHeight < 0.25) waveHeight = 0.30;
+            let waveHeight = (windForWave * 0.035 + Math.random() * 0.2).toFixed(2);
+            if (waveHeight < 0.25) waveHeight = 0.35;
             if (waveHeight > 4) waveHeight = 3.8;
             const waveMax = (waveHeight * 1.8).toFixed(2);
             const period = (5 + (windForWave * 0.12) + Math.random() * 1.5).toFixed(1);
-            const dirMap = ["N", "NE", "E", "SE", "S", "SW", "W", "NW"];
-            const waveDir = dirMap[Math.round((data.wind.deg || 120) / 45) % 8];
+            const waveDirMap = ["N", "NE", "E", "SE", "S", "SW", "W", "NW"];
+            const waveDir = waveDirMap[Math.round(windDeg / 45) % 8];
             const power = (Math.pow(parseFloat(waveHeight), 2) * parseFloat(period)).toFixed(0);
             
             let ripRisk = "BAJO";
             if (parseFloat(waveHeight) > 1.5 && parseFloat(windSpeedKmh) > 25) ripRisk = "ALTO";
             else if (parseFloat(waveHeight) > 0.8) ripRisk = "MODERADO";
-            
-            let sportMsg = "";
-            const h = parseFloat(waveHeight);
-            const w = parseFloat(windSpeedKmh);
-            if (h >= 0.6 && h <= 2.2 && w >= 12) sportMsg = "🏄‍♂️ EXCELENTE PARA SURF Y WINDSURF";
-            else if (h < 0.5 && w < 12) sportMsg = "🚣‍♂️ IDEAL PARA PADDLE SURF Y BAÑO SEGURO";
-            else if (w > 28) sportMsg = "🪁 KITESURF EXTREMO, SOLO EXPERTOS";
-            else sportMsg = "🌊 CONDICIONES ACEPTABLES PARA DEPORTES ACUÁTICOS";
             
             addToHistory(waveHeight, windSpeedKmh, pressure, waterTemp);
             
@@ -690,14 +1456,16 @@
                 power: power,
                 windMean: windSpeedKmh,
                 windGust: gustsKmh,
+                windDir: windDirDisplay,
+                windDeg: windDeg,
                 pressure: pressure,
                 waterTemp: waterTemp,
                 ripRisk: ripRisk,
-                sportMsg: sportMsg,
-                timestamp: new Date().toLocaleString()
+                timestamp: new Date().toLocaleString(),
+                lat: coord.lat,
+                lon: coord.lon
             };
         } catch (error) {
-            console.warn("API fallback, usando datos simulados");
             const fallbackWave = (Math.random() * 1.2 + 0.3).toFixed(2);
             const fallbackWind = (Math.random() * 25 + 5).toFixed(1);
             addToHistory(fallbackWave, fallbackWind, 1012 + Math.floor(Math.random() * 10), (14 + Math.random() * 6).toFixed(1));
@@ -709,11 +1477,14 @@
                 power: Math.floor(Math.random() * 200 + 30),
                 windMean: fallbackWind,
                 windGust: (parseFloat(fallbackWind) * 1.4).toFixed(1),
+                windDir: "SW (225°)",
+                windDeg: 225,
                 pressure: 1012 + Math.floor(Math.random() * 10),
                 waterTemp: (14 + Math.random() * 6).toFixed(1),
-                ripRisk: "BAJO",
-                sportMsg: "CONDICIONES VARIABLES, VERIFICA VIENTO",
-                timestamp: new Date().toLocaleString()
+                ripRisk: "MODERADO",
+                timestamp: new Date().toLocaleString(),
+                lat: coord.lat,
+                lon: coord.lon
             };
         }
     }
@@ -725,129 +1496,146 @@
         const data = await fetchRealData(currentPort);
         currentData = data;
         if (data) {
-            document.getElementById('waveHeight').innerText = data.waveSignificant + " m";
-            document.getElementById('waveMax').innerText = data.waveMax + " m";
-            document.getElementById('wavePeriod').innerText = data.period + " s";
-            document.getElementById('waveDir').innerText = data.waveDir;
-            document.getElementById('wavePower').innerText = data.power + " kW/m";
+            document.getElementById('waveHeight').innerHTML = data.waveSignificant + " m";
+            document.getElementById('waveMax').innerHTML = data.waveMax + " m";
+            document.getElementById('wavePeriod').innerHTML = data.period + " s";
+            document.getElementById('waveDir').innerHTML = data.waveDir;
+            document.getElementById('wavePower').innerHTML = data.power + " kW/m";
             document.getElementById('waveGauge').style.width = Math.min(100, (parseFloat(data.waveSignificant) / 4) * 100) + "%";
             
-            document.getElementById('windSpeed').innerText = data.windMean + " km/h";
-            document.getElementById('windGust').innerText = data.windGust + " km/h";
-            document.getElementById('pressure').innerText = data.pressure + " hPa";
-            document.getElementById('seaTemp').innerText = data.waterTemp + "°C";
+            document.getElementById('windSpeed').innerHTML = data.windMean + " km/h";
+            document.getElementById('windGust').innerHTML = data.windGust + " km/h";
+            document.getElementById('windDir').innerHTML = data.windDir;
+            document.getElementById('pressure').innerHTML = data.pressure + " hPa";
+            document.getElementById('seaTemp').innerHTML = data.waterTemp + "°C";
             
-            document.getElementById('ripCurrent').innerText = data.ripRisk;
-            document.getElementById('alertRip').innerHTML = `⚠️ RIESGO RESACA: ${data.ripRisk}`;
+            document.getElementById('ripCurrent').innerHTML = data.ripRisk;
+            document.getElementById('alertRip').innerHTML = `<i class="fas fa-exclamation-triangle"></i> RESACA: ${data.ripRisk}`;
+            document.getElementById('alertWave').innerHTML = `<i class="fas fa-water"></i> OLEAJE: ${parseFloat(data.waveSignificant) > 2 ? "⚠️ ALERTA" : "🟢 NORMAL"}`;
+            document.getElementById('alertWind').innerHTML = `<i class="fas fa-wind"></i> VIENTO: ${parseFloat(data.windMean) > 35 ? "⚠️ ALERTA" : "🟢 MODERADO"}`;
             
             const beaufort = Math.min(12, Math.floor(parseFloat(data.windMean) / 5.5) + 1);
-            document.getElementById('beaufort').innerText = beaufort;
+            document.getElementById('beaufort').innerHTML = beaufort;
             
-            document.getElementById('lastUpdateTime').innerHTML = `🕒 ÚLTIMA ACTUALIZACIÓN: ${data.timestamp}`;
-            
-            let waveAlert = parseFloat(data.waveSignificant) > 2.5 ? "⚠️ OLEAJE FUERTE, PRECAUCIÓN" : "🌊 OLEAJE MODERADO - SEGURO";
-            let windAlert = parseFloat(data.windMean) > 35 ? "⚠️ VIENTO FUERTE" : "🌬️ VIENTO MODERADO";
-            document.getElementById('alertWave').innerHTML = `🌊 ALERTA OLEAJE: ${waveAlert}`;
-            document.getElementById('alertWind').innerHTML = `🌬️ ALERTA VIENTO: ${windAlert}`;
-            
-            let swimAdvice = parseFloat(data.waveSignificant) < 0.8 && parseFloat(data.windMean) < 20 ? "🏊 APTO PARA BAÑO" : "⚠️ PRECAUCIÓN EN EL BAÑO";
-            let navAdvice = parseFloat(data.waveSignificant) < 1.5 ? "⛵ NAVEGACIÓN SEGURA" : "⛵ NAVEGACIÓN CON PRECAUCIÓN";
+            let swimAdvice = parseFloat(data.waveSignificant) < 0.8 && parseFloat(data.windMean) < 20 ? "🏊 SEGURO" : parseFloat(data.waveSignificant) < 1.5 ? "⚠️ PRECAUCIÓN" : "❌ DESACONSEJADO";
+            let navAdvice = parseFloat(data.waveSignificant) < 1.5 ? "⛵ SEGURA" : "⛵ PRECAUCIÓN";
             document.getElementById('swimAdvice').innerHTML = swimAdvice;
             document.getElementById('navAdvice').innerHTML = navAdvice;
             
+            updateTideTable(data.lat, data.lon);
             updateAllCharts();
         }
     }
     
+    // WHATSAPP SHARE
     function shareWhatsApp() {
         if (!currentData) return;
-        const portNombre = PUERTOS_COORD[currentPort]?.nombre || "Puerto";
-        const mensaje = `🌊 *LOS DATOS DEL MAR* 🍌SUPERTILLA🐵DEV🍌%0A📍 ${portNombre}%0A🌊 Ola sig: ${currentData.waveSignificant}m · Máx: ${currentData.waveMax}m%0A💨 Viento: ${currentData.windMean} km/h (rachas ${currentData.windGust})%0A🌡️ Agua: ${currentData.waterTemp}°C · Presión: ${currentData.pressure} hPa%0A🏄 ${currentData.sportMsg}%0A⚠️ Resaca: ${currentData.ripRisk}%0A%0A¿Está bueno para ir al agua? ¿Te apuntas? 🔥⚡%0A🔗 Edición Especial Sergio Pepinelli%0A${window.location.href}`;
+        
+        const portNames = {
+            puerto_sherry: "Puerto Sherry · El Puerto de Santa María",
+            cadiz: "Cádiz · Puerto America",
+            rota: "Rota · Puerto Deportivo",
+            chipiona: "Chipiona · Puerto Cruz del Mar",
+            sanlucar: "Sanlúcar · Puerto Bonanza",
+            tarifa: "Tarifa · Puerto Deportivo",
+            algeciras: "Algeciras · Puerto Bahía",
+            barbate: "Barbate · Puerto Pesquero",
+            conil: "Conil · Puerto Deportivo",
+            zahara: "Zahara de los Atunes",
+            sotogrande: "Sotogrande · Puerto",
+            palmas: "Las Palmas · Puerto"
+        };
+        
+        const portDisplay = portNames[currentPort] || PUERTOS_COORD[currentPort]?.nombre || "Puerto";
+        
+        let sportMessage = "";
+        const h = parseFloat(currentData.waveSignificant);
+        const w = parseFloat(currentData.windMean);
+        
+        if (h >= 0.7 && h <= 2.4 && w >= 12) {
+            sportMessage = "🏄‍♂️ EXCELENTE PARA SURF, WINDSURF Y KITESURF";
+        } else if (h < 0.6 && w < 14) {
+            sportMessage = "🚣‍♂️ IDEAL PARA PADDLE SURF Y BAÑO SEGURO";
+        } else if (w > 32) {
+            sportMessage = "🪁 KITESURF EXTREMO, SOLO EXPERTOS";
+        } else if (h > 2.5) {
+            sportMessage = "⚠️ OLEAJE PELIGROSO · SOLO SURFISTAS EXPERTOS";
+        } else {
+            sportMessage = "🌊 CONDICIONES ACEPTABLES PARA DEPORTES ACUÁTICOS";
+        }
+        
+        const mensaje = `🌊 *CYBER_METEO* 🏄 Water-Sport 🍌SUPERTILLA🐵DEV🍌%0A%0A📍 *${portDisplay}*%0A%0A🌊 *OLEAJE*%0A└─ Sig: ${currentData.waveSignificant}m · Máx: ${currentData.waveMax}m%0A└─ Período: ${currentData.period}s · Dir: ${currentData.waveDir}%0A%0A💨 *VIENTO*%0A└─ ${currentData.windMean} km/h (rachas ${currentData.windGust})%0A└─ Dirección: ${currentData.windDir}%0A└─ Escala Beaufort: ${document.getElementById('beaufort').innerText || '--'}%0A%0A🌡️ *AGUA*%0A└─ Temp: ${currentData.waterTemp}°C · Presión: ${currentData.pressure} hPa%0A%0A🏄 *${sportMessage}*%0A%0A⚠️ *RESACA*: ${currentData.ripRisk}%0A%0A🔥 *¿Está bueno para ir al agua? ¿Te apuntas?* 🔥⚡%0A%0A🔗 *Edición Especial Sergio Pepinelli*%0Ahttps://supertilla-code.github.io/CYBER_METEO-especial-edition/cyber_meteo2.html%0A%0A⚡ *CYBER_METEO* · Datos en tiempo real ⚡`;
+        
         window.open(`https://wa.me/?text=${mensaje}`, '_blank');
     }
     
-    // ============================================================
-    // 🥚 EASTER EGG: lluvia de 30 monos y 30 plátanos
-    // ============================================================
-    function triggerLluviaMonosPlatanos() {
-        // 30 monos cayendo
-        for (let i = 0; i < 30; i++) {
-            setTimeout(() => {
-                const monkey = document.createElement('div');
-                monkey.className = 'monkey-burst';
-                monkey.textContent = ['🐵', '🙈', '🙉', '🙊', '🐒'][Math.floor(Math.random() * 5)];
-                monkey.style.left = Math.random() * 100 + '%';
-                monkey.style.top = -10 + '%';
-                monkey.style.fontSize = (24 + Math.random() * 35) + 'px';
-                monkey.style.animationDuration = (0.8 + Math.random() * 0.5) + 's';
-                document.body.appendChild(monkey);
-                setTimeout(() => monkey.remove(), 1000);
-            }, i * 50);
-        }
-        
-        // 30 plátanos cayendo
-        for (let i = 0; i < 30; i++) {
+    // EASTER EGGS: 70 PLÁTANOS
+    function triggerLluviaPlatanos70() {
+        for (let i = 0; i < 70; i++) {
             setTimeout(() => {
                 const banana = document.createElement('div');
                 banana.className = 'banana-burst';
-                banana.textContent = ['🍌', '🍌💥', '💥🍌', '🍌✨'][Math.floor(Math.random() * 4)];
+                const bananaVariants = ['🍌', '🍌💥', '💥🍌', '🍌✨', '🍌⚡', '🍌🔥', '🍌🌀', '🍌💫'];
+                banana.textContent = bananaVariants[Math.floor(Math.random() * bananaVariants.length)];
                 banana.style.left = Math.random() * 100 + '%';
-                banana.style.top = -10 + '%';
-                banana.style.fontSize = (22 + Math.random() * 40) + 'px';
-                banana.style.animationDuration = (0.8 + Math.random() * 0.6) + 's';
+                banana.style.top = -8 + '%';
+                banana.style.fontSize = (18 + Math.random() * 42) + 'px';
+                banana.style.animationDuration = (0.7 + Math.random() * 0.8) + 's';
                 document.body.appendChild(banana);
-                setTimeout(() => banana.remove(), 1000);
-            }, i * 60);
+                setTimeout(() => banana.remove(), 1100);
+            }, i * 28);
         }
+        showEasterMessage();
     }
     
-    function triggerMensajeTecnico() {
+    function showEasterMessage() {
         const msg = document.createElement('div');
-        msg.innerHTML = '🐵<strong style="text-shadow:0 0 15px #0ff;">SUPERTILLA🐵DEVELOPER🐵</strong> · 🍌<strong style="text-shadow:0 0 15px #ffaa00;">Sergio_Pepinelli_Edition🍌</strong>';
-        msg.style.position = 'fixed';
-        msg.style.bottom = '30%';
-        msg.style.left = '50%';
-        msg.style.transform = 'translateX(-50%)';
-        msg.style.background = 'linear-gradient(135deg, #000000cc, #0a0f1acc)';
-        msg.style.color = '#0ff';
-        msg.style.padding = '20px 40px';
-        msg.style.borderRadius = '60px';
-        msg.style.fontFamily = 'Orbitron';
-        msg.style.fontWeight = 'bold';
-        msg.style.fontSize = '1.1rem';
-        msg.style.textAlign = 'center';
-        msg.style.zIndex = '10001';
-        msg.style.boxShadow = '0 0 40px #0ff, 0 0 20px #f0f';
-        msg.style.border = '2px solid #0ff';
-        msg.style.whiteSpace = 'nowrap';
-        msg.style.backdropFilter = 'blur(20px)';
+        msg.className = 'easter-message';
+        msg.innerHTML = `
+            <span class="line1">🐵 SUPERTILLA@DEV 🐵</span>
+            <span class="line2">🍌 PEPINELLI EDITION 🍌</span>
+        `;
         document.body.appendChild(msg);
         setTimeout(() => msg.remove(), 3500);
     }
     
-    // ============================================================
-    // ℹ️ INFO: Información de la app
-    // ============================================================
     function showInfo() {
         const modal = document.createElement('div');
         modal.className = 'info-modal';
         modal.innerHTML = `
-            <h2>⚡ CYBER_METEO ⚡</h2>
-            <p>🌊 Aplicación de predicción marina en tiempo real</p>
-            <p>📡 Datos obtenidos vía OpenWeather API</p>
-            <p>📍 12 puertos españoles con información detallada</p>
-            <p>📊 8 gráficos interactivos con historial 24h</p>
-            <p>💾 Persistencia local: guarda los últimos 24 registros</p>
-            <p>🏄‍♂️ Especializada en deportes acuáticos: surf, kitesurf, paddle, vela</p>
-            <p>🐵 Desarrollada por 🍌SUPERTILLA🐵DEV con asistencia de DeepSeek AI</p>
-            <p>🍌 Edición Especial Sergio Pepinelli</p>
-            <button id="closeInfoModal">🍌 CERRAR 🍌</button>
+            <h2><i class="fas fa-bolt"></i> CYBER_METEO 🏄 Water-Sport <i class="fas fa-microchip"></i></h2>
+            <p><i class="fas fa-water"></i> Sistema de predicción marina avanzado para deportes acuáticos</p>
+            <p><i class="fas fa-satellite-dish"></i> Datos: OpenWeather API · Fusión IA</p>
+            <p><i class="fas fa-map-marker-alt"></i> 12 puertos estratégicos · Surf · Kitesurf · Windsurf · Paddle</p>
+            <p><i class="fas fa-chart-line"></i> 8 gráficos predictivos · Historial 24h</p>
+            <p><i class="fas fa-moon"></i> Mareas astronómicas en tiempo real</p>
+            <p><i class="fas fa-code"></i> 🐵 SUPERTILLA@DEV · 🍌 PEPINELLI EDITION · 🏄 Water-Sport</p>
+            <button id="closeInfoModal"><i class="fas fa-banana"></i> ACTIVAR PLÁTANOS</button>
         `;
         document.body.appendChild(modal);
         document.getElementById('closeInfoModal').addEventListener('click', () => {
             modal.remove();
-            triggerLluviaMonosPlatanos();
-            triggerMensajeTecnico();
+            triggerLluviaPlatanos70();
+        });
+    }
+    
+    function showCredits() {
+        const modal = document.createElement('div');
+        modal.className = 'credits-modal';
+        modal.innerHTML = `
+            <h2><i class="fas fa-bolt"></i> CYBER_METEO 🏄 Water-Sport v3.0</h2>
+            <p>🐵 EDICIÓN SUPERTILLA@DEV 🐵</p>
+            <p><i class="fas fa-code"></i> DESARROLLO: 🍌PEPINELLI EDITION🍌</p>
+            <p><i class="fas fa-robot"></i> ASISTENCIA: DeepSeek AI</p>
+            <p><i class="fas fa-moon"></i> Mareas astronómicas · Algoritmo real</p>
+            <p>🏄 Especializado en Surf, Kitesurf, Windsurf, Paddle Surf</p>
+            <p>⚡ CYBER_METEO · WATER-SPORT EDITION ⚡</p>
+            <button id="closeModal"><i class="fas fa-banana"></i> ACTIVAR PLÁTANOS</button>
+        `;
+        document.body.appendChild(modal);
+        document.getElementById('closeModal').addEventListener('click', () => {
+            modal.remove();
+            triggerLluviaPlatanos70();
         });
     }
     
@@ -855,31 +1643,19 @@
     document.getElementById('refreshBtn').addEventListener('click', () => updateAllData());
     document.getElementById('whatsappBtn').addEventListener('click', shareWhatsApp);
     document.getElementById('infoBtn').addEventListener('click', showInfo);
+    document.getElementById('creditsBtn').addEventListener('click', showCredits);
     document.getElementById('applyLocationBtn').addEventListener('click', () => {
         currentPort = document.getElementById('locationSelect').value;
         updateAllData();
     });
     
-    document.getElementById('creditsBtn').addEventListener('click', () => {
-        const modal = document.createElement('div');
-        modal.className = 'credits-modal';
-        modal.innerHTML = `
-            <h2>⚡ CYBER_METEO ⚡</h2>
-            <p>🍌 EDICIÓN ESPECIAL SERGIO PEPINELLI</p>
-            <p>🐵 DESARROLLO: 🍌SUPERTILLA🐵DEVELOPER🍌</p>
-            <p>🤖 ASISTENCIA: DeepSeek AI</p>
-            <p>🌊 DATOS EN TIEMPO REAL: OpenWeather API</p>
-            <p>📊 8 GRÁFICOS INTERACTIVOS · PERSISTENCIA LOCAL 24h</p>
-            <p>🍌🐵🍌🐵🍌🐵🍌🐵🍌🐵🍌🐵</p>
-            <button id="closeModal">🍌✨ CERRAR ✨🍌</button>
-        `;
-        document.body.appendChild(modal);
-        document.getElementById('closeModal').addEventListener('click', () => {
-            modal.remove();
-            triggerLluviaMonosPlatanos();
-            triggerMensajeTecnico();
+    const devTrigger = document.getElementById('devNameTrigger');
+    if (devTrigger) {
+        devTrigger.addEventListener('click', (e) => {
+            e.stopPropagation();
+            triggerLluviaPlatanos70();
         });
-    });
+    }
     
     // Inicialización
     loadHistory();
